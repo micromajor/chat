@@ -193,7 +193,7 @@ export default function MessagesPage() {
           }`}
         >
           <MessageCircle className="w-4 h-4" />
-          Conversations
+          Tes Conversations
         </button>
       </div>
 
@@ -290,7 +290,7 @@ export default function MessagesPage() {
           <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
             <h1 className="text-lg font-heading font-bold text-gray-900 dark:text-white flex items-center gap-2">
               <MessageCircle className="w-5 h-5 text-primary-500" />
-              Mes conversations
+              Tes conversations
             </h1>
             <button onClick={fetchConversations} className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors" disabled={conversationsLoading}>
               <RefreshCw className={`w-4 h-4 text-gray-500 ${conversationsLoading ? "animate-spin" : ""}`} />

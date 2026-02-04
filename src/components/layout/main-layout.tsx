@@ -57,15 +57,11 @@ export function MainLayout({ children, user: propUser }: MainLayoutProps) {
           headers["X-Quick-Access-Token"] = quickAccessToken;
         }
 
-        // Conversations non lues
-        const convRes = await fetch("/api/conversations", { headers });
-        const convData = await convRes.json();
-        if (convData.success) {
-          const total = convData.data.reduce(
-            (acc: number, c: { unreadCount: number }) => acc + c.unreadCount,
-            0
-          );
-          setUnreadCount(total);
+        // Messages non lus (API dédiée plus rapide)
+        const unreadRes = await fetch("/api/messages/unread", { headers });
+        const unreadData = await unreadRes.json();
+        if (unreadData.success) {
+          setUnreadCount(unreadData.data.unreadCount);
         }
 
         // Notifications non lues
@@ -80,7 +76,8 @@ export function MainLayout({ children, user: propUser }: MainLayoutProps) {
     };
 
     fetchCounts();
-    const interval = setInterval(fetchCounts, 30000); // Toutes les 30s
+    // Polling toutes les 10 secondes pour une meilleure réactivité
+    const interval = setInterval(fetchCounts, 10000);
 
     return () => clearInterval(interval);
   }, [user, quickAccessToken]);
@@ -149,7 +146,7 @@ export function MainLayout({ children, user: propUser }: MainLayoutProps) {
                   <item.icon className="w-5 h-5" />
                   <span>{item.name}</span>
                   {item.badge !== undefined && item.badge > 0 && (
-                    <span className="absolute -top-1 -right-1 min-w-[20px] h-5 bg-accent-500 text-white text-xs font-bold rounded-full flex items-center justify-center px-1">
+                    <span className="absolute -top-1 -right-1 min-w-[22px] h-[22px] bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center px-1.5 shadow-lg animate-pulse border-2 border-white dark:border-gray-900">
                       {item.badge > 99 ? "99+" : item.badge}
                     </span>
                   )}
@@ -241,7 +238,7 @@ export function MainLayout({ children, user: propUser }: MainLayoutProps) {
               <item.icon className="w-6 h-6" />
               <span className="text-xs">{item.name}</span>
               {item.badge !== undefined && item.badge > 0 && (
-                <span className="absolute top-0 right-0 min-w-[18px] h-[18px] bg-accent-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                <span className="absolute -top-1 right-1 min-w-[20px] h-[20px] bg-red-500 text-white text-[11px] font-bold rounded-full flex items-center justify-center shadow-lg animate-pulse border-2 border-white dark:border-gray-900">
                   {item.badge > 99 ? "99+" : item.badge}
                 </span>
               )}

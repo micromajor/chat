@@ -9,25 +9,95 @@
 
 ---
 
-## 🚀 État Actuel du Projet (Février 2026)
+## 🚀 État Actuel du Projet (Janvier 2025)
 
 ### Ce qui est implémenté ✅
-- Architecture complète Next.js 14 avec App Router
-- Système d'authentification dual : NextAuth.js + Accès Rapide (anonyme)
-- Toutes les pages frontend (connexion, inscription, accès rapide, dashboard, chat, profil, paramètres, explorer)
-- Schéma Prisma complet avec PostgreSQL
-- Contexte d'authentification unifié (`AuthContext`)
-- Générateur de pseudos format `Menhir_XXXXX`
-- Pages légales (CGU, mentions légales, confidentialité, contact)
-- Composants publicitaires (banner, sidebar)
-- Dark mode support
 
-### Ce qui reste à faire ⚠️
-- Configurer PostgreSQL (DATABASE_URL dans .env)
-- Exécuter `npx prisma db push` pour créer les tables
-- Implémenter Socket.io pour le chat temps réel
-- Intégrer Cloudinary ou S3 pour le stockage des photos
-- Configurer Google AdSense
+#### Infrastructure
+- [x] Architecture complète Next.js 14 avec App Router
+- [x] PostgreSQL configuré (Neon) avec Prisma ORM
+- [x] Déploiement Vercel fonctionnel
+- [x] Schéma Prisma complet avec toutes les relations
+
+#### Authentification
+- [x] Système dual : NextAuth.js (inscrits) + Accès Rapide (anonyme)
+- [x] Contexte d'authentification unifié (`AuthContext`)
+- [x] Générateur de pseudos format `Menhir_XXXXX`
+- [x] Inscription complète avec vérification email
+- [x] Récupération mot de passe
+- [x] Protection des routes authentifiées
+
+#### Pages & Navigation
+- [x] Page d'accueil avec choix inscription/accès rapide
+- [x] Dashboard de découverte des profils
+- [x] Pages de profil (vue + édition)
+- [x] Page de messagerie (liste conversations + chat)
+- [x] Page des likes (envoyés/reçus)
+- [x] Page de recherche avec filtres
+- [x] Pages paramètres (profil, mot de passe, utilisateurs bloqués)
+- [x] Pages légales (CGU, mentions légales, confidentialité, contact)
+
+#### UX Mobile
+- [x] Interface mobile-first responsive
+- [x] Navigation bottom bar sur mobile
+- [x] Dashboard optimisé mobile (liste cachée, titre "Ta recherche")
+- [x] Profil/Paramètres masqués pour accès rapide dans la nav
+
+#### Fonctionnalités
+- [x] CRUD profil utilisateur
+- [x] Système de likes
+- [x] Système de blocage
+- [x] Système de signalement
+- [x] Conversations et messages (API)
+- [x] Suppression automatique des messages > 7 jours (cron Vercel)
+
+### TODO - Ce qui reste à faire 📋
+
+#### 🔴 Priorité Haute (Core Features)
+
+1. **Chat temps réel avec Socket.io**
+   - [ ] Configurer serveur Socket.io
+   - [ ] Envoi/réception de messages en temps réel
+   - [ ] Statut en ligne/hors ligne temps réel
+   - [ ] **Badge messages non lus bien visible** (pastille rouge dans la nav)
+
+2. **Recherche fonctionnelle**
+   - [ ] Filtrer par utilisateurs connectés (par défaut)
+   - [ ] Filtre par ville (avec autocomplétion)
+   - [ ] Filtre par âge (tranche)
+   - [ ] Filtre par région
+
+3. **Upload photo de profil (membres inscrits uniquement)**
+   - [ ] Intégrer Cloudinary ou S3
+   - [ ] Compression automatique des images
+   - [ ] Validation type/taille fichier
+   - [ ] **PAS de photo pour les comptes accès rapide**
+
+#### 🟡 Priorité Moyenne
+
+4. **Amélioration UX**
+   - [ ] Confirmation avant suppression compte
+   - [ ] Améliorer feedback visuel (toasts)
+   - [ ] Skeleton loaders pendant chargement
+
+5. **Publicité (Monétisation)**
+   - [ ] Intégrer Google AdSense
+   - [ ] Banner header sur pages principales
+   - [ ] Sidebar sur desktop
+
+#### 🟢 Priorité Basse / Version Future Payante
+
+6. **Fonctionnalités Premium (V2)**
+   - [ ] Indicateur "en train d'écrire..."
+   - [ ] Indicateur de lecture (vu/non vu)
+   - [ ] Mode invisible
+   - [ ] Voir qui a consulté son profil
+
+### ❌ Fonctionnalités NON prévues
+- Pas de page notifications dédiée
+- Pas d'affichage "Match" (like mutuel)
+- Pas d'envoi de photos dans le chat (modération complexe)
+- Pas de salons collectifs (messagerie privée uniquement)
 
 ---
 
@@ -176,9 +246,10 @@ if (!user) return NextResponse.json({ error: "Non authentifié" }, { status: 401
 
 ### Accès Rapide
 - Pseudo **attribué automatiquement** (Menhir_XXXXX)
-- Photo de profil optionnelle
+- **PAS de photo de profil** (réservé aux membres inscrits)
 - Un seul clic pour accéder au site
-- Mêmes fonctionnalités que l'inscription complète
+- Mêmes fonctionnalités que l'inscription complète (chat, likes, etc.)
+- Menu Profil/Paramètres masqué dans la navigation
 
 ### Profil Utilisateur
 - Photo de profil (modération avant publication)
@@ -195,11 +266,11 @@ if (!user) return NextResponse.json({ error: "Non authentifié" }, { status: 401
 
 ### Chat Privé
 - Messagerie 1-to-1 uniquement
-- Indicateur de lecture (vu/non vu)
-- Indicateur "en train d'écrire..."
-- Envoi de photos dans le chat (avec modération)
 - Liste des conversations avec preview du dernier message
-- Notifications temps réel
+- **Badge messages non lus** bien visible (pastille rouge dans navigation)
+- Indicateur de lecture (vu/non vu) - **VERSION PAYANTE FUTURE**
+- Indicateur "en train d'écrire..." - **VERSION PAYANTE FUTURE**
+- Pas d'envoi de photos dans le chat (modération complexe)
 
 ---
 

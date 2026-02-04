@@ -13,8 +13,7 @@ import {
   ChevronRight,
   Circle,
   Camera,
-  Users,
-  Globe
+  Users
 } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -48,9 +47,10 @@ export default function DashboardPage() {
     ageMin: 18,
     ageMax: 99,
     hasPhoto: false,
-    hasAlbum: false,
+    city: "",
+    region: "",
     pseudo: "",
-    onlineOnly: false,
+    onlineOnly: true, // Par défaut ON
   });
 
   const fetchUsers = async (pageNum: number) => {
@@ -59,9 +59,15 @@ export default function DashboardPage() {
       const params = new URLSearchParams({
         page: pageNum.toString(),
         limit: "15",
-        ...(filters.onlineOnly && { online: "true" }),
-        ...(filters.pseudo && { search: filters.pseudo }),
       });
+      
+      // Ajouter les filtres actifs
+      if (filters.onlineOnly) params.set("isOnline", "true");
+      if (filters.hasPhoto) params.set("hasPhoto", "true");
+      if (filters.pseudo) params.set("search", filters.pseudo);
+      if (filters.city) params.set("city", filters.city);
+      if (filters.ageMin > 18) params.set("ageMin", filters.ageMin.toString());
+      if (filters.ageMax < 99) params.set("ageMax", filters.ageMax.toString());
       
       const headers: HeadersInit = {};
       if (quickAccessToken) {
@@ -327,16 +333,16 @@ export default function DashboardPage() {
           {/* Localisation */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              <Globe className="w-4 h-4 inline mr-1" />
-              Localisation
+              <MapPin className="w-4 h-4 inline mr-1" />
+              Ville
             </label>
-            <select className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500">
-              <option value="">Toute la France</option>
-              <option value="idf">Île-de-France</option>
-              <option value="paca">PACA</option>
-              <option value="aura">Auvergne-Rhône-Alpes</option>
-              <option value="occitanie">Occitanie</option>
-            </select>
+            <Input
+              type="text"
+              value={filters.city}
+              onChange={(e) => setFilters({ ...filters, city: e.target.value })}
+              placeholder="Paris, Lyon, Marseille..."
+              className="w-full"
+            />
           </div>
 
           {/* Pseudo */}

@@ -7,7 +7,6 @@ import {
   User,
   MapPin,
   Save,
-  Camera,
   Trash2,
   Eye,
   EyeOff,
@@ -16,6 +15,7 @@ import {
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { AvatarUpload } from "@/components/profile/avatar-upload";
 
 interface Profile {
   id: string;
@@ -136,6 +136,28 @@ export default function MonProfilPage() {
     }
   };
 
+  // Gérer l'upload de photo
+  const handleAvatarUpload = async (base64Image: string) => {
+    try {
+      const response = await fetch("/api/profile", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ avatar: base64Image }),
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        setProfile((prev) => prev ? { ...prev, avatar: base64Image || undefined } : null);
+        setMessage({ type: "success", text: base64Image ? "Photo mise à jour !" : "Photo supprimée" });
+      } else {
+        setMessage({ type: "error", text: data.error || "Erreur lors de la mise à jour" });
+      }
+    } catch {
+      setMessage({ type: "error", text: "Erreur lors de l'upload" });
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="max-w-2xl mx-auto">
@@ -161,24 +183,15 @@ export default function MonProfilPage() {
       <form onSubmit={handleSubmit}>
         {/* Avatar */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 mb-6">
-          <div className="flex items-center gap-6">
-            <div className="relative">
-              <Avatar
-                src={profile?.avatar}
-                alt={profile?.pseudo || ""}
-                size="xl"
-                className="w-24 h-24"
-              />
-              <button
-                type="button"
-                className="absolute bottom-0 right-0 w-8 h-8 bg-primary-500 text-white rounded-full flex items-center justify-center hover:bg-primary-600"
-                title="Changer la photo"
-              >
-                <Camera className="w-4 h-4" />
-              </button>
-            </div>
-            <div>
-              <h2 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row items-center gap-6">
+            <AvatarUpload
+              currentAvatar={profile?.avatar}
+              onUploadComplete={handleAvatarUpload}
+              onError={(error) => setMessage({ type: "error", text: error })}
+              disabled={false} // Les inscrits peuvent uploader
+            />
+            <div className="text-center sm:text-left">
+              <h2 className="font-semibold text-gray-900 dark:text-white flex items-center justify-center sm:justify-start gap-2">
                 {profile?.pseudo}
                 {profile?.isVerified && (
                   <Shield className="w-4 h-4 text-green-500" />

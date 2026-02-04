@@ -120,6 +120,7 @@ export async function PUT(request: NextRequest) {
       select: {
         id: true,
         pseudo: true,
+        avatar: true,
         city: true,
         region: true,
         description: true,

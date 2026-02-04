@@ -76,6 +76,7 @@ export const profileUpdateSchema = z.object({
       "Le pseudo ne peut contenir que des lettres, chiffres, tirets et underscores"
     )
     .optional(),
+  avatar: z.string().optional(), // Photo de profil en base64
   city: z.string().max(100, "La ville ne peut pas dépasser 100 caractères").optional(),
   region: z.string().max(100, "La région ne peut pas dépasser 100 caractères").optional(),
   description: z
@@ -122,6 +123,7 @@ export const searchSchema = z.object({
   ageMin: z.number().min(18).max(99).optional(),
   ageMax: z.number().min(18).max(99).optional(),
   city: z.string().optional(),
+  search: z.string().optional(), // Recherche par pseudo
   isOnline: z.boolean().optional(),
   hasPhoto: z.boolean().optional(),
   page: z.number().min(1).optional().default(1),

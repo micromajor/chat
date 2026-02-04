@@ -15,6 +15,7 @@ export async function GET(request: NextRequest) {
       ageMin: searchParams.get("ageMin") ? parseInt(searchParams.get("ageMin")!) : undefined,
       ageMax: searchParams.get("ageMax") ? parseInt(searchParams.get("ageMax")!) : undefined,
       city: searchParams.get("city") || undefined,
+      search: searchParams.get("search") || undefined,
       isOnline: searchParams.get("isOnline") === "true" ? true : undefined,
       hasPhoto: searchParams.get("hasPhoto") === "true" ? true : undefined,
       page: searchParams.get("page") ? parseInt(searchParams.get("page")!) : 1,
@@ -29,7 +30,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const { ageMin, ageMax, city, isOnline, hasPhoto, page, limit } = validation.data;
+    const { ageMin, ageMax, city, search, isOnline, hasPhoto, page, limit } = validation.data;
 
     // Récupérer les utilisateurs bloqués par ou qui ont bloqué l'utilisateur actuel
     const blocks = await prisma.block.findMany({
@@ -74,6 +75,7 @@ export async function GET(request: NextRequest) {
       ...(isOnline !== undefined && { isOnline }),
       ...(hasPhoto && { avatar: { not: null } }),
       ...(city && { city: { contains: city, mode: "insensitive" as const } }),
+      ...(search && { pseudo: { contains: search, mode: "insensitive" as const } }),
       ...(maxBirthDate && { birthDate: { lte: maxBirthDate } }),
       ...(minBirthDate && { birthDate: { gte: minBirthDate } }),
     };

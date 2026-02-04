@@ -72,7 +72,7 @@ export default function LikesPage() {
         <div className="flex-1">
           <div className="flex items-center justify-between mb-6">
             <h1 className="text-2xl font-heading font-bold text-gray-900 dark:text-white">
-              Likes
+              Tes Likes
             </h1>
           </div>
 
@@ -134,15 +134,15 @@ export default function LikesPage() {
                 </div>
                 <p className="text-gray-500 dark:text-gray-400">
                   {activeTab === "received"
-                    ? "Personne ne vous a encore liké"
-                    : "Vous n'avez encore liké personne"}
+                    ? "Personne ne t'a encore liké"
+                    : "Tu n'as encore liké personne"}
                 </p>
                 {activeTab === "received" && (
                   <Link
                     href="/dashboard"
                     className="text-primary-500 hover:underline text-sm mt-2 inline-block"
                   >
-                    Complétez votre profil pour recevoir plus de likes
+                    Complète ton profil pour recevoir plus de likes
                   </Link>
                 )}
               </div>

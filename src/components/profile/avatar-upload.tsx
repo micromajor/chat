@@ -9,16 +9,42 @@ interface AvatarUploadProps {
   currentAvatar?: string | null;
   onUploadComplete?: (base64Image: string) => void;
   onError?: (error: string) => void;
+  disabled?: boolean; // Pour bloquer l'upload aux comptes accès rapide
 }
 
 export function AvatarUpload({
   currentAvatar,
   onUploadComplete,
   onError,
+  disabled = false,
 }: AvatarUploadProps) {
   const [preview, setPreview] = useState<string | null>(currentAvatar || null);
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Si désactivé (accès rapide), afficher message
+  if (disabled) {
+    return (
+      <div className="flex flex-col items-center space-y-4">
+        <div className="relative">
+          <div className="w-32 h-32 rounded-full overflow-hidden bg-stone-200 dark:bg-stone-700 flex items-center justify-center">
+            <Camera size={48} className="text-stone-400" />
+          </div>
+        </div>
+        <div className="text-center">
+          <p className="text-sm text-stone-600 dark:text-stone-400 mb-2">
+            Les photos de profil sont réservées aux membres inscrits.
+          </p>
+          <a 
+            href="/inscription" 
+            className="text-sm text-primary-500 hover:text-primary-600 hover:underline font-medium"
+          >
+            Créer un compte →
+          </a>
+        </div>
+      </div>
+    );
+  }
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
