@@ -70,6 +70,13 @@
 - [x] Modal de confirmation personnalisée
 - [x] Composants Skeleton pour chargement
 
+#### Monétisation ✅
+- [x] Composants AdSense (AdBanner, AdBannerHorizontal, AdBannerSidebar, AdBannerNative)
+- [x] Script AdSense dans layout.tsx
+- [x] Placements stratégiques sur toutes les pages principales
+- [x] Variables d'environnement pour slots (`NEXT_PUBLIC_AD_SLOT_*`)
+- [x] Documentation complète (`docs/ADSENSE_SETUP.md`)
+
 ### TODO - Ce qui reste à faire 📋
 
 #### 🔴 Priorité Haute
@@ -81,10 +88,10 @@
 
 #### 🟡 Priorité Moyenne
 
-2. **Publicité (Monétisation)**
-   - [ ] Intégrer Google AdSense
-   - [ ] Banner header sur pages principales
-   - [ ] Sidebar sur desktop
+2. **Compte Google AdSense**
+   - [ ] Créer compte AdSense
+   - [ ] Obtenir ID publisher et slots
+   - [ ] Configurer variables d'environnement en production
 
 #### 🟢 Priorité Basse / Version Future Payante
 

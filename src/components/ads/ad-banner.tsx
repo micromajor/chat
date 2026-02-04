@@ -71,11 +71,13 @@ export function AdBanner({ slot, format = "horizontal", className }: AdBannerPro
 
 /**
  * Publicité bannière horizontale (header/footer)
+ * Utilise NEXT_PUBLIC_AD_SLOT_HEADER ou un slot par défaut
  */
 export function AdBannerHorizontal({ className }: { className?: string }) {
+  const slot = process.env.NEXT_PUBLIC_AD_SLOT_HEADER || "header-banner";
   return (
     <AdBanner
-      slot="header-banner"
+      slot={slot}
       format="horizontal"
       className={className}
     />
@@ -84,11 +86,13 @@ export function AdBannerHorizontal({ className }: { className?: string }) {
 
 /**
  * Publicité carrée pour sidebar
+ * Utilise NEXT_PUBLIC_AD_SLOT_SIDEBAR ou un slot par défaut
  */
 export function AdBannerSidebar({ className }: { className?: string }) {
+  const slot = process.env.NEXT_PUBLIC_AD_SLOT_SIDEBAR || "sidebar-rectangle";
   return (
     <AdBanner
-      slot="sidebar-rectangle"
+      slot={slot}
       format="rectangle"
       className={className}
     />
@@ -96,11 +100,13 @@ export function AdBannerSidebar({ className }: { className?: string }) {
 }
 
 /**
- * Publicité native pour insertion dans les listes
+ * Publicité native pour insertion dans les listes de profils
+ * Utilise NEXT_PUBLIC_AD_SLOT_NATIVE ou un slot par défaut
  */
 export function AdBannerNative({ className }: { className?: string }) {
   const isProduction = process.env.NODE_ENV === "production";
   const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_ID;
+  const slot = process.env.NEXT_PUBLIC_AD_SLOT_NATIVE || "native-ad";
 
   if (!isProduction || !adsenseId) {
     return (
@@ -125,7 +131,7 @@ export function AdBannerNative({ className }: { className?: string }) {
         className="adsbygoogle"
         style={{ display: "block" }}
         data-ad-client={adsenseId}
-        data-ad-slot="native-ad"
+        data-ad-slot={slot}
         data-ad-format="fluid"
       />
     </div>

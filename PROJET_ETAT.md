@@ -24,7 +24,7 @@ Ce document résume l'état actuel du projet pour faciliter la reprise par un au
 | Recherche Filtres | ✅ 100% | Filtres ville, âge, connectés, pseudo, photo |
 | Composants UX | ✅ 100% | Toasts, modals, skeletons |
 | Socket.io (Chat) | ⏳ 50% | Polling 5s (WebSocket nécessite serveur dédié) |
-| AdSense | ❌ 0% | À configurer |
+| AdSense | ✅ 100% | Composants créés, slots configurables |
 
 ---
 
@@ -112,10 +112,14 @@ Actuellement: **Polling fonctionnel** (5 secondes)
 - [x] Système de Toasts (feedback visuel)
 - [x] Composants Skeleton réutilisables
 
-#### 6. Publicité (Monétisation)
-- [ ] Intégrer Google AdSense
-- [ ] Banner header
-- [ ] Sidebar desktop
+#### 6. Publicité (Monétisation) ✅
+**FAIT** - Intégration AdSense complète
+- [x] Composants AdBanner, AdBannerHorizontal, AdBannerSidebar, AdBannerNative
+- [x] Script AdSense dans layout.tsx
+- [x] Placements sur dashboard, explorer, messages, likes, recherche
+- [x] Variables d'environnement pour slots
+- [x] Documentation de configuration (`docs/ADSENSE_SETUP.md`)
+- [ ] Compte AdSense à créer et configurer (dépend du déploiement)
 
 ### 🟢 VERSION PAYANTE FUTURE
 
@@ -183,10 +187,10 @@ const { user, isAuthenticated, isQuickAccess } = useAuth();
 
 ## 🚀 Prochaine Étape Recommandée
 
-**Implémenter Socket.io pour le chat temps réel** car :
-1. C'est la dernière fonctionnalité core manquante
-2. Améliore significativement l'UX du chat
-3. Permettra le statut en ligne temps réel
+**Créer un compte Google AdSense** car :
+1. L'intégration technique est complète
+2. Il suffit de configurer les variables d'environnement
+3. Voir `docs/ADSENSE_SETUP.md` pour le guide complet
 
 ---
 
@@ -195,3 +199,4 @@ const { user, isAuthenticated, isQuickAccess } = useAuth();
 - Instructions Copilot: `.github/copilot-instructions.md`
 - Schéma DB: `prisma/schema.prisma`
 - Contexte Auth: `src/contexts/auth-context.tsx`
+- **Guide AdSense: `docs/ADSENSE_SETUP.md`**
