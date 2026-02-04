@@ -1,0 +1,260 @@
+// Schema Prisma pour Menhir
+// Plateforme de rencontres et chat entre hommes
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==========================================
+// UTILISATEURS
+// ==========================================
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  password      String    // Hashé avec bcrypt
+  pseudo        String    @unique
+  birthDate     DateTime
+  city          String?
+  region        String?
+  description   String?   @db.VarChar(280)
+  avatar        String?   @db.Text // Photo de profil compressée en base64 (max 1 par utilisateur)
+  
+  // Préférences de recherche
+  searchAgeMin  Int       @default(18)
+  searchAgeMax  Int       @default(99)
+  searchDistance Int?     // en km
+  
+  // Accès rapide (profil temporaire)
+  isQuickAccess    Boolean   @default(false)
+  quickAccessToken String?   @unique
+  
+  // Statuts
+  isOnline      Boolean   @default(false)
+  isInvisible   Boolean   @default(false)
+  isVerified    Boolean   @default(false)
+  isBanned      Boolean   @default(false)
+  lastSeenAt    DateTime  @default(now())
+  
+  // Métadonnées
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // Relations
+  sentMessages      Message[]                 @relation("SentMessages")
+  receivedMessages  Message[]                 @relation("ReceivedMessages")
+  conversations     ConversationParticipant[]
+  likesSent         Like[]                    @relation("LikesSent")
+  likesReceived     Like[]                    @relation("LikesReceived")
+  blockedUsers      Block[]                   @relation("BlockedBy")
+  blockedByUsers    Block[]                   @relation("BlockedUsers")
+  reports           Report[]                  @relation("ReportsSent")
+  reportedBy        Report[]                  @relation("ReportsReceived")
+  profileViews      ProfileView[]             @relation("ViewedProfiles")
+  viewedBy          ProfileView[]             @relation("ProfileViewers")
+  notifications     Notification[]
+  
+  @@index([isOnline, isBanned])
+  @@index([city])
+  @@index([lastSeenAt])
+  @@index([quickAccessToken])
+}
+
+// ==========================================
+// CONVERSATIONS & MESSAGES
+// ==========================================
+
+model Conversation {
+  id           String    @id @default(cuid())
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  
+  // Relations
+  participants ConversationParticipant[]
+  messages     Message[]
+  
+  @@index([updatedAt])
+}
+
+model ConversationParticipant {
+  id             String       @id @default(cuid())
+  userId         String
+  conversationId String
+  joinedAt       DateTime     @default(now())
+  lastReadAt     DateTime     @default(now())
+  isArchived     Boolean      @default(false)
+  
+  // Relations
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, conversationId])
+  @@index([userId])
+  @@index([conversationId])
+}
+
+model Message {
+  id             String       @id @default(cuid())
+  content        String       @db.Text
+  imageUrl       String?
+  isRead         Boolean      @default(false)
+  isDeleted      Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+  expiresAt      DateTime?    // Date d'expiration du message (15 min après dernière connexion ou déconnexion anonyme)
+  
+  // Relations
+  senderId       String
+  sender         User         @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  receiverId     String
+  receiver       User         @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  
+  @@index([conversationId, createdAt])
+  @@index([senderId])
+  @@index([receiverId])
+  @@index([expiresAt]) // Index pour la suppression automatique
+}
+
+// ==========================================
+// INTERACTIONS SOCIALES
+// ==========================================
+
+model Like {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  
+  // Relations
+  senderId   String
+  sender     User     @relation("LikesSent", fields: [senderId], references: [id], onDelete: Cascade)
+  receiverId String
+  receiver   User     @relation("LikesReceived", fields: [receiverId], references: [id], onDelete: Cascade)
+  
+  @@unique([senderId, receiverId])
+  @@index([receiverId])
+}
+
+model Block {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  reason    String?
+  
+  // Relations
+  blockerId String
+  blocker   User     @relation("BlockedBy", fields: [blockerId], references: [id], onDelete: Cascade)
+  blockedId String
+  blocked   User     @relation("BlockedUsers", fields: [blockedId], references: [id], onDelete: Cascade)
+  
+  @@unique([blockerId, blockedId])
+  @@index([blockedId])
+}
+
+model ProfileView {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  
+  // Relations
+  viewerId  String
+  viewer    User     @relation("ProfileViewers", fields: [viewerId], references: [id], onDelete: Cascade)
+  viewedId  String
+  viewed    User     @relation("ViewedProfiles", fields: [viewedId], references: [id], onDelete: Cascade)
+  
+  @@index([viewedId, createdAt])
+  @@index([viewerId, createdAt])
+}
+
+// ==========================================
+// MODÉRATION
+// ==========================================
+
+model Report {
+  id          String       @id @default(cuid())
+  reason      ReportReason
+  description String?      @db.Text
+  status      ReportStatus @default(PENDING)
+  createdAt   DateTime     @default(now())
+  resolvedAt  DateTime?
+  
+  // Relations
+  reporterId  String
+  reporter    User         @relation("ReportsSent", fields: [reporterId], references: [id], onDelete: Cascade)
+  reportedId  String
+  reported    User         @relation("ReportsReceived", fields: [reportedId], references: [id], onDelete: Cascade)
+  
+  @@index([status])
+  @@index([reportedId])
+}
+
+enum ReportReason {
+  HARASSMENT
+  SPAM
+  FAKE_PROFILE
+  INAPPROPRIATE_CONTENT
+  UNDERAGE
+  OTHER
+}
+
+enum ReportStatus {
+  PENDING
+  REVIEWED
+  RESOLVED
+  DISMISSED
+}
+
+// ==========================================
+// NOTIFICATIONS
+// ==========================================
+
+model Notification {
+  id        String           @id @default(cuid())
+  type      NotificationType
+  title     String
+  content   String
+  isRead    Boolean          @default(false)
+  data      Json?            // Données supplémentaires (ex: userId concerné)
+  createdAt DateTime         @default(now())
+  
+  // Relations
+  userId    String
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId, isRead])
+  @@index([createdAt])
+}
+
+enum NotificationType {
+  NEW_MESSAGE
+  NEW_LIKE
+  PROFILE_VIEW
+  MATCH        // Quand deux personnes se likent mutuellement
+  SYSTEM
+}
+
+// ==========================================
+// VÉRIFICATION EMAIL
+// ==========================================
+
+model VerificationToken {
+  id        String   @id @default(cuid())
+  email     String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  
+  @@index([email])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  email     String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  
+  @@index([email])
+}
