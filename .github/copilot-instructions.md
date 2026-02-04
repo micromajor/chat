@@ -1,5 +1,14 @@
 # Instructions Copilot - Projet Menhir
 
+## 📌 RÈGLE IMPORTANTE - Maintenance Documentation
+
+**À chaque accomplissement de tâche, TOUJOURS mettre à jour :**
+1. Ce fichier (`copilot-instructions.md`) - Section "État Actuel"
+2. Le fichier `PROJET_ETAT.md` - Progression et TODO
+3. Commiter les changements avec un message descriptif
+
+---
+
 ## 🎯 Vision du Projet
 
 **Menhir** est une plateforme de rencontres et de chat entre hommes, gratuite et financée par la publicité.
@@ -9,7 +18,9 @@
 
 ---
 
-## 🚀 État Actuel du Projet (Janvier 2025)
+## 🚀 État Actuel du Projet (Février 2025)
+
+### Progression Globale: ~85%
 
 ### Ce qui est implémenté ✅
 
@@ -33,7 +44,7 @@
 - [x] Pages de profil (vue + édition)
 - [x] Page de messagerie (liste conversations + chat)
 - [x] Page des likes (envoyés/reçus)
-- [x] Page de recherche avec filtres
+- [x] Page de recherche avec filtres fonctionnels
 - [x] Pages paramètres (profil, mot de passe, utilisateurs bloqués)
 - [x] Pages légales (CGU, mentions légales, confidentialité, contact)
 
@@ -43,52 +54,41 @@
 - [x] Dashboard optimisé mobile (liste cachée, titre "Ta recherche")
 - [x] Profil/Paramètres masqués pour accès rapide dans la nav
 
-#### Fonctionnalités
+#### Fonctionnalités CORE ✅
 - [x] CRUD profil utilisateur
 - [x] Système de likes
 - [x] Système de blocage
 - [x] Système de signalement
-- [x] Conversations et messages (API)
+- [x] Conversations et messages (API + polling 5s)
 - [x] Suppression automatique des messages > 7 jours (cron Vercel)
+- [x] **Badge messages non lus** (pastille rouge animée, API dédiée, polling 10s)
+- [x] **Recherche fonctionnelle** (filtres ville, âge, connectés, pseudo, photo)
+- [x] **Upload photos** (bloqué pour accès rapide, compression auto)
+
+#### Composants UX ✅
+- [x] Système de Toasts (success, error, info, warning)
+- [x] Modal de confirmation personnalisée
+- [x] Composants Skeleton pour chargement
 
 ### TODO - Ce qui reste à faire 📋
 
-#### 🔴 Priorité Haute (Core Features)
+#### 🔴 Priorité Haute
 
-1. **Chat temps réel avec Socket.io**
-   - [ ] Configurer serveur Socket.io
-   - [ ] Envoi/réception de messages en temps réel
-   - [ ] Statut en ligne/hors ligne temps réel
-   - [ ] **Badge messages non lus bien visible** (pastille rouge dans la nav)
-
-2. **Recherche fonctionnelle**
-   - [ ] Filtrer par utilisateurs connectés (par défaut)
-   - [ ] Filtre par ville (avec autocomplétion)
-   - [ ] Filtre par âge (tranche)
-   - [ ] Filtre par région
-
-3. **Upload photo de profil (membres inscrits uniquement)**
-   - [ ] Intégrer Cloudinary ou S3
-   - [ ] Compression automatique des images
-   - [ ] Validation type/taille fichier
-   - [ ] **PAS de photo pour les comptes accès rapide**
+1. **Chat temps réel** (Polling 5s actuellement)
+   - NOTE: Vercel ne supporte pas WebSockets natifs
+   - [ ] Migrer vers Pusher ou Ably pour temps réel vrai
+   - [ ] Indicateur "en train d'écrire..."
 
 #### 🟡 Priorité Moyenne
 
-4. **Amélioration UX**
-   - [ ] Confirmation avant suppression compte
-   - [ ] Améliorer feedback visuel (toasts)
-   - [ ] Skeleton loaders pendant chargement
-
-5. **Publicité (Monétisation)**
+2. **Publicité (Monétisation)**
    - [ ] Intégrer Google AdSense
    - [ ] Banner header sur pages principales
    - [ ] Sidebar sur desktop
 
 #### 🟢 Priorité Basse / Version Future Payante
 
-6. **Fonctionnalités Premium (V2)**
-   - [ ] Indicateur "en train d'écrire..."
+3. **Fonctionnalités Premium (V2)**
    - [ ] Indicateur de lecture (vu/non vu)
    - [ ] Mode invisible
    - [ ] Voir qui a consulté son profil
