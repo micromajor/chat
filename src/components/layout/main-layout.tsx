@@ -18,6 +18,7 @@ import { cn } from "@/lib/utils";
 import { Avatar } from "@/components/ui/avatar";
 import { AdBannerHorizontal } from "@/components/ads/ad-banner";
 import { useAuth } from "@/contexts/auth-context";
+import { useUnreadMessages } from "@/contexts/unread-messages-context";
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -31,7 +32,7 @@ interface MainLayoutProps {
 export function MainLayout({ children, user: propUser }: MainLayoutProps) {
   const pathname = usePathname();
   const { user: authUser, logout, quickAccessToken } = useAuth();
-  const [unreadCount, setUnreadCount] = useState(0);
+  const { unreadCount } = useUnreadMessages();
   const [notificationCount, setNotificationCount] = useState(0);
 
   // Utiliser l'utilisateur du contexte ou celui passé en prop
@@ -46,22 +47,15 @@ export function MainLayout({ children, user: propUser }: MainLayoutProps) {
     );
   }
 
-  // Récupérer les compteurs de notifications
+  // Récupérer les notifications non lues
   useEffect(() => {
     if (!user) return;
 
-    const fetchCounts = async () => {
+    const fetchNotificationCount = async () => {
       try {
         const headers: HeadersInit = {};
         if (quickAccessToken) {
           headers["X-Quick-Access-Token"] = quickAccessToken;
-        }
-
-        // Messages non lus (API dédiée plus rapide)
-        const unreadRes = await fetch("/api/messages/unread", { headers });
-        const unreadData = await unreadRes.json();
-        if (unreadData.success) {
-          setUnreadCount(unreadData.data.unreadCount);
         }
 
         // Notifications non lues
@@ -71,13 +65,13 @@ export function MainLayout({ children, user: propUser }: MainLayoutProps) {
           setNotificationCount(notifData.data.unreadCount);
         }
       } catch (error) {
-        console.error("Erreur récupération compteurs:", error);
+        console.error("Erreur récupération notifications:", error);
       }
     };
 
-    fetchCounts();
+    fetchNotificationCount();
     // Polling toutes les 10 secondes pour une meilleure réactivité
-    const interval = setInterval(fetchCounts, 10000);
+    const interval = setInterval(fetchNotificationCount, 10000);
 
     return () => clearInterval(interval);
   }, [user, quickAccessToken]);
@@ -122,6 +116,7 @@ export function MainLayout({ children, user: propUser }: MainLayoutProps) {
               <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-accent-500 rounded-xl flex items-center justify-center shadow-lg">
                 <Mountain className="w-6 h-6 text-white" />
               </div>
+              {/* Logo complet en desktop, caché en mobile */}
               <div className="hidden sm:block">
                 <span className="text-xl font-heading font-bold text-primary-500">
                   Menhir
@@ -159,6 +154,10 @@ export function MainLayout({ children, user: propUser }: MainLayoutProps) {
               {/* Menu profil */}
               <div className="relative group">
                 <button className="flex items-center gap-2 p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
+                  {/* Pseudo en mobile - à gauche de l'avatar */}
+                  <span className="sm:hidden text-sm font-medium text-gray-700 dark:text-gray-300 truncate max-w-[100px]">
+                    {user.pseudo}
+                  </span>
                   <Avatar
                     src={user.avatar}
                     alt={user.pseudo}
@@ -166,6 +165,7 @@ export function MainLayout({ children, user: propUser }: MainLayoutProps) {
                     showOnlineStatus
                     isOnline
                   />
+                  {/* Pseudo en desktop - à droite de l'avatar */}
                   <span className="hidden sm:block text-sm font-medium text-gray-700 dark:text-gray-300">
                     {user.pseudo}
                   </span>

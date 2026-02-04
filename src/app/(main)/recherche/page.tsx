@@ -2,18 +2,20 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Search, Filter, MapPin, RefreshCw } from "lucide-react";
+import { Search, Filter, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { UserCard } from "@/components/profile/user-card";
 import { AdBannerSidebar } from "@/components/ads/ad-banner";
+import { LocationSelect } from "@/components/ui/location-select";
 
 interface User {
   id: string;
   pseudo: string;
   avatar?: string;
   age: number;
-  city?: string;
+  country?: string;
+  department?: string;
   isOnline: boolean;
   lastSeenAt: string;
 }
@@ -26,7 +28,8 @@ export default function RecherchePage() {
   const [filters, setFilters] = useState({
     ageMin: 18,
     ageMax: 99,
-    city: "",
+    country: "",
+    department: "",
     isOnline: false,
     hasPhoto: false,
   });
@@ -39,7 +42,8 @@ export default function RecherchePage() {
       const params = new URLSearchParams();
       if (filters.ageMin > 18) params.set("ageMin", filters.ageMin.toString());
       if (filters.ageMax < 99) params.set("ageMax", filters.ageMax.toString());
-      if (filters.city) params.set("city", filters.city);
+      if (filters.country) params.set("country", filters.country);
+      if (filters.department) params.set("department", filters.department);
       if (filters.isOnline) params.set("isOnline", "true");
       if (filters.hasPhoto) params.set("hasPhoto", "true");
 
@@ -112,23 +116,17 @@ export default function RecherchePage() {
               </div>
             </div>
 
-            {/* Ville */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Ville
-              </label>
-              <div className="relative">
-                <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                <Input
-                  type="text"
-                  value={filters.city}
-                  onChange={(e) =>
-                    setFilters({ ...filters, city: e.target.value })
-                  }
-                  placeholder="Paris, Lyon..."
-                  className="pl-10"
-                />
-              </div>
+            {/* Localisation */}
+            <div className="md:col-span-2">
+              <LocationSelect
+                country={filters.country}
+                department={filters.department}
+                onCountryChange={(country) => setFilters({ ...filters, country })}
+                onDepartmentChange={(department) => setFilters({ ...filters, department })}
+                showLabels={true}
+                countryLabel="Pays"
+                departmentLabel="Département"
+              />
             </div>
 
             {/* Options */}
@@ -217,7 +215,8 @@ export default function RecherchePage() {
                   setFilters({
                     ageMin: 18,
                     ageMax: 99,
-                    city: "",
+                    country: "",
+                    department: "",
                     isOnline: false,
                     hasPhoto: false,
                   });

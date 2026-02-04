@@ -23,7 +23,7 @@ export async function GET() {
         email: true,
         pseudo: true,
         birthDate: true,
-        city: true,
+        department: true,
         description: true,
         avatar: true,
         isOnline: true,
@@ -116,6 +116,90 @@ export async function PUT(request: NextRequest) {
     });
   } catch (error) {
     console.error("Erreur PUT /api/account:", error);
+    return NextResponse.json(
+      { success: false, error: "Erreur serveur" },
+      { status: 500 }
+    );
+  }
+}
+
+// DELETE - Supprimer le compte utilisateur
+export async function DELETE() {
+  try {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user?.id) {
+      return NextResponse.json(
+        { success: false, error: "Non authentifié" },
+        { status: 401 }
+      );
+    }
+
+    // Supprimer toutes les données liées à l'utilisateur
+    await prisma.$transaction([
+      // Supprimer les messages envoyés
+      prisma.message.deleteMany({
+        where: { senderId: session.user.id },
+      }),
+      // Supprimer les messages reçus
+      prisma.message.deleteMany({
+        where: { receiverId: session.user.id },
+      }),
+      // Supprimer les conversations
+      prisma.conversationParticipant.deleteMany({
+        where: { userId: session.user.id },
+      }),
+      // Supprimer les likes envoyés
+      prisma.like.deleteMany({
+        where: { senderId: session.user.id },
+      }),
+      // Supprimer les likes reçus
+      prisma.like.deleteMany({
+        where: { receiverId: session.user.id },
+      }),
+      // Supprimer les blocages
+      prisma.block.deleteMany({
+        where: {
+          OR: [
+            { blockerId: session.user.id },
+            { blockedId: session.user.id },
+          ],
+        },
+      }),
+      // Supprimer les signalements
+      prisma.report.deleteMany({
+        where: {
+          OR: [
+            { reporterId: session.user.id },
+            { reportedId: session.user.id },
+          ],
+        },
+      }),
+      // Supprimer les vues de profil
+      prisma.profileView.deleteMany({
+        where: {
+          OR: [
+            { viewerId: session.user.id },
+            { viewedId: session.user.id },
+          ],
+        },
+      }),
+      // Supprimer les notifications
+      prisma.notification.deleteMany({
+        where: { userId: session.user.id },
+      }),
+      // Enfin, supprimer l'utilisateur
+      prisma.user.delete({
+        where: { id: session.user.id },
+      }),
+    ]);
+
+    return NextResponse.json({
+      success: true,
+      message: "Compte supprimé avec succès",
+    });
+  } catch (error) {
+    console.error("Erreur DELETE /api/account:", error);
     return NextResponse.json(
       { success: false, error: "Erreur serveur" },
       { status: 500 }

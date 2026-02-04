@@ -19,6 +19,7 @@ import { Avatar } from "@/components/ui/avatar";
 import { AdBanner } from "@/components/ads/ad-banner";
 import { formatRelativeTime, truncateText } from "@/lib/utils";
 import { useAuthenticatedFetch } from "@/hooks/use-authenticated-fetch";
+import { useUnreadMessages } from "@/contexts/unread-messages-context";
 
 interface User {
   id: string;
@@ -52,6 +53,7 @@ interface Conversation {
 export default function MessagesPage() {
   const router = useRouter();
   const authFetch = useAuthenticatedFetch();
+  const { refreshUnreadCount } = useUnreadMessages();
   
   // État pour le responsive mobile (vue active)
   const [mobileView, setMobileView] = useState<"users" | "conversations">("users");
@@ -117,7 +119,9 @@ export default function MessagesPage() {
   useEffect(() => {
     fetchUsers(page);
     fetchConversations();
-  }, [page, fetchUsers, fetchConversations]);
+    // Rafraîchir le compteur quand on ouvre la page
+    refreshUnreadCount();
+  }, [page, fetchUsers, fetchConversations, refreshUnreadCount]);
 
   const handleUserClick = async (userId: string) => {
     try {

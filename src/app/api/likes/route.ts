@@ -2,20 +2,105 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/prisma";
+import { getUserFromRequest } from "@/lib/quick-access";
 
-// POST - Liker un utilisateur
-export async function POST(request: NextRequest) {
+// Calculer l'âge à partir de la date de naissance
+function calculateAge(birthDate: Date): number {
+  const today = new Date();
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const m = today.getMonth() - birthDate.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  return age;
+}
+
+// GET - Récupérer les likes envoyés (favoris)
+export async function GET(request: NextRequest) {
   try {
+    // Support dual auth: NextAuth + Quick Access
     const session = await getServerSession(authOptions);
+    const quickUser = !session?.user ? await getUserFromRequest(request) : null;
+    const currentUser = session?.user || quickUser;
 
-    if (!session?.user) {
+    if (!currentUser) {
       return NextResponse.json(
         { success: false, error: "Non authentifié" },
         { status: 401 }
       );
     }
 
-    const { userId } = await request.json();
+    // Récupérer les likes envoyés avec les infos du destinataire
+    const sentLikes = await prisma.like.findMany({
+      where: { senderId: currentUser.id },
+      include: {
+        receiver: {
+          select: {
+            id: true,
+            pseudo: true,
+            avatar: true,
+            birthDate: true,
+            department: true,
+            isOnline: true,
+          },
+        },
+      },
+      orderBy: { createdAt: "desc" },
+    });
+
+    // Formater la réponse
+    const formattedLikes = sentLikes.map((like) => ({
+      id: like.id,
+      createdAt: like.createdAt.toISOString(),
+      user: {
+        id: like.receiver.id,
+        pseudo: like.receiver.pseudo,
+        avatar: like.receiver.avatar,
+        age: calculateAge(like.receiver.birthDate),
+        department: like.receiver.department,
+        isOnline: like.receiver.isOnline,
+      },
+    }));
+
+    return NextResponse.json({
+      success: true,
+      data: { likes: formattedLikes, total: formattedLikes.length },
+    });
+  } catch (error) {
+    console.error("Erreur récupération likes:", error);
+    return NextResponse.json(
+      { success: false, error: "Une erreur est survenue" },
+      { status: 500 }
+    );
+  }
+}
+
+// POST - Liker un utilisateur
+export async function POST(request: NextRequest) {
+  try {
+    // Support dual auth: NextAuth + Quick Access
+    const session = await getServerSession(authOptions);
+    const quickUser = !session?.user ? await getUserFromRequest(request) : null;
+    const currentUser = session?.user || quickUser;
+
+    if (!currentUser) {
+      return NextResponse.json(
+        { success: false, error: "Non authentifié" },
+        { status: 401 }
+      );
+    }
+
+    // Les utilisateurs quick access ne peuvent pas liker
+    if (quickUser) {
+      return NextResponse.json(
+        { success: false, error: "Les utilisateurs anonymes ne peuvent pas liker" },
+        { status: 403 }
+      );
+    }
+
+    // Accepter userId, targetUserId ou targetId
+    const body = await request.json();
+    const userId = body.userId || body.targetUserId || body.targetId;
 
     if (!userId) {
       return NextResponse.json(
@@ -24,7 +109,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (userId === session.user.id) {
+    if (userId === currentUser.id) {
       return NextResponse.json(
         { success: false, error: "Vous ne pouvez pas vous liker vous-même" },
         { status: 400 }
@@ -43,11 +128,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // On ne peut liker que des utilisateurs inscrits (pas quick access)
+    if (targetUser.isQuickAccess) {
+      return NextResponse.json(
+        { success: false, error: "Vous ne pouvez liker que des membres inscrits" },
+        { status: 400 }
+      );
+    }
+
     // Vérifier si déjà liké
     const existingLike = await prisma.like.findUnique({
       where: {
         senderId_receiverId: {
-          senderId: session.user.id,
+          senderId: currentUser.id,
           receiverId: userId,
         },
       },
@@ -63,7 +156,7 @@ export async function POST(request: NextRequest) {
     // Créer le like
     await prisma.like.create({
       data: {
-        senderId: session.user.id,
+        senderId: currentUser.id,
         receiverId: userId,
       },
     });
@@ -73,7 +166,7 @@ export async function POST(request: NextRequest) {
       where: {
         senderId_receiverId: {
           senderId: userId,
-          receiverId: session.user.id,
+          receiverId: currentUser.id,
         },
       },
     });
@@ -89,11 +182,11 @@ export async function POST(request: NextRequest) {
             userId: userId,
             type: "MATCH",
             title: "Nouveau match ! 🎉",
-            content: `Vous et ${session.user.pseudo} vous êtes mutuellement likés !`,
-            data: { userId: session.user.id },
+            content: `Vous et ${currentUser.pseudo} vous êtes mutuellement likés !`,
+            data: { userId: currentUser.id },
           },
           {
-            userId: session.user.id,
+            userId: currentUser.id,
             type: "MATCH",
             title: "Nouveau match ! 🎉",
             content: `Vous et ${targetUser.pseudo} vous êtes mutuellement likés !`,
@@ -108,8 +201,8 @@ export async function POST(request: NextRequest) {
           userId: userId,
           type: "NEW_LIKE",
           title: "Nouveau like ❤️",
-          content: `${session.user.pseudo} vous a liké`,
-          data: { userId: session.user.id },
+          content: `${currentUser.pseudo} vous a liké`,
+          data: { userId: currentUser.id },
         },
       });
     }
@@ -130,9 +223,12 @@ export async function POST(request: NextRequest) {
 // DELETE - Retirer un like
 export async function DELETE(request: NextRequest) {
   try {
+    // Support dual auth: NextAuth + Quick Access
     const session = await getServerSession(authOptions);
+    const quickUser = !session?.user ? await getUserFromRequest(request) : null;
+    const currentUser = session?.user || quickUser;
 
-    if (!session?.user) {
+    if (!currentUser) {
       return NextResponse.json(
         { success: false, error: "Non authentifié" },
         { status: 401 }
@@ -152,7 +248,7 @@ export async function DELETE(request: NextRequest) {
     await prisma.like.delete({
       where: {
         senderId_receiverId: {
-          senderId: session.user.id,
+          senderId: currentUser.id,
           receiverId: userId,
         },
       },

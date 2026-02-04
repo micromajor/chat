@@ -6,13 +6,13 @@ import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { AdBanner } from "@/components/ads/ad-banner";
 import { useAuth } from "@/contexts/auth-context";
+import { useUnreadMessages } from "@/contexts/unread-messages-context";
 import { useAuthenticatedFetch } from "@/hooks/use-authenticated-fetch";
 import { useToast } from "@/components/ui/toast";
 import { 
   ArrowLeft, 
   Send, 
   User, 
-  AlertTriangle, 
   Ban, 
   Heart,
   Trash2,
@@ -30,6 +30,7 @@ interface UserData {
   description?: string;
   isOnline?: boolean;
   lastSeenAt?: string;
+  isQuickAccess?: boolean;
 }
 
 // Interface pour un message
@@ -88,6 +89,7 @@ export default function ConversationPage() {
   const conversationId = params.id as string;
   const router = useRouter();
   const { user } = useAuth();
+  const { refreshUnreadCount } = useUnreadMessages();
   const authenticatedFetch = useAuthenticatedFetch();
   const { addToast } = useToast();
 
@@ -104,9 +106,7 @@ export default function ConversationPage() {
 
   // États pour les actions utilisateur
   const [hasLiked, setHasLiked] = useState(false);
-  const [showReportModal, setShowReportModal] = useState(false);
   const [showBlockModal, setShowBlockModal] = useState(false);
-  const [reportReason, setReportReason] = useState("");
   const [actionLoading, setActionLoading] = useState(false);
 
   // Charger les utilisateurs en ligne
@@ -138,6 +138,9 @@ export default function ConversationPage() {
           messages: data.messages || [],
         });
 
+        // Rafraîchir le compteur de messages non lus
+        refreshUnreadCount();
+
         // Vérifier si l'utilisateur a liké l'autre utilisateur
         if (data.otherUser) {
           const likeResponse = await authenticatedFetch(`/api/likes?targetId=${data.otherUser.id}`);
@@ -154,7 +157,7 @@ export default function ConversationPage() {
     } finally {
       setConversationLoading(false);
     }
-  }, [authenticatedFetch, conversationId, router]);
+  }, [authenticatedFetch, conversationId, router, refreshUnreadCount]);
 
   // Envoyer un message
   const sendMessage = async (e: React.FormEvent) => {
@@ -209,33 +212,7 @@ export default function ConversationPage() {
     }
   };
 
-  // Signaler l'utilisateur
-  const handleReport = async () => {
-    if (!conversation?.otherUser || !reportReason.trim() || actionLoading) return;
 
-    setActionLoading(true);
-    try {
-      const response = await authenticatedFetch("/api/reports", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          reportedId: conversation.otherUser.id,
-          reason: reportReason,
-        }),
-      });
-
-      if (response.ok) {
-        setShowReportModal(false);
-        setReportReason("");
-        addToast("success", "Signalement envoyé, merci");
-      }
-    } catch (error) {
-      console.error("Erreur lors du signalement:", error);
-      addToast("error", "Erreur lors du signalement");
-    } finally {
-      setActionLoading(false);
-    }
-  };
 
   // Bloquer l'utilisateur
   const handleBlock = async () => {
@@ -404,7 +381,7 @@ export default function ConversationPage() {
         </div>
 
         {/* Colonne centrale - Chat */}
-        <div className="flex-1 flex flex-col bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div className="flex-1 flex flex-col bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden pb-20 md:pb-0">
           {conversationLoading ? (
             <div className="flex-1 flex items-center justify-center">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
@@ -454,14 +431,16 @@ export default function ConversationPage() {
 
                 {/* Actions directes */}
                 <div className="flex items-center gap-1">
-                  {/* Profil */}
-                  <button
-                    onClick={() => router.push(`/profil/${conversation.otherUser.id}`)}
-                    className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
-                    title="Voir le profil"
-                  >
-                    <User className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-                  </button>
+                  {/* Profil - Uniquement pour les utilisateurs inscrits */}
+                  {!conversation.otherUser.isQuickAccess && (
+                    <button
+                      onClick={() => router.push(`/profil/${conversation.otherUser.id}`)}
+                      className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
+                      title="Voir le profil"
+                    >
+                      <User className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                    </button>
+                  )}
                   
                   {/* Like */}
                   <button
@@ -473,15 +452,6 @@ export default function ConversationPage() {
                     <Heart 
                       className={`w-5 h-5 ${hasLiked ? "text-red-500 fill-red-500" : "text-gray-600 dark:text-gray-400"}`} 
                     />
-                  </button>
-
-                  {/* Signaler */}
-                  <button
-                    onClick={() => setShowReportModal(true)}
-                    className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
-                    title="Signaler"
-                  >
-                    <AlertTriangle className="w-5 h-5 text-amber-500" />
                   </button>
 
                   {/* Bloquer */}
@@ -532,7 +502,6 @@ export default function ConversationPage() {
                             }`}
                           >
                             {formatMessageTime(message.createdAt)}
-                            {isMe && message.isRead && " • Lu"}
                           </p>
                         </div>
                       </div>
@@ -578,40 +547,6 @@ export default function ConversationPage() {
           </div>
         </div>
       </div>
-
-      {/* Modal de signalement */}
-      {showReportModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-md">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-              Signaler {conversation?.otherUser.pseudo}
-            </h3>
-            <textarea
-              value={reportReason}
-              onChange={(e) => setReportReason(e.target.value)}
-              placeholder="Décrivez la raison du signalement..."
-              className="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 resize-none"
-              rows={4}
-            />
-            <div className="flex gap-3 mt-4">
-              <Button
-                variant="outline"
-                onClick={() => setShowReportModal(false)}
-                className="flex-1"
-              >
-                Annuler
-              </Button>
-              <Button
-                onClick={handleReport}
-                disabled={!reportReason.trim() || actionLoading}
-                className="flex-1 bg-amber-500 hover:bg-amber-600"
-              >
-                Signaler
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Modal de blocage */}
       {showBlockModal && (

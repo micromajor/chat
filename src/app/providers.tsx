@@ -2,6 +2,7 @@
 
 import { SessionProvider } from "next-auth/react";
 import { AuthProvider } from "@/contexts/auth-context";
+import { UnreadMessagesProvider } from "@/contexts/unread-messages-context";
 import { ToastProvider } from "@/components/ui/toast";
 import { useEffect } from "react";
 
@@ -22,7 +23,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <SessionProvider>
       <AuthProvider>
-        <ToastProvider>{children}</ToastProvider>
+        <UnreadMessagesProvider>
+          <ToastProvider>{children}</ToastProvider>
+        </UnreadMessagesProvider>
       </AuthProvider>
     </SessionProvider>
   );

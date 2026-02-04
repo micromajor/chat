@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useId } from "react";
 import { Camera, Loader2, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { prepareImageForUpload } from "@/lib/image-compression";
 
 interface AvatarUploadProps {
@@ -20,7 +20,7 @@ export function AvatarUpload({
 }: AvatarUploadProps) {
   const [preview, setPreview] = useState<string | null>(currentAvatar || null);
   const [isUploading, setIsUploading] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const inputId = useId();
 
   // Si désactivé (accès rapide), afficher message
   if (disabled) {
@@ -66,19 +66,14 @@ export function AvatarUpload({
       onError?.(errorMessage);
     } finally {
       setIsUploading(false);
+      // Reset input pour pouvoir re-sélectionner le même fichier
+      e.target.value = "";
     }
   };
 
   const handleRemove = () => {
     setPreview(null);
     onUploadComplete?.("");
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-  };
-
-  const handleClick = () => {
-    fileInputRef.current?.click();
   };
 
   return (
@@ -117,24 +112,24 @@ export function AvatarUpload({
         )}
       </div>
 
-      {/* Input file caché */}
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
-        onChange={handleFileSelect}
-        className="hidden"
-        disabled={isUploading}
-      />
-
-      {/* Bouton de sélection */}
-      <Button
-        type="button"
-        onClick={handleClick}
-        disabled={isUploading}
-        variant="outline"
-        className="flex items-center space-x-2"
+      {/* Label cliquable avec input file caché à l'intérieur */}
+      <label
+        htmlFor={inputId}
+        className={cn(
+          "inline-flex items-center justify-center gap-2 px-4 py-2 text-base font-medium rounded-lg transition-all duration-200 cursor-pointer",
+          "border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white",
+          "focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-red-500",
+          isUploading && "opacity-50 cursor-not-allowed pointer-events-none"
+        )}
       >
+        <input
+          id={inputId}
+          type="file"
+          accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
+          onChange={handleFileSelect}
+          className="sr-only"
+          disabled={isUploading}
+        />
         {isUploading ? (
           <>
             <Loader2 size={16} className="animate-spin" />
@@ -146,7 +141,7 @@ export function AvatarUpload({
             <span>{preview ? "Changer la photo" : "Ajouter une photo"}</span>
           </>
         )}
-      </Button>
+      </label>
 
       {/* Informations */}
       <p className="text-xs text-stone-500 dark:text-stone-400 text-center max-w-xs">

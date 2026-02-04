@@ -37,16 +37,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Activer le compte
-    await prisma.user.update({
-      where: { email: verificationToken.email },
-      data: { isVerified: true },
-    });
-
-    // Supprimer le token utilisé
-    await prisma.verificationToken.delete({
-      where: { id: verificationToken.id },
-    });
+    // Activer le compte et supprimer le token dans une transaction
+    await prisma.$transaction([
+      prisma.user.update({
+        where: { email: verificationToken.email },
+        data: { isVerified: true },
+      }),
+      prisma.verificationToken.delete({
+        where: { id: verificationToken.id },
+      }),
+    ]);
 
     return NextResponse.json({
       success: true,

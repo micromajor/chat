@@ -49,10 +49,9 @@ export default function HomePage() {
             <span>100% gratuit • Inscription rapide</span>
           </div>
           <h1 className="text-4xl md:text-6xl font-heading font-bold text-white mb-6 leading-tight">
-            Trouve ton <span className="text-accent-300">match</span> 💪
+            Chat gratuit et privé entre mecs.
           </h1>
           <p className="text-xl text-white/90 mb-8">
-            Chat gratuit et privé entre mecs.
             Viens faire de nouvelles rencontres !
           </p>
 
@@ -99,7 +98,7 @@ export default function HomePage() {
                   href="/acces-rapide"
                   className="block w-full bg-accent-500 text-white hover:bg-accent-600 px-6 py-3 rounded-xl font-bold text-center transition-all shadow-lg hover:shadow-xl"
                 >
-                  Tester maintenant
+                  Anonyme
                 </Link>
                 <p className="text-xs text-white/60 text-center mt-2">
                   <Clock className="w-3 h-3 inline mr-1" />

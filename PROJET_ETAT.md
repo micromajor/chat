@@ -1,6 +1,8 @@
-# 📋 État du Projet Menhir - Janvier 2025
+# 📋 État du Projet Menhir - Février 2026
 
 Ce document résume l'état actuel du projet pour faciliter la reprise par un autre modèle ou développeur.
+
+**Dernière mise à jour: 4 février 2026**
 
 ---
 
@@ -10,18 +12,20 @@ Ce document résume l'état actuel du projet pour faciliter la reprise par un au
 - **Slogan**: "Solide comme la pierre"
 - **Logo**: Icône Mountain (Lucide React)
 
-### Progression Globale: ~85%
+### Progression Globale: ~90%
 
 | Module | État | Notes |
 |--------|------|-------|
 | Frontend Pages | ✅ 100% | Toutes les pages créées |
-| Authentification | ✅ 100% | NextAuth + Accès Rapide |
+| Authentification | ⚠️ 95% | NextAuth + Accès Rapide - MANQUE blocage sans vérification |
+| Vérification Email | ✅ 100% | Fix race condition (4 fév 2026) |
 | Schema Prisma | ✅ 100% | Complet |
 | Base de données | ✅ 100% | PostgreSQL (Neon) |
-| API Routes | ✅ 95% | Fonctionnelles |
+| API Routes | ✅ 100% | Toutes fonctionnelles avec dual auth |
 | UX Mobile | ✅ 100% | Navigation bottom bar, layout optimisé |
 | Upload Photos | ✅ 100% | Composant fonctionnel, blocage accès rapide |
 | Recherche Filtres | ✅ 100% | Filtres ville, âge, connectés, pseudo, photo |
+| Page Likes | ✅ 100% | Comportement intelligent online/offline |
 | Composants UX | ✅ 100% | Toasts, modals, skeletons |
 | Socket.io (Chat) | ⏳ 50% | Polling 5s (WebSocket nécessite serveur dédié) |
 | AdSense | ✅ 100% | Composants créés, slots configurables |
@@ -41,7 +45,9 @@ Ce document résume l'état actuel du projet pour faciliter la reprise par un au
 - [x] Accès Rapide (anonyme avec pseudo `Menhir_XXXXX`)
 - [x] Contexte unifié `AuthContext`
 - [x] Inscription avec vérification email
+- [x] **Fix vérification email** (4 fév 2026) : Transaction Prisma pour éviter race condition
 - [x] Récupération mot de passe
+- [ ] ⚠️ **PROBLÈME** : Les utilisateurs peuvent se connecter SANS vérifier leur email
 
 ### Pages
 - [x] Accueil avec choix inscription/accès rapide
@@ -62,10 +68,11 @@ Ce document résume l'état actuel du projet pour faciliter la reprise par un au
 
 ### Fonctionnalités
 - [x] CRUD profil
-- [x] Likes
+- [x] Likes (avec règles : anonymes ne peuvent pas liker, on ne peut liker que des inscrits)
+- [x] Page likes intelligente (clic online→chat, clic offline→popup)
 - [x] Blocage utilisateurs
 - [x] Signalement
-- [x] API conversations/messages
+- [x] API conversations/messages (support dual auth)
 
 ---
 
@@ -73,13 +80,26 @@ Ce document résume l'état actuel du projet pour faciliter la reprise par un au
 
 ### 🔴 HAUTE PRIORITÉ
 
-#### 1. Badge Messages Non Lus ✅
+#### 1. Validation Email Obligatoire ⚠️
+**URGENT** - Actuellement les utilisateurs peuvent se connecter sans vérifier leur email
+- [ ] Bloquer connexion NextAuth si `user.isVerified = false`
+- [ ] Ajouter middleware de vérification sur routes (main)
+- [ ] Message d'erreur : "Veuillez vérifier votre email avant de vous connecter"
+- [ ] Bouton "Renvoyer l'email de vérification" sur page connexion
+- [ ] API `/api/auth/resend-verification` (rate limiting 1 email/5min)
+
+**Fichiers à modifier:**
+- `src/lib/auth.ts` - Callback authorize() de NextAuth
+- `src/app/(auth)/connexion/page.tsx` - UI message vérification
+- `src/app/api/auth/resend-verification/route.ts` - Nouvelle API
+
+#### 2. Badge Messages Non Lus ✅
 **FAIT** - Pastille rouge animée dans la navigation
 - [x] API `/api/messages/unread` dédiée (plus rapide)
 - [x] Polling toutes les 10 secondes
 - [x] Style visible : rouge vif, animation pulse, bordure
 
-#### 2. Recherche Fonctionnelle ✅
+#### 3. Recherche Fonctionnelle ✅
 **FAIT** - Filtres opérationnels
 - [x] Filtre "Connectés" (par défaut ON)
 - [x] Filtre par ville (texte libre)
@@ -87,7 +107,7 @@ Ce document résume l'état actuel du projet pour faciliter la reprise par un au
 - [x] Filtre par photo
 - [x] Recherche par pseudo
 
-#### 3. Chat Temps Réel (Socket.io)
+#### 4. Chat Temps Réel (Socket.io)
 **NOTE**: Vercel ne supporte pas les WebSockets natifs. Options:
 - Pusher/Ably (services tiers temps réel)
 - Polling optimisé (actuellement: 5s dans le chat)
@@ -98,7 +118,7 @@ Actuellement: **Polling fonctionnel** (5 secondes)
 - [ ] Statut en ligne/hors ligne temps réel
 - [ ] Indicateur "en train d'écrire"
 
-#### 4. Upload Photos ✅
+#### 5. Upload Photos ✅
 **FAIT** - Composant AvatarUpload fonctionnel
 - [x] Compression automatique 300x300
 - [x] Validation type/taille
@@ -106,13 +126,13 @@ Actuellement: **Polling fonctionnel** (5 secondes)
 
 ### 🟡 PRIORITÉ MOYENNE
 
-#### 5. Amélioration UX ✅
+#### 6. Amélioration UX ✅
 **FAIT** - Composants UX ajoutés
 - [x] Modal de confirmation personnalisée (suppression compte)
 - [x] Système de Toasts (feedback visuel)
 - [x] Composants Skeleton réutilisables
 
-#### 6. Publicité (Monétisation) ✅
+#### 7. Publicité (Monétisation) ✅
 **FAIT** - Intégration AdSense complète
 - [x] Composants AdBanner, AdBannerHorizontal, AdBannerSidebar, AdBannerNative
 - [x] Script AdSense dans layout.tsx
@@ -123,7 +143,7 @@ Actuellement: **Polling fonctionnel** (5 secondes)
 
 ### 🟢 VERSION PAYANTE FUTURE
 
-#### 7. Fonctionnalités Premium
+#### 8. Fonctionnalités Premium
 - [ ] Indicateur "en train d'écrire..."
 - [ ] Indicateur de lecture (vu/non vu)
 - [ ] Mode invisible

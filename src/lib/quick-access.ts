@@ -50,6 +50,16 @@ export async function getUserFromRequest(request: Request) {
   // Sinon, vérifier la session NextAuth
   const session = await getServerSession(authOptions);
   if (session?.user) {
+    // Mettre à jour le statut en ligne pour les utilisateurs NextAuth également
+    try {
+      await prisma.user.update({
+        where: { id: session.user.id },
+        data: { isOnline: true, lastSeenAt: new Date() },
+      });
+    } catch {
+      // Ignorer les erreurs de mise à jour
+    }
+
     return {
       id: session.user.id,
       pseudo: session.user.pseudo || "Utilisateur",

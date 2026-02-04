@@ -20,8 +20,8 @@ model User {
   password      String    // Hashé avec bcrypt
   pseudo        String    @unique
   birthDate     DateTime
-  city          String?
-  region        String?
+  country       String?   // Code pays (ex: "FR", "BE", "MA")
+  department    String?   // Code département français (ex: "75", "2A", "971") - uniquement si country = "FR"
   description   String?   @db.VarChar(280)
   avatar        String?   @db.Text // Photo de profil compressée en base64 (max 1 par utilisateur)
   
@@ -60,7 +60,7 @@ model User {
   notifications     Notification[]
   
   @@index([isOnline, isBanned])
-  @@index([city])
+  @@index([department])
   @@index([lastSeenAt])
   @@index([quickAccessToken])
 }

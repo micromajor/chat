@@ -18,16 +18,18 @@ import {
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { LocationSelect } from "@/components/ui/location-select";
 import { AdBannerSidebar } from "@/components/ads/ad-banner";
 import { formatRelativeTime } from "@/lib/utils";
 import { useAuth } from "@/contexts/auth-context";
+import { FRENCH_DEPARTMENTS, getDepartmentLabel } from "@/lib/french-departments";
 
 interface User {
   id: string;
   pseudo: string;
   avatar?: string;
   age: number;
-  city?: string;
+  department?: string;
   description?: string;
   isOnline: boolean;
   lastSeenAt: string;
@@ -47,8 +49,8 @@ export default function DashboardPage() {
     ageMin: 18,
     ageMax: 99,
     hasPhoto: false,
-    city: "",
-    region: "",
+    country: "",
+    department: "",
     pseudo: "",
     onlineOnly: true, // Par défaut ON
   });
@@ -64,8 +66,9 @@ export default function DashboardPage() {
       // Ajouter les filtres actifs
       if (filters.onlineOnly) params.set("isOnline", "true");
       if (filters.hasPhoto) params.set("hasPhoto", "true");
+      if (filters.country) params.set("country", filters.country);
       if (filters.pseudo) params.set("search", filters.pseudo);
-      if (filters.city) params.set("city", filters.city);
+      if (filters.department) params.set("department", filters.department);
       if (filters.ageMin > 18) params.set("ageMin", filters.ageMin.toString());
       if (filters.ageMax < 99) params.set("ageMax", filters.ageMax.toString());
       
@@ -203,7 +206,7 @@ export default function DashboardPage() {
                   </span>
                 </div>
                 <div className="text-xs text-gray-500 dark:text-gray-400">
-                  {user.age} ans • {user.city || "France"}
+                  {user.age} ans • {user.department ? getDepartmentLabel(user.department) : "France"}
                 </div>
               </div>
 
@@ -330,18 +333,22 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* Localisation */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              <MapPin className="w-4 h-4 inline mr-1" />
-              Ville
-            </label>
-            <Input
-              type="text"
-              value={filters.city}
-              onChange={(e) => setFilters({ ...filters, city: e.target.value })}
-              placeholder="Paris, Lyon, Marseille..."
-              className="w-full"
+          {/* Localisation (pays + département) */}
+          <div className="sm:col-span-2">
+            <LocationSelect
+              country={filters.country}
+              department={filters.department}
+              onCountryChange={(country) => {
+                console.log("Dashboard - onCountryChange called with:", country);
+                setFilters(prev => ({ ...prev, country }));
+              }}
+              onDepartmentChange={(department) => {
+                console.log("Dashboard - onDepartmentChange called with:", department);
+                setFilters(prev => ({ ...prev, department }));
+              }}
+              showLabels={true}
+              countryLabel="Pays"
+              departmentLabel="Département"
             />
           </div>
 

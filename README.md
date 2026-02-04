@@ -125,7 +125,7 @@ SMTP_HOST="smtp.mailtrap.io"
 SMTP_PORT="587"
 SMTP_USER=""
 SMTP_PASSWORD=""
-EMAIL_FROM="Menhir <noreply@menhir.fr>"
+EMAIL_FROM="Menhir <noreply@menhir.chat>"
 
 # URL publique
 NEXT_PUBLIC_APP_URL="http://localhost:3000"

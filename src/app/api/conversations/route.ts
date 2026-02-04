@@ -127,7 +127,8 @@ export async function POST(request: NextRequest) {
     if (error) return error;
     const currentUserId = user!.id;
 
-    const { userId } = await request.json();
+    const body = await request.json();
+    const userId = body.userId || body.targetUserId;
 
     if (!userId) {
       return NextResponse.json(

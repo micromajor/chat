@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { MainLayout } from "@/components/layout/main-layout";
 import { useAuth } from "@/contexts/auth-context";
+import { useOnlineStatus } from "@/hooks/use-online-status";
 
 export default function MainAppLayout({
   children,
@@ -15,6 +16,9 @@ export default function MainAppLayout({
   const { status } = useSession();
   const { user, isAuthenticated, isLoading } = useAuth();
   const [checked, setChecked] = useState(false);
+
+  // Maintenir le statut en ligne
+  useOnlineStatus();
 
   useEffect(() => {
     // Attendre que l'authentification soit vérifiée

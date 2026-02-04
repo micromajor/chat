@@ -4,6 +4,7 @@ import Link from "next/link";
 import { MapPin } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { formatRelativeTime } from "@/lib/utils";
+import { getLocationLabel } from "@/lib/countries";
 
 interface UserCardProps {
   user: {
@@ -11,7 +12,8 @@ interface UserCardProps {
     pseudo: string;
     avatar?: string;
     age: number;
-    city?: string;
+    country?: string;
+    department?: string;
     isOnline: boolean;
     lastSeenAt: string;
   };
@@ -56,10 +58,10 @@ export function UserCard({ user, showAd }: UserCardProps) {
             </span>
           </div>
 
-          {user.city && (
+          {(user.country || user.department) && (
             <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1">
               <MapPin className="w-3 h-3" />
-              {user.city}
+              {getLocationLabel(user.country, user.department)}
             </p>
           )}
 

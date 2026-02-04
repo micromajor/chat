@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { email, password, pseudo, birthDate } = validationResult.data;
+    const { email, password, pseudo, birthDate, country, department } = validationResult.data;
 
     // Vérifier si l'email existe déjà
     const existingEmail = await prisma.user.findUnique({
@@ -59,6 +59,8 @@ export async function POST(request: NextRequest) {
         password: hashedPassword,
         pseudo,
         birthDate: new Date(birthDate),
+        country: country || null,
+        department: department || null,
       },
     });
 

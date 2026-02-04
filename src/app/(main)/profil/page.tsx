@@ -16,6 +16,7 @@ import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { AvatarUpload } from "@/components/profile/avatar-upload";
+import { LocationSelect } from "@/components/ui/location-select";
 
 interface Profile {
   id: string;
@@ -23,8 +24,8 @@ interface Profile {
   pseudo: string;
   avatar?: string;
   age: number;
-  city?: string;
-  region?: string;
+  country?: string;
+  department?: string;
   description?: string;
   searchAgeMin: number;
   searchAgeMax: number;
@@ -42,8 +43,8 @@ export default function MonProfilPage() {
   const [message, setMessage] = useState({ type: "", text: "" });
   const [formData, setFormData] = useState({
     pseudo: "",
-    city: "",
-    region: "",
+    country: "",
+    department: "",
     description: "",
     searchAgeMin: 18,
     searchAgeMax: 99,
@@ -60,8 +61,8 @@ export default function MonProfilPage() {
           setProfile(data.data);
           setFormData({
             pseudo: data.data.pseudo || "",
-            city: data.data.city || "",
-            region: data.data.region || "",
+            country: data.data.country || "",
+            department: data.data.department || "",
             description: data.data.description || "",
             searchAgeMin: data.data.searchAgeMin || 18,
             searchAgeMax: data.data.searchAgeMax || 99,
@@ -237,24 +238,13 @@ export default function MonProfilPage() {
               required
             />
 
-            <div className="grid grid-cols-2 gap-4">
-              <Input
-                label="Ville"
-                value={formData.city}
-                onChange={(e) =>
-                  setFormData({ ...formData, city: e.target.value })
-                }
-                placeholder="Paris"
-              />
-              <Input
-                label="Région"
-                value={formData.region}
-                onChange={(e) =>
-                  setFormData({ ...formData, region: e.target.value })
-                }
-                placeholder="Île-de-France"
-              />
-            </div>
+            {/* Localisation (Pays + Département si France) */}
+            <LocationSelect
+              country={formData.country}
+              department={formData.department}
+              onCountryChange={(country) => setFormData({ ...formData, country })}
+              onDepartmentChange={(department) => setFormData({ ...formData, department })}
+            />
 
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">

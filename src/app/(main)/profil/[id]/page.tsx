@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, use } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -18,14 +18,14 @@ import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/toast";
 import { formatRelativeTime } from "@/lib/utils";
+import { getDepartmentLabel } from "@/lib/french-departments";
 
 interface UserProfile {
   id: string;
   pseudo: string;
   avatar?: string;
   age: number;
-  city?: string;
-  region?: string;
+  department?: string;
   description?: string;
   isOnline: boolean;
   isVerified: boolean;
@@ -36,13 +36,9 @@ interface UserProfile {
   isMatch: boolean;
 }
 
-interface ProfilPageProps {
-  params: Promise<{ id: string }>;
-}
-
-export default function ProfilPage({ params }: ProfilPageProps) {
-  const resolvedParams = use(params);
-  const { id } = resolvedParams;
+export default function ProfilPage() {
+  const params = useParams();
+  const id = params.id as string;
   const router = useRouter();
   const { addToast } = useToast();
   const [user, setUser] = useState<UserProfile | null>(null);
@@ -273,11 +269,10 @@ export default function ProfilPage({ params }: ProfilPageProps) {
 
           <p className="text-gray-600 dark:text-gray-400">
             {user.age} ans
-            {user.city && (
+            {user.department && (
               <>
                 {" "}
-                • <MapPin className="w-4 h-4 inline" /> {user.city}
-                {user.region && `, ${user.region}`}
+                • <MapPin className="w-4 h-4 inline" /> {getDepartmentLabel(user.department)}
               </>
             )}
           </p>

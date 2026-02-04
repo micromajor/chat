@@ -118,7 +118,7 @@ npm run build
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/menhir?schema=public"
 NEXTAUTH_URL="http://localhost:3000"
 NEXTAUTH_SECRET="dev-secret-change-this-in-production"
-EMAIL_FROM="Menhir <noreply@menhir.fr>"
+EMAIL_FROM="Menhir <noreply@menhir.chat>"
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
 ```
 

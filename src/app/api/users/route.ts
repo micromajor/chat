@@ -14,7 +14,8 @@ export async function GET(request: NextRequest) {
     const params = {
       ageMin: searchParams.get("ageMin") ? parseInt(searchParams.get("ageMin")!) : undefined,
       ageMax: searchParams.get("ageMax") ? parseInt(searchParams.get("ageMax")!) : undefined,
-      city: searchParams.get("city") || undefined,
+      country: searchParams.get("country") || undefined,
+      department: searchParams.get("department") || undefined,
       search: searchParams.get("search") || undefined,
       isOnline: searchParams.get("isOnline") === "true" ? true : undefined,
       hasPhoto: searchParams.get("hasPhoto") === "true" ? true : undefined,
@@ -30,7 +31,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const { ageMin, ageMax, city, search, isOnline, hasPhoto, page, limit } = validation.data;
+    const { ageMin, ageMax, country, department, search, isOnline, hasPhoto, page, limit } = validation.data;
 
     // Récupérer les utilisateurs bloqués par ou qui ont bloqué l'utilisateur actuel
     const blocks = await prisma.block.findMany({
@@ -73,8 +74,14 @@ export async function GET(request: NextRequest) {
       // isVerified: true, // Commenté pour permettre aux quick access de voir les autres
       isInvisible: false,
       ...(isOnline !== undefined && { isOnline }),
-      ...(hasPhoto && { avatar: { not: null } }),
-      ...(city && { city: { contains: city, mode: "insensitive" as const } }),
+      ...(hasPhoto && { 
+        AND: [
+          { avatar: { not: null } },
+          { avatar: { not: "" } }
+        ]
+      }),
+      ...(country && { country: country }),
+      ...(department && { department: department }),
       ...(search && { pseudo: { contains: search, mode: "insensitive" as const } }),
       ...(maxBirthDate && { birthDate: { lte: maxBirthDate } }),
       ...(minBirthDate && { birthDate: { gte: minBirthDate } }),
@@ -91,7 +98,8 @@ export async function GET(request: NextRequest) {
         pseudo: true,
         avatar: true,
         birthDate: true,
-        city: true,
+        country: true,
+        department: true,
         description: true,
         isOnline: true,
         lastSeenAt: true,

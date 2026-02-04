@@ -18,9 +18,11 @@
 
 ---
 
-## 🚀 État Actuel du Projet (Février 2025)
+## 🚀 État Actuel du Projet (Février 2026)
 
-### Progression Globale: ~85%
+### Progression Globale: ~90%
+
+**Dernière mise à jour: 4 février 2026**
 
 ### Ce qui est implémenté ✅
 
@@ -35,6 +37,7 @@
 - [x] Contexte d'authentification unifié (`AuthContext`)
 - [x] Générateur de pseudos format `Menhir_XXXXX`
 - [x] Inscription complète avec vérification email
+- [x] Fix race condition vérification email (transaction Prisma)
 - [x] Récupération mot de passe
 - [x] Protection des routes authentifiées
 
@@ -56,10 +59,17 @@
 
 #### Fonctionnalités CORE ✅
 - [x] CRUD profil utilisateur
-- [x] Système de likes
-- [x] Système de blocage
+- [x] Système de likes avec règles strictes :
+  - Utilisateurs anonymes NE PEUVENT PAS liker (API retourne 403)
+  - On ne peut liker QUE des membres inscrits (pas d'anonymes)
+  - API accepte targetId, userId, ou targetUserId
+- [x] **Page Likes intelligente** :
+  - Clic sur contact EN LIGNE → Ouvre le chat
+  - Clic sur contact HORS LIGNE → Affiche popup "Utilisateur hors ligne"
+  - Badges "En ligne" sur les cards
+- [x] Système de blocage (support dual auth)
 - [x] Système de signalement
-- [x] Conversations et messages (API + polling 5s)
+- [x] Conversations et messages (API + polling 5s, support dual auth)
 - [x] Suppression automatique des messages > 7 jours (cron Vercel)
 - [x] **Badge messages non lus** (pastille rouge animée, API dédiée, polling 10s)
 - [x] **Recherche fonctionnelle** (filtres ville, âge, connectés, pseudo, photo)
@@ -81,7 +91,13 @@
 
 #### 🔴 Priorité Haute
 
-1. **Chat temps réel** (Polling 5s actuellement)
+1. **Renforcer validation email** (URGENT)
+   - [ ] Bloquer connexion NextAuth si `isVerified = false`
+   - [ ] Ajouter middleware de vérification sur toutes les routes (main)
+   - [ ] Afficher message "Veuillez vérifier votre email" sur page connexion
+   - [ ] Bouton "Renvoyer l'email de vérification"
+
+2. **Chat temps réel** (Polling 5s actuellement)
    - NOTE: Vercel ne supporte pas WebSockets natifs
    - [ ] Migrer vers Pusher ou Ably pour temps réel vrai
    - [ ] Indicateur "en train d'écrire..."
@@ -441,7 +457,7 @@ npm run lint
 
 ## 📧 URLs et Emails
 
-- **Site**: https://www.menhir.fr
-- **Contact**: contact@menhir.fr
-- **Support**: support@menhir.fr
-- **Signalement**: signalement@menhir.fr
+- **Site**: https://www.menhir.chat
+- **Contact**: contact@menhir.chat
+- **Support**: support@menhir.chat
+- **Signalement**: signalement@menhir.chat

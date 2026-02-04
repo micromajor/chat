@@ -3,20 +3,26 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { reportSchema } from "@/lib/validations";
+import { getUserFromRequest } from "@/lib/quick-access";
 
 // POST - Bloquer un utilisateur
 export async function POST(request: NextRequest) {
   try {
+    // Support dual auth: NextAuth + Quick Access
     const session = await getServerSession(authOptions);
+    const quickUser = !session?.user ? await getUserFromRequest(request) : null;
+    const currentUser = session?.user || quickUser;
 
-    if (!session?.user) {
+    if (!currentUser) {
       return NextResponse.json(
         { success: false, error: "Non authentifié" },
         { status: 401 }
       );
     }
 
-    const { userId, reason } = await request.json();
+    // Accepter blockedId ou userId
+    const body = await request.json();
+    const userId = body.blockedId || body.userId;
 
     if (!userId) {
       return NextResponse.json(
@@ -25,7 +31,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (userId === session.user.id) {
+    if (userId === currentUser.id) {
       return NextResponse.json(
         { success: false, error: "Vous ne pouvez pas vous bloquer vous-même" },
         { status: 400 }
@@ -36,7 +42,7 @@ export async function POST(request: NextRequest) {
     const existingBlock = await prisma.block.findUnique({
       where: {
         blockerId_blockedId: {
-          blockerId: session.user.id,
+          blockerId: currentUser.id,
           blockedId: userId,
         },
       },
@@ -50,9 +56,10 @@ export async function POST(request: NextRequest) {
     }
 
     // Créer le blocage
+    const { reason } = body;
     await prisma.block.create({
       data: {
-        blockerId: session.user.id,
+        blockerId: currentUser.id,
         blockedId: userId,
         reason,
       },
@@ -62,8 +69,8 @@ export async function POST(request: NextRequest) {
     await prisma.like.deleteMany({
       where: {
         OR: [
-          { senderId: session.user.id, receiverId: userId },
-          { senderId: userId, receiverId: session.user.id },
+          { senderId: currentUser.id, receiverId: userId },
+          { senderId: userId, receiverId: currentUser.id },
         ],
       },
     });
@@ -84,9 +91,12 @@ export async function POST(request: NextRequest) {
 // DELETE - Débloquer un utilisateur
 export async function DELETE(request: NextRequest) {
   try {
+    // Support dual auth: NextAuth + Quick Access
     const session = await getServerSession(authOptions);
+    const quickUser = !session?.user ? await getUserFromRequest(request) : null;
+    const currentUser = session?.user || quickUser;
 
-    if (!session?.user) {
+    if (!currentUser) {
       return NextResponse.json(
         { success: false, error: "Non authentifié" },
         { status: 401 }
@@ -106,7 +116,7 @@ export async function DELETE(request: NextRequest) {
     await prisma.block.delete({
       where: {
         blockerId_blockedId: {
-          blockerId: session.user.id,
+          blockerId: currentUser.id,
           blockedId: userId,
         },
       },
@@ -126,11 +136,14 @@ export async function DELETE(request: NextRequest) {
 }
 
 // GET - Liste des utilisateurs bloqués
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    // Support dual auth: NextAuth + Quick Access
     const session = await getServerSession(authOptions);
+    const quickUser = !session?.user ? await getUserFromRequest(request) : null;
+    const currentUser = session?.user || quickUser;
 
-    if (!session?.user) {
+    if (!currentUser) {
       return NextResponse.json(
         { success: false, error: "Non authentifié" },
         { status: 401 }
@@ -138,7 +151,7 @@ export async function GET() {
     }
 
     const blocks = await prisma.block.findMany({
-      where: { blockerId: session.user.id },
+      where: { blockerId: currentUser.id },
       include: {
         blocked: {
           select: {

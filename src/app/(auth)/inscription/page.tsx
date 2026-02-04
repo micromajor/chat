@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { LocationSelect } from "@/components/ui/location-select";
 
 export default function InscriptionPage() {
   const router = useRouter();
@@ -28,6 +29,8 @@ export default function InscriptionPage() {
     confirmPassword: "",
     pseudo: "",
     birthDate: "",
+    country: "",
+    department: "",
     acceptCGU: false,
     acceptPrivacy: false,
   });
@@ -85,7 +88,7 @@ export default function InscriptionPage() {
         </div>
 
         {/* Formulaire */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 overflow-visible">
           <h1 className="text-2xl font-heading font-bold text-gray-900 dark:text-white mb-6 text-center">
             Créer un compte
           </h1>
@@ -151,6 +154,20 @@ export default function InscriptionPage() {
                 required
               />
             </div>
+
+            {/* Localisation */}
+            <LocationSelect
+              country={formData.country}
+              department={formData.department}
+              onCountryChange={(country) => setFormData(prev => ({ ...prev, country }))}
+              onDepartmentChange={(department) => setFormData(prev => ({ ...prev, department }))}
+              showLabels={false}
+              required
+              allowAllCountries={false}
+            />
+            {getFieldError("country") && (
+              <p className="text-red-500 text-xs mt-1">{getFieldError("country")}</p>
+            )}
 
             {/* Mot de passe */}
             <div className="relative">

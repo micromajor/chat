@@ -24,6 +24,8 @@ export const registerSchema = z
         "Le pseudo ne peut contenir que des lettres, chiffres, tirets et underscores"
       ),
     birthDate: z.string().min(1, "La date de naissance est requise"),
+    country: z.string().min(1, "Le pays est requis"),
+    department: z.string().optional(),
     acceptCGU: z.boolean().refine((v) => v === true, {
       message: "Vous devez accepter les conditions d'utilisation",
     }),
@@ -77,8 +79,8 @@ export const profileUpdateSchema = z.object({
     )
     .optional(),
   avatar: z.string().optional(), // Photo de profil en base64
-  city: z.string().max(100, "La ville ne peut pas dépasser 100 caractères").optional(),
-  region: z.string().max(100, "La région ne peut pas dépasser 100 caractères").optional(),
+  country: z.string().max(2, "Code pays invalide").optional(),
+  department: z.string().max(3, "Code département invalide").optional(),
   description: z
     .string()
     .max(280, "La description ne peut pas dépasser 280 caractères")
@@ -122,7 +124,8 @@ export type ReportInput = z.infer<typeof reportSchema>;
 export const searchSchema = z.object({
   ageMin: z.number().min(18).max(99).optional(),
   ageMax: z.number().min(18).max(99).optional(),
-  city: z.string().optional(),
+  country: z.string().optional(),
+  department: z.string().optional(),
   search: z.string().optional(), // Recherche par pseudo
   isOnline: z.boolean().optional(),
   hasPhoto: z.boolean().optional(),

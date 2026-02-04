@@ -17,7 +17,7 @@
 1. Aller sur [Google AdSense](https://www.google.com/adsense/)
 2. Cliquer sur "Commencer"
 3. Se connecter avec un compte Google
-4. Entrer l'URL du site : `https://www.menhir.fr`
+4. Entrer l'URL du site : `https://www.menhir.chat`
 5. Sélectionner le pays (France) et accepter les conditions
 
 ### 2. Vérification du site

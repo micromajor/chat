@@ -166,7 +166,7 @@ Le cron job est configuré via `vercel.json` et s'exécute automatiquement.
 Configurer un cron job système :
 ```bash
 # Crontab (Linux/Mac)
-*/5 * * * * curl -X POST https://menhir.fr/api/cleanup/messages
+*/5 * * * * curl -X POST https://menhir.chat/api/cleanup/messages
 
 # Task Scheduler (Windows)
 # Créer une tâche qui appelle l'API toutes les 5 minutes

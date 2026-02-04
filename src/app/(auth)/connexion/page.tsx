@@ -33,7 +33,9 @@ export default function ConnexionPage() {
       if (result?.error) {
         setError(result.error);
       } else {
-        router.push("/dashboard");
+        // Sur mobile, rediriger vers /messages pour voir la liste des utilisateurs
+        const isMobile = window.innerWidth < 768;
+        router.push(isMobile ? "/messages" : "/dashboard");
         router.refresh();
       }
     } catch {

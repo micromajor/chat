@@ -2,13 +2,16 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
-import { Mountain, Camera, Zap, X, Sparkles } from "lucide-react";
+import { Mountain, Camera, Zap, X, Sparkles, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { LocationSelect } from "@/components/ui/location-select";
 import { generateRandomPseudo } from "@/lib/pseudo-generator";
 
 export default function AccesRapidePage() {
   const router = useRouter();
+  const { data: session, status } = useSession();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -17,6 +20,25 @@ export default function AccesRapidePage() {
   const [pseudo, setPseudo] = useState("");
   const [avatar, setAvatar] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState("");
+  
+  // Informations obligatoires
+  const [birthDate, setBirthDate] = useState("");
+  const [country, setCountry] = useState("");
+  const [department, setDepartment] = useState("");
+
+  // Si l'utilisateur est déjà connecté via NextAuth, le déconnecter
+  useEffect(() => {
+    if (status !== "loading" && session) {
+      // L'utilisateur a une session NextAuth active, on le déconnecte
+      signOut({ redirect: false }).then(() => {
+        // Nettoyer le localStorage aussi
+        localStorage.removeItem("quickAccessToken");
+        localStorage.removeItem("quickAccessUser");
+        // Recharger la page pour réinitialiser l'état
+        window.location.reload();
+      });
+    }
+  }, [session, status]);
 
   // Générer le pseudo automatiquement au montage du composant
   useEffect(() => {
@@ -55,6 +77,29 @@ export default function AccesRapidePage() {
       setError("Erreur lors de la génération du pseudo");
       return;
     }
+    
+    if (!birthDate) {
+      setError("La date de naissance est requise");
+      return;
+    }
+    
+    // Vérifier que l'utilisateur a au moins 18 ans
+    const today = new Date();
+    const birth = new Date(birthDate);
+    let age = today.getFullYear() - birth.getFullYear();
+    const monthDiff = today.getMonth() - birth.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+      age--;
+    }
+    if (age < 18) {
+      setError("Vous devez avoir au moins 18 ans");
+      return;
+    }
+    
+    if (!country) {
+      setError("Le pays est requis");
+      return;
+    }
 
     setIsLoading(true);
     setError("");
@@ -63,6 +108,12 @@ export default function AccesRapidePage() {
       const formDataToSend = new FormData();
       formDataToSend.append("pseudo", pseudo);
       formDataToSend.append("isQuickAccess", "true");
+      formDataToSend.append("birthDate", birthDate);
+      formDataToSend.append("country", country);
+      
+      if (department) {
+        formDataToSend.append("department", department);
+      }
       
       if (avatar) {
         formDataToSend.append("avatar", avatar);
@@ -91,15 +142,28 @@ export default function AccesRapidePage() {
       // Attendre un peu pour que le localStorage soit bien écrit
       await new Promise(resolve => setTimeout(resolve, 100));
 
-      // Forcer le rechargement de la page pour que AuthContext détecte le changement
-      window.location.href = "/dashboard";
+      // Sur mobile, rediriger vers /messages pour voir la liste des utilisateurs
+      // Sur desktop, rediriger vers /dashboard pour voir la recherche
+      const isMobile = window.innerWidth < 768;
+      window.location.href = isMobile ? "/messages" : "/dashboard";
     } catch (err) {
       setError(err instanceof Error ? err.message : "Une erreur est survenue");
     } finally {
       setIsLoading(false);
     }
   };
-
+  // Afficher un écran de chargement si on attend la déconnexion NextAuth
+  if (status === "loading" || (status === "authenticated" && session)) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-primary-500 via-primary-600 to-accent-600 flex items-center justify-center p-4">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-white border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-white text-lg">Déconnexion en cours...</p>
+          <p className="text-white/70 text-sm mt-2">Préparation de l'accès rapide</p>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-500 via-primary-600 to-accent-600 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
@@ -154,6 +218,40 @@ export default function AccesRapidePage() {
             </div>
           )}
 
+          {/* Date de naissance */}
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Date de naissance <span className="text-red-500">*</span>
+            </label>
+            <div className="relative">
+              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+              <input
+                type="date"
+                value={birthDate}
+                onChange={(e) => setBirthDate(e.target.value)}
+                max={new Date(new Date().setFullYear(new Date().getFullYear() - 18)).toISOString().split('T')[0]}
+                required
+                className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+              />
+            </div>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              Tu dois avoir au moins 18 ans
+            </p>
+          </div>
+
+          {/* Localisation */}
+          <div className="mb-6">
+            <LocationSelect
+              country={country}
+              department={department}
+              onCountryChange={setCountry}
+              onDepartmentChange={setDepartment}
+              required={true}
+              showLabels={true}
+              allowAllCountries={false}
+            />
+          </div>
+
           {/* Photo optionnelle */}
           <div className="mb-6">
             <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3 text-center">
@@ -201,7 +299,7 @@ export default function AccesRapidePage() {
             variant="accent"
             size="lg"
             className="w-full"
-            disabled={isLoading || !pseudo}
+            disabled={isLoading || !pseudo || !birthDate || !country}
           >
             {isLoading ? (
               <>

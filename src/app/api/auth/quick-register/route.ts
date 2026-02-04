@@ -6,11 +6,43 @@ export async function POST(request: Request) {
   try {
     const formData = await request.formData();
     const pseudo = formData.get("pseudo") as string;
+    const birthDate = formData.get("birthDate") as string;
+    const country = formData.get("country") as string;
+    const department = formData.get("department") as string | null;
     const avatarFile = formData.get("avatar") as File | null;
 
     if (!pseudo || pseudo.length < 3 || pseudo.length > 20) {
       return NextResponse.json(
         { error: "Pseudo invalide (3-20 caractères)" },
+        { status: 400 }
+      );
+    }
+    
+    if (!birthDate) {
+      return NextResponse.json(
+        { error: "La date de naissance est requise" },
+        { status: 400 }
+      );
+    }
+    
+    // Vérifier l'âge minimum (18 ans)
+    const birth = new Date(birthDate);
+    const today = new Date();
+    let age = today.getFullYear() - birth.getFullYear();
+    const monthDiff = today.getMonth() - birth.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+      age--;
+    }
+    if (age < 18) {
+      return NextResponse.json(
+        { error: "Vous devez avoir au moins 18 ans" },
+        { status: 400 }
+      );
+    }
+    
+    if (!country) {
+      return NextResponse.json(
+        { error: "Le pays est requis" },
         { status: 400 }
       );
     }
@@ -56,7 +88,9 @@ export async function POST(request: Request) {
         pseudo,
         email: tempEmail,
         password: tempPassword, // Non hashé car temporaire et inutilisable
-        birthDate: new Date("2000-01-01"), // Date par défaut
+        birthDate: birth,
+        country: country,
+        department: department || null,
         avatar: avatarUrl,
         isOnline: true,
         isVerified: false,

@@ -1,16 +1,46 @@
-import { createTransport } from "nodemailer";
-
-const transporter = createTransport({
-  host: process.env.SMTP_HOST,
-  port: parseInt(process.env.SMTP_PORT || "587"),
-  secure: process.env.SMTP_PORT === "465",
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASSWORD,
-  },
-});
-
 const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
+
+/**
+ * Envoie un email via l'API REST Brevo
+ */
+async function sendBrevoEmail(to: string, subject: string, htmlContent: string) {
+  const BREVO_API_KEY = process.env.BREVO_API_KEY;
+  const EMAIL_FROM = process.env.EMAIL_FROM || "Menhir <noreply@menhir.chat>";
+
+  if (!BREVO_API_KEY) {
+    throw new Error("BREVO_API_KEY manquante dans .env");
+  }
+
+  // Parse EMAIL_FROM pour extraire name et email
+  const fromMatch = EMAIL_FROM.match(/^(.+?)\s*<(.+?)>$/);
+  const fromName = fromMatch ? fromMatch[1].trim() : "Menhir";
+  const fromEmail = fromMatch ? fromMatch[2].trim() : EMAIL_FROM;
+
+  const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+    method: "POST",
+    headers: {
+      accept: "application/json",
+      "api-key": BREVO_API_KEY,
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({
+      sender: {
+        name: fromName,
+        email: fromEmail,
+      },
+      to: [{ email: to }],
+      subject,
+      htmlContent,
+    }),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(`Erreur Brevo: ${JSON.stringify(error)}`);
+  }
+
+  return response.json();
+}
 
 /**
  * Envoie un email de vérification
@@ -62,12 +92,7 @@ export async function sendVerificationEmail(email: string, token: string) {
     </html>
   `;
 
-  await transporter.sendMail({
-    from: `"MenConnect" <${process.env.EMAIL_FROM}>`,
-    to: email,
-    subject: "Vérifiez votre email - Menhir",
-    html,
-  });
+  await sendBrevoEmail(email, "Vérifiez votre email - Menhir", html);
 }
 
 /**
@@ -121,12 +146,7 @@ export async function sendPasswordResetEmail(email: string, token: string) {
     </html>
   `;
 
-  await transporter.sendMail({
-    from: `"Menhir" <${process.env.EMAIL_FROM}>`,
-    to: email,
-    subject: "Réinitialisation du mot de passe - Menhir",
-    html,
-  });
+  await sendBrevoEmail(email, "Réinitialisation du mot de passe - Menhir", html);
 }
 
 /**
@@ -173,10 +193,9 @@ export async function sendNewMessageNotification(
     </html>
   `;
 
-  await transporter.sendMail({
-    from: `"Menhir" <${process.env.EMAIL_FROM}>`,
-    to: email,
-    subject: `${senderPseudo} vous a envoyé un message - Menhir`,
-    html,
-  });
+  await sendBrevoEmail(
+    email,
+    `${senderPseudo} vous a envoyé un message - Menhir`,
+    html
+  );
 }

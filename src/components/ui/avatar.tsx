@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { User } from "lucide-react";
 
@@ -42,14 +41,15 @@ export function Avatar({
   showOnlineStatus = false,
   className,
 }: AvatarProps) {
+  // Utiliser img native pour les data URLs base64, sinon next/image
+  const isDataUrl = src?.startsWith("data:");
+  
   return (
     <div className={cn("relative inline-block flex-shrink-0", className)}>
       {src ? (
-        <Image
+        <img
           src={src}
           alt={alt}
-          width={size === "xl" ? 96 : size === "lg" ? 64 : size === "md" ? 48 : 32}
-          height={size === "xl" ? 96 : size === "lg" ? 64 : size === "md" ? 48 : 32}
           className={cn(
             "rounded-full object-cover bg-gray-200 dark:bg-gray-700",
             sizeClasses[size]
