@@ -16,12 +16,23 @@ import {
   Users,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ConfirmModal } from "@/components/ui/confirm-modal";
+import { useToast } from "@/components/ui/toast";
 import Link from "next/link";
+import { useAuth } from "@/contexts/auth-context";
+import { useAuthenticatedFetch } from "@/hooks/use-authenticated-fetch";
 
 export default function ParametresPage() {
   const router = useRouter();
   const { data: session } = useSession();
+  const { user, logout } = useAuth();
+  const authenticatedFetch = useAuthenticatedFetch();
+  const { addToast } = useToast();
+  
+  const isQuickAccess = user?.isQuickAccess ?? false;
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   useEffect(() => {
     // Vérifier le mode sombre actuel
@@ -32,42 +43,53 @@ export default function ParametresPage() {
     if (isDarkMode) {
       document.documentElement.classList.remove("dark");
       localStorage.setItem("theme", "light");
+      addToast("info", "Mode clair activé");
     } else {
       document.documentElement.classList.add("dark");
       localStorage.setItem("theme", "dark");
+      addToast("info", "Mode sombre activé");
     }
     setIsDarkMode(!isDarkMode);
   };
 
   const handleLogout = () => {
-    signOut({ callbackUrl: "/" });
+    if (isQuickAccess) {
+      logout();
+      router.push("/");
+    } else {
+      signOut({ callbackUrl: "/" });
+    }
+    addToast("success", "Déconnexion réussie");
   };
 
   const handleDeleteAccount = async () => {
-    if (
-      !confirm(
-        "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible."
-      )
-    ) {
-      return;
-    }
-
-    if (
-      !confirm(
-        "Toutes vos données seront définitivement supprimées. Confirmer ?"
-      )
-    ) {
-      return;
-    }
-
+    setDeleteLoading(true);
+    
     try {
-      const response = await fetch("/api/profile", { method: "DELETE" });
+      const response = await authenticatedFetch("/api/account", { 
+        method: "DELETE" 
+      });
 
       if (response.ok) {
-        router.push("/");
+        addToast("success", "Votre compte a été supprimé");
+        // Attendre un peu pour que le toast s'affiche
+        setTimeout(() => {
+          if (isQuickAccess) {
+            logout();
+          } else {
+            signOut({ callbackUrl: "/" });
+          }
+        }, 1000);
+      } else {
+        const data = await response.json();
+        addToast("error", data.error || "Erreur lors de la suppression");
       }
     } catch (error) {
       console.error("Erreur suppression:", error);
+      addToast("error", "Une erreur est survenue");
+    } finally {
+      setDeleteLoading(false);
+      setShowDeleteModal(false);
     }
   };
 
@@ -220,7 +242,11 @@ export default function ParametresPage() {
           Se déconnecter
         </Button>
 
-        <Button variant="danger" className="w-full" onClick={handleDeleteAccount}>
+        <Button 
+          variant="danger" 
+          className="w-full" 
+          onClick={() => setShowDeleteModal(true)}
+        >
           <Trash2 className="w-5 h-5 mr-2" />
           Supprimer mon compte
         </Button>
@@ -230,6 +256,19 @@ export default function ParametresPage() {
       <p className="text-center text-sm text-gray-400 dark:text-gray-500 mt-8">
         Menhir v1.0.0
       </p>
+
+      {/* Modal de confirmation de suppression */}
+      <ConfirmModal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={handleDeleteAccount}
+        title="Supprimer votre compte ?"
+        message="Cette action est irréversible. Toutes vos données, messages et conversations seront définitivement supprimés."
+        confirmText="Supprimer définitivement"
+        cancelText="Annuler"
+        variant="danger"
+        loading={deleteLoading}
+      />
     </div>
   );
 }

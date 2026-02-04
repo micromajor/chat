@@ -10,7 +10,7 @@ Ce document résume l'état actuel du projet pour faciliter la reprise par un au
 - **Slogan**: "Solide comme la pierre"
 - **Logo**: Icône Mountain (Lucide React)
 
-### Progression Globale: ~75%
+### Progression Globale: ~85%
 
 | Module | État | Notes |
 |--------|------|-------|
@@ -20,9 +20,10 @@ Ce document résume l'état actuel du projet pour faciliter la reprise par un au
 | Base de données | ✅ 100% | PostgreSQL (Neon) |
 | API Routes | ✅ 95% | Fonctionnelles |
 | UX Mobile | ✅ 100% | Navigation bottom bar, layout optimisé |
-| Upload Photos | ✅ 90% | Composant fonctionnel, blocage accès rapide |
-| Recherche Filtres | ✅ 80% | Filtres ville, âge, connectés fonctionnels |
-| Socket.io (Chat) | ❌ 0% | À implémenter |
+| Upload Photos | ✅ 100% | Composant fonctionnel, blocage accès rapide |
+| Recherche Filtres | ✅ 100% | Filtres ville, âge, connectés, pseudo, photo |
+| Composants UX | ✅ 100% | Toasts, modals, skeletons |
+| Socket.io (Chat) | ⏳ 50% | Polling 5s (WebSocket nécessite serveur dédié) |
 | AdSense | ❌ 0% | À configurer |
 
 ---
@@ -87,11 +88,15 @@ Ce document résume l'état actuel du projet pour faciliter la reprise par un au
 - [x] Recherche par pseudo
 
 #### 3. Chat Temps Réel (Socket.io)
-**Objectif**: Messages instantanés sans recharger
-- [ ] Configurer serveur Socket.io
-- [ ] Envoi/réception messages temps réel
+**NOTE**: Vercel ne supporte pas les WebSockets natifs. Options:
+- Pusher/Ably (services tiers temps réel)
+- Polling optimisé (actuellement: 5s dans le chat)
+- Serveur Node.js dédié pour Socket.io
+
+Actuellement: **Polling fonctionnel** (5 secondes)
+- [ ] Migration vers Pusher/Ably pour temps réel vrai
 - [ ] Statut en ligne/hors ligne temps réel
-- [ ] Déconnexion propre
+- [ ] Indicateur "en train d'écrire"
 
 #### 4. Upload Photos ✅
 **FAIT** - Composant AvatarUpload fonctionnel
@@ -101,10 +106,11 @@ Ce document résume l'état actuel du projet pour faciliter la reprise par un au
 
 ### 🟡 PRIORITÉ MOYENNE
 
-#### 5. Amélioration UX
-- [ ] Confirmation suppression compte
-- [ ] Toasts feedback
-- [ ] Skeleton loaders
+#### 5. Amélioration UX ✅
+**FAIT** - Composants UX ajoutés
+- [x] Modal de confirmation personnalisée (suppression compte)
+- [x] Système de Toasts (feedback visuel)
+- [x] Composants Skeleton réutilisables
 
 #### 6. Publicité (Monétisation)
 - [ ] Intégrer Google AdSense

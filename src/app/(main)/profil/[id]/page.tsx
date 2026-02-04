@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/toast";
 import { formatRelativeTime } from "@/lib/utils";
 
 interface UserProfile {
@@ -43,6 +44,7 @@ export default function ProfilPage({ params }: ProfilPageProps) {
   const resolvedParams = use(params);
   const { id } = resolvedParams;
   const router = useRouter();
+  const { addToast } = useToast();
   const [user, setUser] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
@@ -79,6 +81,7 @@ export default function ProfilPage({ params }: ProfilPageProps) {
         // Unlike
         await fetch(`/api/likes?userId=${user.id}`, { method: "DELETE" });
         setUser({ ...user, iLiked: false, isMatch: false });
+        addToast("info", "Like retiré");
       } else {
         // Like
         const response = await fetch("/api/likes", {
@@ -89,10 +92,12 @@ export default function ProfilPage({ params }: ProfilPageProps) {
         const data = await response.json();
         if (data.success) {
           setUser({ ...user, iLiked: true, isMatch: data.isMatch });
+          addToast("success", data.isMatch ? "C'est un match ! 💕" : "Profil liké ❤️");
         }
       }
     } catch (error) {
       console.error("Erreur like:", error);
+      addToast("error", "Erreur lors du like");
     } finally {
       setIsLiking(false);
     }

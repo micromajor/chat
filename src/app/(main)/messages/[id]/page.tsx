@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { AdBanner } from "@/components/ads/ad-banner";
 import { useAuth } from "@/contexts/auth-context";
 import { useAuthenticatedFetch } from "@/hooks/use-authenticated-fetch";
+import { useToast } from "@/components/ui/toast";
 import { 
   ArrowLeft, 
   Send, 
@@ -88,6 +89,7 @@ export default function ConversationPage() {
   const router = useRouter();
   const { user } = useAuth();
   const authenticatedFetch = useAuthenticatedFetch();
+  const { addToast } = useToast();
 
   // États pour la liste des utilisateurs
   const [users, setUsers] = useState<UserData[]>([]);
@@ -197,9 +199,11 @@ export default function ConversationPage() {
 
       if (response.ok) {
         setHasLiked(!hasLiked);
+        addToast("success", hasLiked ? "Like retiré" : "Profil liké ❤️");
       }
     } catch (error) {
       console.error("Erreur lors du like:", error);
+      addToast("error", "Erreur lors du like");
     } finally {
       setActionLoading(false);
     }
@@ -223,10 +227,11 @@ export default function ConversationPage() {
       if (response.ok) {
         setShowReportModal(false);
         setReportReason("");
-        alert("Signalement envoyé");
+        addToast("success", "Signalement envoyé, merci");
       }
     } catch (error) {
       console.error("Erreur lors du signalement:", error);
+      addToast("error", "Erreur lors du signalement");
     } finally {
       setActionLoading(false);
     }
@@ -245,10 +250,12 @@ export default function ConversationPage() {
       });
 
       if (response.ok) {
+        addToast("success", "Utilisateur bloqué");
         router.push("/messages");
       }
     } catch (error) {
       console.error("Erreur lors du blocage:", error);
+      addToast("error", "Erreur lors du blocage");
     } finally {
       setActionLoading(false);
       setShowBlockModal(false);
@@ -265,10 +272,12 @@ export default function ConversationPage() {
       });
 
       if (response.ok) {
+        addToast("success", "Conversation supprimée");
         router.push("/messages");
       }
     } catch (error) {
       console.error("Erreur lors de la suppression:", error);
+      addToast("error", "Erreur lors de la suppression");
     }
   };
 
