@@ -110,10 +110,55 @@
 
 #### 🟡 Priorité Moyenne
 
-2. **Compte Google AdSense**
-   - [ ] Créer compte AdSense
-   - [ ] Obtenir ID publisher et slots
-   - [ ] Configurer variables d'environnement en production
+2. **Compte Google AdSense** ⬅️ PROCHAINE ÉTAPE
+   
+   **Contexte** : L'intégration technique est 100% terminée (composants, placements, script conditionnel, doc).
+   Il ne reste QUE la partie administrative + configuration des variables en production.
+   
+   **Étapes à suivre dans l'ordre :**
+   
+   **A. Créer le compte AdSense**
+   - [ ] Aller sur https://www.google.com/adsense/ et cliquer "Commencer"
+   - [ ] Se connecter avec un compte Google
+   - [ ] Entrer l'URL du site : `https://www.menhir.chat`
+   - [ ] Sélectionner le pays : France
+   - [ ] Accepter les conditions
+   - [ ] ⏳ Attendre la validation Google (quelques jours à quelques semaines)
+   
+   **B. Récupérer l'ID Publisher**
+   - [ ] Dans le tableau de bord AdSense → Compte → Informations sur le compte
+   - [ ] Copier l'ID Publisher (format : `ca-pub-XXXXXXXXXXXXXXXX`)
+   
+   **C. Créer 3 blocs d'annonces dans AdSense**
+   - [ ] `menhir-header-horizontal` → Type Display, taille responsive horizontal (728×90) → copier le `data-ad-slot`
+   - [ ] `menhir-sidebar` → Type Display, taille responsive (300×250) → copier le `data-ad-slot`
+   - [ ] `menhir-native-feed` → Type In-feed → copier le `data-ad-slot`
+   
+   **D. Configurer les 4 variables d'environnement en PRODUCTION**
+   - [ ] Se connecter au serveur : `ssh -i ~/.ssh/id_rsa root@89.167.63.22`
+   - [ ] Éditer le fichier : `nano /home/menhir/menhir/.env.production`
+   - [ ] Ajouter/modifier ces 4 lignes :
+     ```
+     NEXT_PUBLIC_ADSENSE_ID="ca-pub-XXXXXXXXXXXXXXXX"
+     NEXT_PUBLIC_AD_SLOT_HEADER="slot_du_bloc_horizontal"
+     NEXT_PUBLIC_AD_SLOT_SIDEBAR="slot_du_bloc_sidebar"
+     NEXT_PUBLIC_AD_SLOT_NATIVE="slot_du_bloc_native"
+     ```
+   - [ ] Rebuild : `sudo -u menhir bash -c 'export DATABASE_URL=... && export NODE_OPTIONS=--max-old-space-size=3072 && npm run build'`
+   - [ ] Restart : `sudo -u menhir pm2 restart menhir`
+   
+   **E. Vérifier le fonctionnement**
+   - [ ] Ouvrir https://menhir.chat en production
+   - [ ] Vérifier que les pubs s'affichent (peut prendre 24-48h après validation)
+   - [ ] Vérifier sur mobile ET desktop
+   
+   **Fichiers concernés (AUCUN à modifier, tout est prêt) :**
+   - `src/components/ads/ad-banner.tsx` → 4 composants (AdBanner, AdBannerHorizontal, AdBannerSidebar, AdBannerNative)
+   - `src/app/layout.tsx` → Script AdSense conditionnel (ne charge que si NEXT_PUBLIC_ADSENSE_ID existe)
+   - Placements : dashboard, explorer, messages, likes, recherche
+   - `docs/ADSENSE_SETUP.md` → Guide complet détaillé
+   
+   **⚠️ Note** : `AdBannerHorizontal` est défini mais pas encore utilisé dans les pages. À placer si besoin.
 
 #### 🟢 Priorité Basse / Version Future Payante
 

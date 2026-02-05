@@ -2,7 +2,7 @@
 
 Ce document résume l'état actuel du projet pour faciliter la reprise par un autre modèle ou développeur.
 
-**Dernière mise à jour: 4 février 2026**
+**Dernière mise à jour: 5 février 2026**
 
 ---
 
@@ -11,8 +11,9 @@ Ce document résume l'état actuel du projet pour faciliter la reprise par un au
 **Menhir** est une plateforme de rencontres entre hommes, gratuite et financée par la publicité.
 - **Slogan**: "Solide comme la pierre"
 - **Logo**: Icône Mountain (Lucide React)
+- **🌐 EN PRODUCTION** : https://menhir.chat
 
-### Progression Globale: ~90%
+### Progression Globale: ~95%
 
 | Module | État | Notes |
 |--------|------|-------|
@@ -20,7 +21,7 @@ Ce document résume l'état actuel du projet pour faciliter la reprise par un au
 | Authentification | ⚠️ 95% | NextAuth + Accès Rapide - MANQUE blocage sans vérification |
 | Vérification Email | ✅ 100% | Fix race condition (4 fév 2026) |
 | Schema Prisma | ✅ 100% | Complet |
-| Base de données | ✅ 100% | PostgreSQL (Neon) |
+| Base de données | ✅ 100% | PostgreSQL LOCAL sur serveur Hetzner |
 | API Routes | ✅ 100% | Toutes fonctionnelles avec dual auth |
 | UX Mobile | ✅ 100% | Navigation bottom bar, layout optimisé |
 | Upload Photos | ✅ 100% | Composant fonctionnel, blocage accès rapide |
@@ -28,7 +29,13 @@ Ce document résume l'état actuel du projet pour faciliter la reprise par un au
 | Page Likes | ✅ 100% | Comportement intelligent online/offline |
 | Composants UX | ✅ 100% | Toasts, modals, skeletons |
 | Socket.io (Chat) | ⏳ 50% | Polling 5s (WebSocket nécessite serveur dédié) |
-| AdSense | ✅ 100% | Composants créés, slots configurables |
+| AdSense (code) | ✅ 100% | Composants créés, placements faits, script conditionnel |
+| AdSense (compte) | ❌ 0% | ⬅️ PROCHAINE ÉTAPE : créer compte + configurer variables |
+| SEO | ✅ 100% | sitemap.xml, robots.txt, metadata, JSON-LD, manifest |
+| Google Analytics | ✅ 100% | GA4 (G-BM9NGWE0SX) avec consentement RGPD |
+| Cookie Consent RGPD | ✅ 100% | Bandeau cookies, GA ne charge qu'après consentement |
+| Robustesse | ✅ 100% | Error Boundary, retry API, rate limiting, logger, sécurité |
+| Déploiement | ✅ 100% | Hetzner CX23 + Nginx + PM2 + Cloudflare SSL |
 
 ---
 
@@ -132,14 +139,27 @@ Actuellement: **Polling fonctionnel** (5 secondes)
 - [x] Système de Toasts (feedback visuel)
 - [x] Composants Skeleton réutilisables
 
-#### 7. Publicité (Monétisation) ✅
-**FAIT** - Intégration AdSense complète
+#### 7. Publicité (Monétisation) - Code ✅ / Compte ❌
+**Code 100% terminé** - Il ne reste que la partie administrative
 - [x] Composants AdBanner, AdBannerHorizontal, AdBannerSidebar, AdBannerNative
-- [x] Script AdSense dans layout.tsx
+- [x] Script AdSense conditionnel dans layout.tsx
 - [x] Placements sur dashboard, explorer, messages, likes, recherche
-- [x] Variables d'environnement pour slots
+- [x] Variables d'environnement préparées
 - [x] Documentation de configuration (`docs/ADSENSE_SETUP.md`)
-- [ ] Compte AdSense à créer et configurer (dépend du déploiement)
+- [x] Placeholders en mode dev (cadres gris "Publicité")
+
+**⬅️ PROCHAINE ÉTAPE - Compte AdSense :**
+- [ ] Créer compte sur https://www.google.com/adsense/ avec URL https://www.menhir.chat
+- [ ] Attendre validation Google
+- [ ] Récupérer ID Publisher (`ca-pub-XXX`)
+- [ ] Créer 3 blocs : `menhir-header-horizontal` (Display 728×90), `menhir-sidebar` (Display 300×250), `menhir-native-feed` (In-feed)
+- [ ] Sur le serveur, ajouter dans `/home/menhir/menhir/.env.production` :
+  - `NEXT_PUBLIC_ADSENSE_ID="ca-pub-XXX"`
+  - `NEXT_PUBLIC_AD_SLOT_HEADER="slot_horizontal"`
+  - `NEXT_PUBLIC_AD_SLOT_SIDEBAR="slot_sidebar"`
+  - `NEXT_PUBLIC_AD_SLOT_NATIVE="slot_native"`
+- [ ] Rebuild + PM2 restart
+- [ ] Vérifier affichage sur mobile et desktop
 
 ### 🟢 VERSION PAYANTE FUTURE
 
@@ -208,9 +228,17 @@ const { user, isAuthenticated, isQuickAccess } = useAuth();
 ## 🚀 Prochaine Étape Recommandée
 
 **Créer un compte Google AdSense** car :
-1. L'intégration technique est complète
-2. Il suffit de configurer les variables d'environnement
-3. Voir `docs/ADSENSE_SETUP.md` pour le guide complet
+1. Le site est en production sur https://menhir.chat ✅
+2. Les pages légales sont en place (CGU, confidentialité, mentions légales, contact) ✅
+3. L'intégration technique est 100% complète (composants + placements) ✅
+4. Il suffit de créer le compte, récupérer les IDs, et configurer 4 variables d'env sur le serveur
+5. Voir `docs/ADSENSE_SETUP.md` pour le guide complet étape par étape
+
+**Procédure rapide :**
+1. https://www.google.com/adsense/ → Créer compte avec URL https://www.menhir.chat
+2. Attendre validation Google (quelques jours)
+3. Récupérer ID Publisher + créer 3 blocs d'annonces
+4. Demander à Copilot de configurer les variables sur le serveur et déployer
 
 ---
 
