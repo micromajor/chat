@@ -20,16 +20,22 @@
 
 ## 🚀 État Actuel du Projet (Février 2026)
 
-### Progression Globale: ~90%
+### Progression Globale: ~95%
 
-**Dernière mise à jour: 4 février 2026**
+**Dernière mise à jour: 5 février 2026**
+
+### 🌐 SITE EN PRODUCTION : https://menhir.chat
 
 ### Ce qui est implémenté ✅
 
 #### Infrastructure
 - [x] Architecture complète Next.js 14 avec App Router
-- [x] PostgreSQL configuré (Neon) avec Prisma ORM
-- [x] Déploiement Vercel fonctionnel
+- [x] PostgreSQL configuré LOCAL sur serveur de production
+- [x] Déploiement Hetzner Cloud (CX23 - 4GB RAM)
+- [x] Serveur production accessible via SSH
+- [x] Nginx + PM2 + Fail2ban configurés
+- [x] SSL/TLS via Cloudflare (mode Flexible)
+- [x] DNS Cloudflare avec proxy CDN activé
 - [x] Schéma Prisma complet avec toutes les relations
 
 #### Authentification
@@ -434,7 +440,7 @@ Le site doit afficher clairement:
 ## 🔧 Commandes Utiles
 
 ```bash
-# Développement
+# Développement local
 npm run dev
 
 # Build production
@@ -451,6 +457,136 @@ npx prisma studio
 
 # Linter
 npm run lint
+```
+
+---
+
+## 🚀 Déploiement Production
+
+### 📌 RÈGLE IMPORTANTE - Déploiement Automatique
+
+**Copilot se charge TOUJOURS du déploiement en production !**
+- Après chaque correction de bug ou évolution
+- Copilot fait le git pull sur le serveur
+- Copilot rebuild et redémarre PM2
+- L'utilisateur n'a PAS à se connecter en SSH
+
+### Serveur de Production
+
+**Hébergement:** Hetzner Cloud CX23
+- **IP:** 89.167.63.22
+- **RAM:** 4GB
+- **CPU:** 2 vCPU AMD
+- **Stockage:** 40GB SSD
+- **Domaine:** https://menhir.chat
+- **Coût:** €3.59/mois
+
+### Connexion SSH
+
+```bash
+# Connexion root
+ssh -i ~/.ssh/id_rsa root@89.167.63.22
+
+# Connexion utilisateur application
+ssh -i ~/.ssh/id_rsa menhir@89.167.63.22
+```
+
+**Clé SSH:** `~/.ssh/id_rsa` (déjà configurée)
+
+### Configuration Production
+
+**Base de données PostgreSQL:**
+- **Host:** localhost (sur le serveur)
+- **Port:** 5432
+- **Database:** menhir
+- **User:** menhir
+- **Password:** `menhir2026secure!`
+- **Connection String:** `postgresql://menhir:menhir2026secure!@localhost:5432/menhir?schema=public`
+
+**Clé API Brevo (Email):**
+Voir fichier `.env.production` sur le serveur.
+
+**NextAuth Secret:**
+Voir fichier `.env.production` sur le serveur.
+
+### Procédure de Déploiement (Automatique via Copilot)
+
+```bash
+# 1. Connexion au serveur
+ssh -i ~/.ssh/id_rsa root@89.167.63.22
+
+# 2. Navigation dans le projet
+cd /home/menhir/menhir
+
+# 3. Pull des dernières modifications
+sudo -u menhir git pull origin main
+
+# 4. Installation des dépendances (si nécessaire)
+sudo -u menhir npm install
+
+# 5. Build de l'application
+sudo -u menhir bash << 'EOFBUILD'
+export DATABASE_URL='postgresql://menhir:menhir2026secure!@localhost:5432/menhir?schema=public'
+export NODE_OPTIONS='--max-old-space-size=3072'
+npm run build
+EOFBUILD
+
+# 6. Redémarrage PM2
+sudo -u menhir pm2 restart menhir
+
+# 7. Vérification du statut
+pm2 status
+```
+
+### Structure Serveur
+
+```
+/home/menhir/
+├── menhir/                    # Application Next.js
+│   ├── .env.production        # Variables d'environnement
+│   ├── .next/                 # Build production
+│   ├── node_modules/
+│   ├── prisma/
+│   └── src/
+├── logs/                      # Logs PM2
+└── backups/                   # Sauvegardes DB (futur)
+```
+
+### Services Actifs
+
+- **PM2:** Process manager pour Next.js (port 3000)
+- **Nginx:** Reverse proxy (port 80/443 → 3000)
+- **PostgreSQL:** Base de données locale
+- **UFW:** Firewall (ports 22, 80, 443 ouverts)
+- **Fail2ban:** Protection SSH
+- **Cloudflare:** CDN, SSL/TLS, protection DDoS
+
+### Commandes de Monitoring
+
+```bash
+# Statut PM2
+pm2 status
+
+# Logs en temps réel
+pm2 logs menhir
+
+# Logs Nginx
+tail -f /var/log/nginx/access.log
+tail -f /var/log/nginx/error.log
+
+# Statut services
+systemctl status nginx
+systemctl status postgresql
+systemctl status fail2ban
+
+# Espace disque
+df -h
+
+# Mémoire
+free -h
+
+# Processus
+htop
 ```
 
 ---

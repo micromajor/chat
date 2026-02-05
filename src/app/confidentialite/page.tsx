@@ -1,4 +1,10 @@
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Politique de Confidentialité - Menhir",
+  description: "Découvrez comment Menhir protège vos données personnelles. RGPD, cookies et vie privée.",
+};
 
 export default function ConfidentialitePage() {
   return (

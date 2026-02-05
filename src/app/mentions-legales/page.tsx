@@ -1,4 +1,10 @@
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Mentions Légales - Menhir",
+  description: "Mentions légales du site Menhir.chat - Informations sur l'éditeur, l'hébergeur et les conditions d'utilisation.",
+};
 
 export default function MentionsLegalesPage() {
   return (

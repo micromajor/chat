@@ -1,4 +1,10 @@
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Conditions Générales d'Utilisation - Menhir",
+  description: "Consultez les conditions générales d'utilisation de Menhir, la plateforme de rencontres entre hommes.",
+};
 
 export default function CGUPage() {
   return (
