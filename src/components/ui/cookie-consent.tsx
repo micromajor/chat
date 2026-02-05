@@ -23,27 +23,16 @@ export function CookieConsent() {
   const acceptAll = () => {
     localStorage.setItem("cookie-consent", "all");
     setShowBanner(false);
-    // Activer Analytics si configuré
+    // Déclencher le chargement de Google Analytics
     if (typeof window !== "undefined") {
-      // @ts-expect-error - gtag injecté par le script
-      window.gtag?.("consent", "update", {
-        analytics_storage: "granted",
-        ad_storage: "granted",
-      });
+      window.dispatchEvent(new Event("cookie-consent-updated"));
     }
   };
 
   const acceptEssential = () => {
     localStorage.setItem("cookie-consent", "essential");
     setShowBanner(false);
-    // Désactiver Analytics
-    if (typeof window !== "undefined") {
-      // @ts-expect-error - gtag injecté par le script
-      window.gtag?.("consent", "update", {
-        analytics_storage: "denied",
-        ad_storage: "denied",
-      });
-    }
+    // Rien à faire : GA ne se chargera pas du tout
   };
 
   if (!showBanner) return null;
