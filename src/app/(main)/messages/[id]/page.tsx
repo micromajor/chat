@@ -17,7 +17,8 @@ import {
   Heart,
   Trash2,
   Circle,
-  MessageCircle
+  MessageCircle,
+  AlertTriangle
 } from "lucide-react";
 
 // Interface pour un utilisateur
@@ -108,6 +109,14 @@ export default function ConversationPage() {
   const [hasLiked, setHasLiked] = useState(false);
   const [showBlockModal, setShowBlockModal] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
+  
+  // État pour la modale d'avertissement utilisateur hors ligne
+  const [offlineWarning, setOfflineWarning] = useState<{
+    show: boolean;
+    isAnonymous: boolean;
+    pseudo: string;
+    pendingMessage: string;
+  }>({ show: false, isAnonymous: false, pseudo: "", pendingMessage: "" });
 
   // Charger les utilisateurs en ligne
   const fetchUsers = useCallback(async () => {
@@ -164,12 +173,32 @@ export default function ConversationPage() {
     e.preventDefault();
     if (!newMessage.trim() || !conversation || sendingMessage) return;
 
+    // Vérifier si l'interlocuteur est hors ligne
+    const otherUser = conversation.otherUser;
+    if (!otherUser.isOnline) {
+      // Afficher la modale d'avertissement
+      setOfflineWarning({
+        show: true,
+        isAnonymous: otherUser.isQuickAccess || false,
+        pseudo: otherUser.pseudo,
+        pendingMessage: newMessage,
+      });
+      return;
+    }
+
+    await doSendMessage(newMessage);
+  };
+
+  // Fonction interne pour envoyer le message (après confirmation si nécessaire)
+  const doSendMessage = async (messageContent: string) => {
+    if (!conversation) return;
+
     setSendingMessage(true);
     try {
       const response = await authenticatedFetch(`/api/conversations/${conversationId}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content: newMessage }),
+        body: JSON.stringify({ content: messageContent }),
       });
 
       if (response.ok) {
@@ -186,6 +215,19 @@ export default function ConversationPage() {
     } finally {
       setSendingMessage(false);
     }
+  };
+
+  // Confirmer l'envoi malgré l'avertissement hors ligne (pour les inscrits)
+  const handleConfirmSendOffline = async () => {
+    const message = offlineWarning.pendingMessage;
+    setOfflineWarning({ show: false, isAnonymous: false, pseudo: "", pendingMessage: "" });
+    await doSendMessage(message);
+  };
+
+  // Supprimer la conversation (quand l'anonyme est parti)
+  const handleDeleteOfflineConversation = async () => {
+    setOfflineWarning({ show: false, isAnonymous: false, pseudo: "", pendingMessage: "" });
+    await handleDeleteConversation();
   };
 
   // Toggle like
@@ -574,6 +616,68 @@ export default function ConversationPage() {
                 Bloquer
               </Button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal d'avertissement utilisateur hors ligne */}
+      {offlineWarning.show && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-md">
+            <div className="flex items-center gap-3 mb-4">
+              <div className={`p-2 rounded-full ${offlineWarning.isAnonymous ? 'bg-red-100 dark:bg-red-900/30' : 'bg-amber-100 dark:bg-amber-900/30'}`}>
+                <AlertTriangle className={`w-6 h-6 ${offlineWarning.isAnonymous ? 'text-red-600 dark:text-red-400' : 'text-amber-600 dark:text-amber-400'}`} />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                {offlineWarning.pseudo} est hors ligne
+              </h3>
+            </div>
+            
+            {offlineWarning.isAnonymous ? (
+              <>
+                <p className="text-gray-600 dark:text-gray-400 mb-4">
+                  Cet utilisateur utilisait un <strong>accès rapide</strong> et a quitté le site. 
+                  Cette conversation va être <strong>supprimée</strong> car il ne reviendra probablement pas.
+                </p>
+                <div className="flex gap-3">
+                  <Button
+                    variant="outline"
+                    onClick={() => setOfflineWarning({ show: false, isAnonymous: false, pseudo: "", pendingMessage: "" })}
+                    className="flex-1"
+                  >
+                    Annuler
+                  </Button>
+                  <Button
+                    onClick={handleDeleteOfflineConversation}
+                    className="flex-1 bg-red-600 hover:bg-red-700"
+                  >
+                    Supprimer la conversation
+                  </Button>
+                </div>
+              </>
+            ) : (
+              <>
+                <p className="text-gray-600 dark:text-gray-400 mb-4">
+                  Cet utilisateur est actuellement <strong>hors ligne</strong>. 
+                  Votre message sera conservé et il le verra à son retour (dans l'heure qui suit sa déconnexion).
+                </p>
+                <div className="flex gap-3">
+                  <Button
+                    variant="outline"
+                    onClick={() => setOfflineWarning({ show: false, isAnonymous: false, pseudo: "", pendingMessage: "" })}
+                    className="flex-1"
+                  >
+                    Annuler
+                  </Button>
+                  <Button
+                    onClick={handleConfirmSendOffline}
+                    className="flex-1"
+                  >
+                    Envoyer quand même
+                  </Button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}

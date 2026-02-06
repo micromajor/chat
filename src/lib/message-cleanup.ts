@@ -43,10 +43,10 @@ export async function setMessagesExpirationForUser(userId: string) {
   if (!user) return;
   
   // Pour les utilisateurs anonymes : suppression immédiate
-  // Pour les inscrits : 15 minutes après la dernière connexion
+  // Pour les inscrits : 1 heure après la dernière connexion (pour laisser le temps de revenir)
   const expiresAt = user.isQuickAccess 
     ? new Date() // Maintenant (suppression immédiate)
-    : new Date(Date.now() + 15 * 60 * 1000); // Dans 15 minutes
+    : new Date(Date.now() + 60 * 60 * 1000); // Dans 1 heure
   
   try {
     // Met à jour tous les messages de cet utilisateur (envoyés et reçus)
@@ -139,6 +139,41 @@ export async function deleteAllMessagesForQuickAccessUser(userId: string) {
     return result.count;
   } catch (error) {
     console.error("[Cleanup] Erreur lors de la suppression des messages:", error);
+    throw error;
+  }
+}
+
+/**
+ * Supprime toutes les conversations d'un utilisateur anonyme
+ * Les messages sont supprimés en cascade (onDelete: Cascade dans le schéma)
+ * À appeler quand un anonyme passe hors ligne
+ */
+export async function deleteConversationsForQuickAccessUser(userId: string) {
+  try {
+    // Récupérer les IDs des conversations où l'utilisateur participe
+    const participations = await prisma.conversationParticipant.findMany({
+      where: { userId },
+      select: { conversationId: true },
+    });
+    
+    const conversationIds = participations.map(p => p.conversationId);
+    
+    if (conversationIds.length === 0) {
+      console.log(`[Cleanup] Aucune conversation à supprimer pour l'utilisateur anonyme ${userId}`);
+      return 0;
+    }
+    
+    // Supprimer les conversations (messages et participants supprimés en cascade)
+    const result = await prisma.conversation.deleteMany({
+      where: {
+        id: { in: conversationIds },
+      },
+    });
+    
+    console.log(`[Cleanup] ${result.count} conversation(s) supprimée(s) pour l'utilisateur anonyme ${userId}`);
+    return result.count;
+  } catch (error) {
+    console.error("[Cleanup] Erreur lors de la suppression des conversations:", error);
     throw error;
   }
 }

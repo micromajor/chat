@@ -7,7 +7,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { getUserFromRequest } from "@/lib/quick-access";
-import { setMessagesExpirationForUser } from "@/lib/message-cleanup";
+import { setMessagesExpirationForUser, deleteConversationsForQuickAccessUser } from "@/lib/message-cleanup";
 import { prisma } from "@/lib/prisma";
 
 export async function POST(request: NextRequest) {
@@ -24,6 +24,12 @@ export async function POST(request: NextRequest) {
         { status: 401 }
       );
     }
+
+    // Récupérer le type d'utilisateur
+    const userData = await prisma.user.findUnique({
+      where: { id: user.id },
+      select: { isQuickAccess: true },
+    });
     
     // Mettre à jour le statut de l'utilisateur
     await prisma.user.update({
@@ -34,8 +40,13 @@ export async function POST(request: NextRequest) {
       },
     });
     
-    // Définir l'expiration des messages selon le type d'utilisateur
-    await setMessagesExpirationForUser(user.id);
+    // Pour les anonymes : supprimer immédiatement toutes les conversations
+    // Pour les inscrits : marquer les messages pour expiration dans 1h
+    if (userData?.isQuickAccess) {
+      await deleteConversationsForQuickAccessUser(user.id);
+    } else {
+      await setMessagesExpirationForUser(user.id);
+    }
     
     return NextResponse.json({
       success: true,
