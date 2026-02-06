@@ -1,4 +1,4 @@
-const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://menhir.chat";
 
 /**
  * Envoie un email via l'API REST Brevo
@@ -56,35 +56,39 @@ export async function sendVerificationEmail(email: string, token: string) {
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>Vérifiez votre email - Menhir</title>
     </head>
-    <body style="font-family: 'Segoe UI', Arial, sans-serif; background-color: #f5f5f5; margin: 0; padding: 20px;">
-      <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-        <div style="background-color: #1E3A5F; padding: 30px; text-align: center;">
-          <h1 style="color: #ffffff; margin: 0; font-size: 28px;">MenConnect</h1>
+    <body style="font-family: 'Inter', 'Segoe UI', Arial, sans-serif; background-color: #F5F5F4; margin: 0; padding: 20px;">
+      <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+        <div style="background: linear-gradient(to right, #DC2626, #F59E0B); padding: 30px; text-align: center;">
+          <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 800; letter-spacing: 1px;">⛰ Menhir</h1>
+          <p style="color: rgba(255,255,255,0.85); margin: 6px 0 0; font-size: 13px; font-style: italic;">Solide comme la pierre</p>
         </div>
         <div style="padding: 40px 30px;">
-          <h2 style="color: #333333; margin-top: 0;">Bienvenue sur Menhir ! 👋</h2>
-          <p style="color: #666666; line-height: 1.6;">
+          <h2 style="color: #1C1917; margin-top: 0;">Bienvenue sur Menhir ! 👋</h2>
+          <p style="color: #44403C; line-height: 1.6;">
             Merci de vous être inscrit. Pour activer votre compte et commencer à faire des rencontres, 
             veuillez vérifier votre adresse email en cliquant sur le bouton ci-dessous :
           </p>
           <div style="text-align: center; margin: 30px 0;">
             <a href="${verifyUrl}" 
-               style="background-color: #FF6B35; color: #ffffff; padding: 14px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">
+               style="background-color: #DC2626; color: #ffffff; padding: 14px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; font-size: 16px;">
               Vérifier mon email
             </a>
           </div>
-          <p style="color: #999999; font-size: 14px;">
+          <p style="color: #78716C; font-size: 14px;">
             Si le bouton ne fonctionne pas, copiez et collez ce lien dans votre navigateur :
             <br>
-            <a href="${verifyUrl}" style="color: #1E3A5F;">${verifyUrl}</a>
+            <a href="${verifyUrl}" style="color: #DC2626; word-break: break-all;">${verifyUrl}</a>
           </p>
-          <p style="color: #999999; font-size: 14px;">
+          <p style="color: #78716C; font-size: 14px;">
             Ce lien expire dans 24 heures.
           </p>
         </div>
-        <div style="background-color: #f8f9fa; padding: 20px; text-align: center; border-top: 1px solid #eeeeee;">
-          <p style="color: #999999; font-size: 12px; margin: 0;">
+        <div style="background-color: #F5F5F4; padding: 20px; text-align: center; border-top: 1px solid #E7E5E4;">
+          <p style="color: #A8A29E; font-size: 12px; margin: 0;">
             Si vous n'avez pas créé de compte sur Menhir, ignorez cet email.
+          </p>
+          <p style="color: #A8A29E; font-size: 11px; margin: 8px 0 0;">
+            © 2026 Menhir — <a href="https://menhir.chat" style="color: #DC2626; text-decoration: none;">menhir.chat</a>
           </p>
         </div>
       </div>
@@ -109,36 +113,40 @@ export async function sendPasswordResetEmail(email: string, token: string) {
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>Réinitialisation du mot de passe - Menhir</title>
     </head>
-    <body style="font-family: 'Segoe UI', Arial, sans-serif; background-color: #f5f5f5; margin: 0; padding: 20px;">
-      <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-        <div style="background-color: #1E3A5F; padding: 30px; text-align: center;">
-          <h1 style="color: #ffffff; margin: 0; font-size: 28px;">MenConnect</h1>
+    <body style="font-family: 'Inter', 'Segoe UI', Arial, sans-serif; background-color: #F5F5F4; margin: 0; padding: 20px;">
+      <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+        <div style="background: linear-gradient(to right, #DC2626, #F59E0B); padding: 30px; text-align: center;">
+          <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 800; letter-spacing: 1px;">⛰ Menhir</h1>
+          <p style="color: rgba(255,255,255,0.85); margin: 6px 0 0; font-size: 13px; font-style: italic;">Solide comme la pierre</p>
         </div>
         <div style="padding: 40px 30px;">
-          <h2 style="color: #333333; margin-top: 0;">Réinitialisation du mot de passe 🔐</h2>
-          <p style="color: #666666; line-height: 1.6;">
+          <h2 style="color: #1C1917; margin-top: 0;">Réinitialisation du mot de passe 🔐</h2>
+          <p style="color: #44403C; line-height: 1.6;">
             Vous avez demandé à réinitialiser votre mot de passe. 
             Cliquez sur le bouton ci-dessous pour créer un nouveau mot de passe :
           </p>
           <div style="text-align: center; margin: 30px 0;">
             <a href="${resetUrl}" 
-               style="background-color: #FF6B35; color: #ffffff; padding: 14px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">
+               style="background-color: #DC2626; color: #ffffff; padding: 14px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; font-size: 16px;">
               Réinitialiser mon mot de passe
             </a>
           </div>
-          <p style="color: #999999; font-size: 14px;">
+          <p style="color: #78716C; font-size: 14px;">
             Si le bouton ne fonctionne pas, copiez et collez ce lien dans votre navigateur :
             <br>
-            <a href="${resetUrl}" style="color: #1E3A5F;">${resetUrl}</a>
+            <a href="${resetUrl}" style="color: #DC2626; word-break: break-all;">${resetUrl}</a>
           </p>
-          <p style="color: #999999; font-size: 14px;">
+          <p style="color: #78716C; font-size: 14px;">
             Ce lien expire dans 1 heure.
           </p>
         </div>
-        <div style="background-color: #f8f9fa; padding: 20px; text-align: center; border-top: 1px solid #eeeeee;">
-          <p style="color: #999999; font-size: 12px; margin: 0;">
+        <div style="background-color: #F5F5F4; padding: 20px; text-align: center; border-top: 1px solid #E7E5E4;">
+          <p style="color: #A8A29E; font-size: 12px; margin: 0;">
             Si vous n'avez pas demandé cette réinitialisation, ignorez cet email. 
             Votre mot de passe restera inchangé.
+          </p>
+          <p style="color: #A8A29E; font-size: 11px; margin: 8px 0 0;">
+            © 2026 Menhir — <a href="https://menhir.chat" style="color: #DC2626; text-decoration: none;">menhir.chat</a>
           </p>
         </div>
       </div>
@@ -166,26 +174,30 @@ export async function sendNewMessageNotification(
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>Nouveau message - Menhir</title>
     </head>
-    <body style="font-family: 'Segoe UI', Arial, sans-serif; background-color: #f5f5f5; margin: 0; padding: 20px;">
-      <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-        <div style="background-color: #1E3A5F; padding: 30px; text-align: center;">
-          <h1 style="color: #ffffff; margin: 0; font-size: 28px;">Menhir</h1>
+    <body style="font-family: 'Inter', 'Segoe UI', Arial, sans-serif; background-color: #F5F5F4; margin: 0; padding: 20px;">
+      <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+        <div style="background: linear-gradient(to right, #DC2626, #F59E0B); padding: 30px; text-align: center;">
+          <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 800; letter-spacing: 1px;">⛰ Menhir</h1>
+          <p style="color: rgba(255,255,255,0.85); margin: 6px 0 0; font-size: 13px; font-style: italic;">Solide comme la pierre</p>
         </div>
         <div style="padding: 40px 30px;">
-          <h2 style="color: #333333; margin-top: 0;">Vous avez un nouveau message ! 💬</h2>
-          <p style="color: #666666; line-height: 1.6;">
+          <h2 style="color: #1C1917; margin-top: 0;">Vous avez un nouveau message ! 💬</h2>
+          <p style="color: #44403C; line-height: 1.6;">
             <strong>${senderPseudo}</strong> vous a envoyé un message sur Menhir.
           </p>
           <div style="text-align: center; margin: 30px 0;">
             <a href="${loginUrl}" 
-               style="background-color: #FF6B35; color: #ffffff; padding: 14px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">
+               style="background-color: #DC2626; color: #ffffff; padding: 14px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; font-size: 16px;">
               Voir le message
             </a>
           </div>
         </div>
-        <div style="background-color: #f8f9fa; padding: 20px; text-align: center; border-top: 1px solid #eeeeee;">
-          <p style="color: #999999; font-size: 12px; margin: 0;">
+        <div style="background-color: #F5F5F4; padding: 20px; text-align: center; border-top: 1px solid #E7E5E4;">
+          <p style="color: #A8A29E; font-size: 12px; margin: 0;">
             Pour ne plus recevoir ces notifications, modifiez vos préférences dans les paramètres de votre compte.
+          </p>
+          <p style="color: #A8A29E; font-size: 11px; margin: 8px 0 0;">
+            © 2026 Menhir — <a href="https://menhir.chat" style="color: #DC2626; text-decoration: none;">menhir.chat</a>
           </p>
         </div>
       </div>

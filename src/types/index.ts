@@ -1,4 +1,4 @@
-// Types principaux pour MenConnect
+// Types principaux pour Menhir
 
 // ==========================================
 // UTILISATEURS
