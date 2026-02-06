@@ -18,13 +18,14 @@ import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/toast";
 import { formatRelativeTime } from "@/lib/utils";
-import { getDepartmentLabel } from "@/lib/french-departments";
+import { getLocationLabel } from "@/lib/countries";
 
 interface UserProfile {
   id: string;
   pseudo: string;
   avatar?: string;
   age: number;
+  country?: string;
   department?: string;
   description?: string;
   isOnline: boolean;
@@ -269,10 +270,10 @@ export default function ProfilPage() {
 
           <p className="text-gray-600 dark:text-gray-400">
             {user.age} ans
-            {user.department && (
+            {(user.country || user.department) && (
               <>
                 {" "}
-                • <MapPin className="w-4 h-4 inline" /> {getDepartmentLabel(user.department)}
+                • <MapPin className="w-4 h-4 inline" /> {getLocationLabel(user.country, user.department)}
               </>
             )}
           </p>

@@ -1,21 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/prisma";
+import { requireAuth } from "@/lib/quick-access";
 
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const session = await getServerSession(authOptions);
-
-    if (!session?.user) {
-      return NextResponse.json(
-        { success: false, error: "Non authentifié" },
-        { status: 401 }
-      );
-    }
+    const { user: currentUser, error } = await requireAuth(request);
+    
+    if (error) return error;
 
     const { id } = await params;
 
@@ -23,8 +17,8 @@ export async function GET(
     const block = await prisma.block.findFirst({
       where: {
         OR: [
-          { blockerId: session.user.id, blockedId: id },
-          { blockerId: id, blockedId: session.user.id },
+          { blockerId: currentUser!.id, blockedId: id },
+          { blockerId: id, blockedId: currentUser!.id },
         ],
       },
     });
@@ -43,6 +37,7 @@ export async function GET(
         pseudo: true,
         avatar: true,
         birthDate: true,
+        country: true,
         department: true,
         description: true,
         isOnline: true,

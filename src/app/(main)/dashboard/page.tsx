@@ -23,12 +23,14 @@ import { AdBannerSidebar } from "@/components/ads/ad-banner";
 import { formatRelativeTime } from "@/lib/utils";
 import { useAuth } from "@/contexts/auth-context";
 import { FRENCH_DEPARTMENTS, getDepartmentLabel } from "@/lib/french-departments";
+import { getLocationLabel } from "@/lib/countries";
 
 interface User {
   id: string;
   pseudo: string;
   avatar?: string;
   age: number;
+  country?: string;
   department?: string;
   description?: string;
   isOnline: boolean;
@@ -213,7 +215,7 @@ export default function DashboardPage() {
                   </span>
                 </div>
                 <div className="text-xs text-gray-500 dark:text-gray-400">
-                  {user.age} ans • {user.department ? getDepartmentLabel(user.department) : "France"}
+                  {user.age} ans • {getLocationLabel(user.country, user.department) || "Non précisé"}
                 </div>
               </div>
 

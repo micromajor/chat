@@ -20,13 +20,15 @@ import { AdBanner } from "@/components/ads/ad-banner";
 import { formatRelativeTime, truncateText } from "@/lib/utils";
 import { useAuthenticatedFetch } from "@/hooks/use-authenticated-fetch";
 import { useUnreadMessages } from "@/contexts/unread-messages-context";
+import { getLocationLabel } from "@/lib/countries";
 
 interface User {
   id: string;
   pseudo: string;
   avatar?: string;
   age: number;
-  city?: string;
+  country?: string;
+  department?: string;
   isOnline: boolean;
   lastSeenAt: string;
 }
@@ -253,7 +255,7 @@ export default function MessagesPage() {
                   <div className="flex-1 min-w-0">
                     <span className="font-medium text-gray-900 dark:text-white truncate block">{user.pseudo}</span>
                     <div className="text-xs text-gray-500 dark:text-gray-400">
-                      {user.age} ans • {user.city || "France"}
+                      {user.age} ans • {getLocationLabel(user.country, user.department) || "Non précisé"}
                     </div>
                   </div>
 
