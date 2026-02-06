@@ -7,7 +7,6 @@ import {
   Settings,
   Moon,
   Sun,
-  Bell,
   Shield,
   Trash2,
   LogOut,
@@ -193,19 +192,6 @@ export default function ParametresPage() {
             />
           </div>
         </button>
-
-        <Link
-          href="/parametres/notifications"
-          className="flex items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50"
-        >
-          <div className="flex items-center gap-3">
-            <Bell className="w-5 h-5 text-gray-500" />
-            <span className="text-gray-700 dark:text-gray-300">
-              Notifications
-            </span>
-          </div>
-          <ChevronRight className="w-5 h-5 text-gray-400" />
-        </Link>
       </div>
 
       {/* Informations légales */}

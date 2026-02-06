@@ -1,13 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   MessageCircle,
   Users,
   Heart,
-  Bell,
   User,
   Settings,
   LogOut,
@@ -33,7 +31,6 @@ export function MainLayout({ children, user: propUser }: MainLayoutProps) {
   const pathname = usePathname();
   const { user: authUser, logout, quickAccessToken } = useAuth();
   const { unreadCount } = useUnreadMessages();
-  const [notificationCount, setNotificationCount] = useState(0);
 
   // Utiliser l'utilisateur du contexte ou celui passé en prop
   const user = authUser || propUser;
@@ -46,35 +43,6 @@ export function MainLayout({ children, user: propUser }: MainLayoutProps) {
       </div>
     );
   }
-
-  // Récupérer les notifications non lues
-  useEffect(() => {
-    if (!user) return;
-
-    const fetchNotificationCount = async () => {
-      try {
-        const headers: HeadersInit = {};
-        if (quickAccessToken) {
-          headers["X-Quick-Access-Token"] = quickAccessToken;
-        }
-
-        // Notifications non lues
-        const notifRes = await fetch("/api/notifications?unreadOnly=true", { headers });
-        const notifData = await notifRes.json();
-        if (notifData.success) {
-          setNotificationCount(notifData.data.unreadCount);
-        }
-      } catch (error) {
-        console.error("Erreur récupération notifications:", error);
-      }
-    };
-
-    fetchNotificationCount();
-    // Polling toutes les 10 secondes pour une meilleure réactivité
-    const interval = setInterval(fetchNotificationCount, 10000);
-
-    return () => clearInterval(interval);
-  }, [user, quickAccessToken]);
 
   const navigation = [
     {
