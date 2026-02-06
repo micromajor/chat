@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
-import { Eye, EyeOff, LogIn, User, Lock } from "lucide-react";
+import { Eye, EyeOff, LogIn, User, Lock, Mail, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { MenhirLogo } from "@/components/ui/menhir-logo";
@@ -12,8 +12,11 @@ import { MenhirLogo } from "@/components/ui/menhir-logo";
 export default function ConnexionPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [isResending, setIsResending] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const [needsVerification, setNeedsVerification] = useState(false);
+  const [resendSuccess, setResendSuccess] = useState(false);
   const [formData, setFormData] = useState({
     pseudo: "",
     password: "",
@@ -23,6 +26,8 @@ export default function ConnexionPage() {
     e.preventDefault();
     setIsLoading(true);
     setError("");
+    setNeedsVerification(false);
+    setResendSuccess(false);
 
     try {
       const result = await signIn("credentials", {
@@ -32,7 +37,12 @@ export default function ConnexionPage() {
       });
 
       if (result?.error) {
-        setError(result.error);
+        if (result.error === "EMAIL_NON_VERIFIE") {
+          setNeedsVerification(true);
+          setError("Tu dois vérifier ton email avant de te connecter.");
+        } else {
+          setError(result.error);
+        }
       } else {
         // Sur mobile, rediriger vers /messages pour voir la liste des utilisateurs
         const isMobile = window.innerWidth < 768;
@@ -46,6 +56,32 @@ export default function ConnexionPage() {
     }
   };
 
+  const handleResendEmail = async () => {
+    setIsResending(true);
+    setError("");
+    setResendSuccess(false);
+
+    try {
+      const res = await fetch("/api/auth/resend-verification", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ pseudo: formData.pseudo }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setResendSuccess(true);
+      } else {
+        setError(data.error || "Erreur lors de l'envoi");
+      }
+    } catch {
+      setError("Une erreur est survenue");
+    } finally {
+      setIsResending(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-500 via-primary-600 to-accent-600 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
@@ -56,10 +92,9 @@ export default function ConnexionPage() {
               <MenhirLogo className="w-8 h-8 text-white" />
             </div>
             <span className="text-4xl font-heading font-bold text-white drop-shadow-lg">
-              Menhir
+              Le Menhir
             </span>
           </Link>
-          <p className="text-white/80 mt-2 text-sm">Solide comme la pierre 🪨</p>
         </div>
 
         {/* Formulaire */}
@@ -69,8 +104,45 @@ export default function ConnexionPage() {
           </h1>
 
           {error && (
-            <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-4 rounded-xl mb-6 text-sm">
-              {error}
+            <div className={`p-4 rounded-xl mb-6 text-sm ${
+              needsVerification 
+                ? "bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400"
+                : "bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400"
+            }`}>
+              <div className="flex items-start gap-2">
+                {needsVerification && <Mail className="w-5 h-5 mt-0.5 flex-shrink-0" />}
+                <div className="flex-1">
+                  <p>{error}</p>
+                  {needsVerification && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={handleResendEmail}
+                      disabled={isResending}
+                      className="mt-3 border-amber-500 text-amber-700 hover:bg-amber-100 dark:border-amber-400 dark:text-amber-400 dark:hover:bg-amber-900/30"
+                    >
+                      {isResending ? (
+                        <>
+                          <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                          Envoi en cours...
+                        </>
+                      ) : (
+                        <>
+                          <Mail className="w-4 h-4 mr-2" />
+                          Renvoyer l'email de vérification
+                        </>
+                      )}
+                    </Button>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {resendSuccess && (
+            <div className="bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 p-4 rounded-xl mb-6 text-sm">
+              ✅ Email de vérification renvoyé ! Vérifie ta boîte mail.
             </div>
           )}
 

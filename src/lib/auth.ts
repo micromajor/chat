@@ -70,6 +70,15 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Identifiants invalides");
         }
 
+        // Vérification email obligatoire
+        if (!user.isVerified) {
+          throw new Error("EMAIL_NON_VERIFIE");
+        }
+
+        if (!isPasswordValid) {
+          throw new Error("Identifiants invalides");
+        }
+
         // Mettre à jour le statut en ligne
         await prisma.user.update({
           where: { id: user.id },
