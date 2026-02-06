@@ -63,7 +63,7 @@ export default function ContactPage() {
                       Email
                     </p>
                     <p className="font-medium text-gray-900 dark:text-white">
-                      contact@menhir.fr
+                      contact@menhir.chat
                     </p>
                   </div>
                 </div>
@@ -77,7 +77,7 @@ export default function ContactPage() {
                       Support
                     </p>
                     <p className="font-medium text-gray-900 dark:text-white">
-                      support@menhir.fr
+                      support@menhir.chat
                     </p>
                   </div>
                 </div>
@@ -91,7 +91,7 @@ export default function ContactPage() {
                       Signalement urgent
                     </p>
                     <p className="font-medium text-gray-900 dark:text-white">
-                      abuse@menhir.fr
+                      abuse@menhir.chat
                     </p>
                   </div>
                 </div>

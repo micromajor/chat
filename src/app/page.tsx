@@ -34,7 +34,7 @@ export default function HomePage() {
             </div>
             <div>
               <span className="text-2xl font-heading font-bold text-white">
-                Menhir
+                Le Menhir
               </span>
               <span className="block text-xs text-white/70">Solide comme la pierre</span>
             </div>
@@ -45,6 +45,12 @@ export default function HomePage() {
       {/* Hero Section */}
       <main className="container mx-auto px-4 py-16 md:py-24">
         <div className="text-center max-w-3xl mx-auto">
+          {/* Logo Menhir centré et mis en valeur */}
+          <div className="flex justify-center mb-8">
+            <div className="w-32 h-32 md:w-40 md:h-40 bg-white/20 backdrop-blur-md rounded-3xl flex items-center justify-center shadow-2xl border border-white/30 animate-pulse">
+              <MenhirLogo className="w-20 h-20 md:w-24 md:h-24 text-white drop-shadow-lg" />
+            </div>
+          </div>
           <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm mb-6">
             <Sparkles className="w-4 h-4" />
             <span>100% gratuit • Inscription rapide</span>
@@ -149,7 +155,7 @@ export default function HomePage() {
       {/* Footer */}
       <footer className="container mx-auto px-4 py-8 border-t border-white/10">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-white/70 text-sm">
-          <p>© 2026 Menhir. Tous droits réservés. 🪨</p>
+          <p>© 2026 Le Menhir. Tous droits réservés. 🪨</p>
           <div className="flex gap-6">
             <Link href="/mentions-legales" className="hover:text-white transition-colors">
               Mentions légales

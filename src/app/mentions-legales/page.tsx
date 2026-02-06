@@ -2,8 +2,8 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Mentions Légales - Menhir",
-  description: "Mentions légales du site Menhir.chat - Informations sur l'éditeur, l'hébergeur et les conditions d'utilisation.",
+  title: "Mentions Légales - Le Menhir",
+  description: "Mentions légales du site menhir.chat - Informations sur l'éditeur, l'hébergeur et les conditions d'utilisation.",
 };
 
 export default function MentionsLegalesPage() {
@@ -21,16 +21,16 @@ export default function MentionsLegalesPage() {
             </h2>
             <div className="text-gray-600 dark:text-gray-400 space-y-2">
               <p>
-                <strong>Nom du site :</strong> Menhir
+                <strong>Nom du site :</strong> Le Menhir
               </p>
               <p>
-                <strong>URL :</strong> https://menhir.fr
+                <strong>URL :</strong> https://menhir.chat
               </p>
               <p>
                 <strong>Directeur de la publication :</strong> [Nom du responsable]
               </p>
               <p>
-                <strong>Email :</strong> contact@menhir.fr
+                <strong>Email :</strong> contact@menhir.chat
               </p>
             </div>
           </section>
@@ -41,13 +41,13 @@ export default function MentionsLegalesPage() {
             </h2>
             <div className="text-gray-600 dark:text-gray-400 space-y-2">
               <p>
-                <strong>Raison sociale :</strong> Vercel Inc.
+                <strong>Raison sociale :</strong> Hetzner Online GmbH
               </p>
               <p>
-                <strong>Adresse :</strong> 340 S Lemon Ave #4133, Walnut, CA 91789, USA
+                <strong>Adresse :</strong> Industriestr. 25, 91710 Gunzenhausen, Allemagne
               </p>
               <p>
-                <strong>Site web :</strong> https://vercel.com
+                <strong>Site web :</strong> https://www.hetzner.com
               </p>
             </div>
           </section>
@@ -57,7 +57,7 @@ export default function MentionsLegalesPage() {
               3. Nature du service
             </h2>
             <p className="text-gray-600 dark:text-gray-400">
-              Menhir est une plateforme de rencontres et de messagerie privée
+              Le Menhir est une plateforme de rencontres et de messagerie privée
               destinée aux hommes majeurs (18 ans et plus). Le service est gratuit et
               financé par la publicité. L'inscription est réservée aux personnes
               majeures qui déclarent sur l'honneur avoir plus de 18 ans.
@@ -69,9 +69,9 @@ export default function MentionsLegalesPage() {
               4. Propriété intellectuelle
             </h2>
             <p className="text-gray-600 dark:text-gray-400">
-              L'ensemble du contenu du site Menhir (textes, images, graphismes,
+              L'ensemble du contenu du site Le Menhir (textes, images, graphismes,
               logo, icônes, sons, logiciels, etc.) est la propriété exclusive de
-              Menhir ou de ses partenaires. Toute reproduction, représentation,
+              Le Menhir ou de ses partenaires. Toute reproduction, représentation,
               modification, publication ou adaptation de tout ou partie des éléments
               du site, quel que soit le moyen ou le procédé utilisé, est interdite
               sans autorisation écrite préalable.
@@ -83,7 +83,7 @@ export default function MentionsLegalesPage() {
               5. Limitation de responsabilité
             </h2>
             <p className="text-gray-600 dark:text-gray-400 mb-4">
-              Menhir ne pourra être tenue responsable :
+              Le Menhir ne pourra être tenue responsable :
             </p>
             <ul className="list-disc pl-6 text-gray-600 dark:text-gray-400 space-y-2">
               <li>
@@ -110,7 +110,7 @@ export default function MentionsLegalesPage() {
             </h2>
             <p className="text-gray-600 dark:text-gray-400 mb-4">
               Conformément à la Loi pour la Confiance dans l'Économie Numérique
-              (LCEN) du 21 juin 2004, Menhir s'engage à :
+              (LCEN) du 21 juin 2004, Le Menhir s'engage à :
             </p>
             <ul className="list-disc pl-6 text-gray-600 dark:text-gray-400 space-y-2">
               <li>
@@ -133,7 +133,7 @@ export default function MentionsLegalesPage() {
               7. Protection des mineurs
             </h2>
             <p className="text-gray-600 dark:text-gray-400">
-              Menhir est un site réservé aux personnes majeures (18 ans et plus).
+              Le Menhir est un site réservé aux personnes majeures (18 ans et plus).
               Tout contenu impliquant des mineurs est strictement interdit et sera
               immédiatement signalé aux autorités compétentes. Les utilisateurs
               s'engagent, lors de leur inscription, à déclarer sur l'honneur être
@@ -161,7 +161,7 @@ export default function MentionsLegalesPage() {
               9. Cookies
             </h2>
             <p className="text-gray-600 dark:text-gray-400">
-              Le site Menhir utilise des cookies pour son fonctionnement, les
+              Le site Le Menhir utilise des cookies pour son fonctionnement, les
               statistiques et la personnalisation des publicités. Pour plus
               d'informations, consultez notre{" "}
               <Link

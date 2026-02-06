@@ -119,7 +119,7 @@ export function MainLayout({ children, user: propUser }: MainLayoutProps) {
               {/* Logo complet en desktop, caché en mobile */}
               <div className="hidden sm:block">
                 <span className="text-xl font-heading font-bold text-primary-500">
-                  Menhir
+                  Le Menhir
                 </span>
                 <span className="block text-[10px] text-gray-400 -mt-1">Solide comme la pierre</span>
               </div>

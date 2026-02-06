@@ -2,8 +2,8 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Conditions Générales d'Utilisation - Menhir",
-  description: "Consultez les conditions générales d'utilisation de Menhir, la plateforme de rencontres entre hommes.",
+  title: "Conditions Générales d'Utilisation - Le Menhir",
+  description: "Consultez les conditions générales d'utilisation du Menhir, la plateforme de rencontres entre hommes.",
 };
 
 export default function CGUPage() {
@@ -25,7 +25,7 @@ export default function CGUPage() {
             </h2>
             <p className="text-gray-600 dark:text-gray-400">
               Les présentes Conditions Générales d'Utilisation (CGU) régissent l'accès et
-              l'utilisation du service Menhir, plateforme de rencontres et de messagerie
+              l'utilisation du service Le Menhir, plateforme de rencontres et de messagerie
               privée destinée aux hommes majeurs. L'utilisation du service implique
               l'acceptation pleine et entière des présentes CGU.
             </p>
@@ -70,7 +70,7 @@ export default function CGUPage() {
               4. Comportements interdits
             </h2>
             <p className="text-gray-600 dark:text-gray-400 mb-4">
-              Sont strictement interdits sur Menhir :
+              Sont strictement interdits sur Le Menhir :
             </p>
             <ul className="list-disc pl-6 text-gray-600 dark:text-gray-400 space-y-2">
               <li>Le harcèlement, les insultes ou tout comportement agressif</li>
@@ -88,7 +88,7 @@ export default function CGUPage() {
               5. Modération
             </h2>
             <p className="text-gray-600 dark:text-gray-400">
-              Menhir se réserve le droit de modérer les contenus et de suspendre
+              Le Menhir se réserve le droit de modérer les contenus et de suspendre
               ou supprimer tout compte ne respectant pas les présentes CGU, sans préavis
               ni indemnité. Les utilisateurs peuvent signaler tout comportement
               inapproprié via le système de signalement intégré.
@@ -100,7 +100,7 @@ export default function CGUPage() {
               6. Responsabilité
             </h2>
             <p className="text-gray-600 dark:text-gray-400 mb-4">
-              Menhir est un simple intermédiaire technique et ne peut être tenu
+              Le Menhir est un simple intermédiaire technique et ne peut être tenu
               responsable :
             </p>
             <ul className="list-disc pl-6 text-gray-600 dark:text-gray-400 space-y-2">
@@ -116,8 +116,8 @@ export default function CGUPage() {
               7. Propriété intellectuelle
             </h2>
             <p className="text-gray-600 dark:text-gray-400">
-              L'ensemble des éléments constituant le site Menhir (textes, images,
-              logos, logiciels) sont la propriété exclusive de Menhir ou de ses
+              L'ensemble des éléments constituant le site Le Menhir (textes, images,
+              logos, logiciels) sont la propriété exclusive du Menhir ou de ses
               partenaires. Toute reproduction, même partielle, est interdite sans
               autorisation préalable.
             </p>
@@ -128,7 +128,7 @@ export default function CGUPage() {
               8. Modification des CGU
             </h2>
             <p className="text-gray-600 dark:text-gray-400">
-              Menhir se réserve le droit de modifier les présentes CGU à tout moment.
+              Le Menhir se réserve le droit de modifier les présentes CGU à tout moment.
               Les utilisateurs seront informés de toute modification substantielle par
               email ou notification sur le site.
             </p>

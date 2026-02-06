@@ -20,15 +20,15 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   metadataBase: new URL("https://menhir.chat"),
   title: {
-    default: "Menhir - Rencontres entre hommes",
-    template: "%s | Menhir",
+    default: "Le Menhir - Rencontres entre hommes",
+    template: "%s | Le Menhir",
   },
   description:
-    "Menhir est la plateforme de rencontres gratuite dédiée aux hommes. Chat privé, profils vérifiés, messagerie sécurisée. Solide comme la pierre !",
+    "Le Menhir est la plateforme de rencontres gratuite dédiée aux hommes. Chat privé, profils vérifiés, messagerie sécurisée. Solide comme la pierre !",
   keywords: ["rencontres", "gay", "hommes", "chat", "messagerie", "gratuit", "France", "menhir", "rencontre homme", "tchat gay", "site rencontre gratuit"],
-  authors: [{ name: "Menhir" }],
-  creator: "Menhir",
-  publisher: "Menhir",
+  authors: [{ name: "Le Menhir" }],
+  creator: "Le Menhir",
+  publisher: "Le Menhir",
   robots: {
     index: true,
     follow: true,
@@ -44,16 +44,16 @@ export const metadata: Metadata = {
     canonical: "https://menhir.chat",
   },
   openGraph: {
-    title: "Menhir - Rencontres entre hommes",
+    title: "Le Menhir - Rencontres entre hommes",
     description: "La plateforme de rencontres gratuite dédiée aux hommes. Solide comme la pierre !",
     type: "website",
     locale: "fr_FR",
-    siteName: "Menhir",
+    siteName: "Le Menhir",
     url: "https://menhir.chat",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Menhir - Rencontres entre hommes",
+    title: "Le Menhir - Rencontres entre hommes",
     description: "La plateforme de rencontres gratuite dédiée aux hommes. Solide comme la pierre !",
   },
   verification: {
@@ -80,8 +80,8 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebSite",
-              name: "Menhir",
-              alternateName: "Menhir Chat",
+              name: "Le Menhir",
+              alternateName: "Le Menhir Chat",
               url: "https://menhir.chat",
               description: "Plateforme de rencontres gratuite dédiée aux hommes. Chat privé et sécurisé.",
               inLanguage: "fr-FR",

@@ -2,8 +2,8 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Politique de Confidentialité - Menhir",
-  description: "Découvrez comment Menhir protège vos données personnelles. RGPD, cookies et vie privée.",
+  title: "Politique de Confidentialité - Le Menhir",
+  description: "Découvrez comment Le Menhir protège vos données personnelles. RGPD, cookies et vie privée.",
 };
 
 export default function ConfidentialitePage() {
@@ -24,7 +24,7 @@ export default function ConfidentialitePage() {
               1. Introduction
             </h2>
             <p className="text-gray-600 dark:text-gray-400">
-              Chez Menhir, nous nous engageons à protéger votre vie privée. Cette
+              Chez Le Menhir, nous nous engageons à protéger votre vie privée. Cette
               politique de confidentialité explique comment nous collectons, utilisons
               et protégeons vos données personnelles conformément au Règlement Général
               sur la Protection des Données (RGPD).
@@ -66,7 +66,7 @@ export default function ConfidentialitePage() {
               Vos données sont utilisées pour :
             </p>
             <ul className="list-disc pl-6 text-gray-600 dark:text-gray-400 space-y-2">
-              <li>Fournir et améliorer le service Menhir</li>
+              <li>Fournir et améliorer le service Le Menhir</li>
               <li>Permettre la communication entre utilisateurs</li>
               <li>Personnaliser votre expérience et vos recommandations</li>
               <li>Assurer la sécurité et la modération de la plateforme</li>
