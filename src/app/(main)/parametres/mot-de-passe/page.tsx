@@ -70,7 +70,7 @@ export default function ChangePasswordPage() {
             Mot de passe modifié
           </h1>
           <p className="text-gray-600 dark:text-gray-400 mb-6">
-            Votre mot de passe a été modifié avec succès.
+            Ton mot de passe a été modifié avec succès.
           </p>
           <Button variant="primary" onClick={() => router.push("/parametres")}>
             Retour aux paramètres

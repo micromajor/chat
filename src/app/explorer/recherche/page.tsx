@@ -152,7 +152,7 @@ export default function ExplorerRecherchePage() {
         {/* Message inscription */}
         <div className="mt-8 bg-accent-50 dark:bg-accent-900/20 rounded-2xl p-6 text-center">
           <p className="text-gray-700 dark:text-gray-300 mb-4">
-            Pour voir plus de profils et interagir avec les membres, créez votre compte gratuit !
+            Pour voir plus de profils et interagir avec les membres, crée ton compte gratuit !
           </p>
           <Link href="/inscription">
             <Button variant="accent">

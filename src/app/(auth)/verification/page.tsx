@@ -65,7 +65,7 @@ function VerificationContent() {
                 Vérification en cours...
               </h1>
               <p className="text-gray-600 dark:text-gray-400">
-                Veuillez patienter pendant que nous vérifions votre email.
+                Patiente pendant que nous vérifions ton email.
               </p>
             </>
           )}

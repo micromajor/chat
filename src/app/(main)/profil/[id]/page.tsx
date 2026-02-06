@@ -165,7 +165,7 @@ export default function ProfilPage() {
           reason: reasons[reason] || "OTHER",
         }),
       });
-      alert("Signalement enregistré. Merci pour votre vigilance.");
+      alert("Signalement enregistré. Merci pour ta vigilance.");
     } catch (error) {
       console.error("Erreur signalement:", error);
     }

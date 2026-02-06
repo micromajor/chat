@@ -43,7 +43,7 @@ export function CookieConsent() {
         <div className="flex-1 text-sm text-stone-300">
           <p className="font-semibold text-white mb-1">🍪 Cookies & Vie privée</p>
           <p>
-            Menhir utilise des cookies pour améliorer votre expérience, analyser le trafic
+            Menhir utilise des cookies pour améliorer ton expérience, analyser le trafic
             et afficher des publicités pertinentes.{" "}
             <a href="/confidentialite" className="text-red-400 hover:text-red-300 underline">
               En savoir plus

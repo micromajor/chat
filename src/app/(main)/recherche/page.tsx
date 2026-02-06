@@ -183,7 +183,7 @@ export default function RecherchePage() {
               </h2>
               <p className="text-gray-500 dark:text-gray-400 mb-4">
                 Utilisez les filtres pour trouver des profils qui correspondent à
-                vos critères.
+                tes critères.
               </p>
               <Button variant="outline" onClick={() => setShowFilters(true)}>
                 <Filter className="w-5 h-5 mr-2" />
@@ -206,7 +206,7 @@ export default function RecherchePage() {
           ) : users.length === 0 ? (
             <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 text-center">
               <p className="text-gray-500 dark:text-gray-400">
-                Aucun profil ne correspond à vos critères.
+                Aucun profil ne correspond à tes critères.
               </p>
               <Button
                 variant="ghost"

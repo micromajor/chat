@@ -196,7 +196,7 @@ export default function NotificationSettingsPage() {
                   Vues de profil
                 </p>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Afficher qui a vu votre profil
+                  Afficher qui a vu ton profil
                 </p>
               </div>
             </div>

@@ -42,7 +42,7 @@ export function GuestLayout({ children }: GuestLayoutProps) {
     <div className="min-h-screen bg-surface-light dark:bg-surface-dark">
       {/* Banner d'incitation à l'inscription */}
       <div className="bg-gradient-to-r from-primary-500 to-primary-600 text-white py-2 px-4 text-center text-sm">
-        <span className="mr-2">🎉 Inscrivez-vous gratuitement pour accéder à toutes les fonctionnalités !</span>
+        <span className="mr-2">Inscris-toi gratuitement pour accéder à toutes les fonctionnalités !</span>
         <Link
           href="/inscription"
           className="underline font-medium hover:text-accent-300"

@@ -99,7 +99,7 @@ function ReinitialisationContent() {
               Mot de passe réinitialisé !
             </h1>
             <p className="text-gray-600 dark:text-gray-400 mb-6">
-              Votre mot de passe a été modifié avec succès.
+              Ton mot de passe a été modifié avec succès.
             </p>
             <p className="text-sm text-gray-500">
               Redirection automatique vers la connexion...

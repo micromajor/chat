@@ -113,7 +113,7 @@ export default function ExplorerPage() {
             <div>
               <h1 className="text-xl font-heading font-bold">Mode Découverte</h1>
               <p className="text-white/80 text-sm">
-                Explorez les profils en mode anonyme. Inscrivez-vous pour interagir !
+                Explore les profils en mode anonyme. Inscris-toi pour interagir !
               </p>
             </div>
           </div>
@@ -167,11 +167,11 @@ export default function ExplorerPage() {
             <IconWrapper className="w-8 h-8 text-accent-500"><Sparkles /></IconWrapper>
           </div>
           <h3 className="text-xl font-heading font-bold text-gray-900 dark:text-white mb-2">
-            Vous aimez ce que vous voyez ?
+            Tu aimes ce que tu vois ?
           </h3>
           <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">
-            Créez votre compte gratuit pour envoyer des messages, des likes et
-            voir qui s'intéresse à votre profil !
+            Crée ton compte gratuit pour envoyer des messages, des likes et
+            voir qui s'intéresse à ton profil !
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link href="/inscription">
@@ -206,11 +206,11 @@ export default function ExplorerPage() {
               </li>
               <li className="flex items-center gap-2">
                 <span className="text-green-500">✓</span>
-                Voir qui vous a liké
+                Voir qui t'a liké
               </li>
               <li className="flex items-center gap-2">
                 <span className="text-green-500">✓</span>
-                Créer votre profil
+                Créer ton profil
               </li>
               <li className="flex items-center gap-2">
                 <span className="text-green-500">✓</span>
@@ -317,11 +317,11 @@ function AuthPromptModal({
     },
     like: {
       title: "Envoyer un like",
-      description: "Inscrivez-vous pour montrer votre intérêt et voir vos matchs.",
+      description: "Inscris-toi pour montrer ton intérêt et voir tes matchs.",
     },
     message: {
       title: "Envoyer un message",
-      description: "Créez votre profil pour discuter en privé avec ce membre.",
+      description: "Crée ton profil pour discuter en privé avec ce membre.",
     },
   };
 

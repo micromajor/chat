@@ -48,19 +48,21 @@ export async function GET(request: NextRequest) {
       orderBy: { createdAt: "desc" },
     });
 
-    // Formater la réponse
-    const formattedLikes = sentLikes.map((like) => ({
-      id: like.id,
-      createdAt: like.createdAt.toISOString(),
-      user: {
-        id: like.receiver.id,
-        pseudo: like.receiver.pseudo,
-        avatar: like.receiver.avatar,
-        age: calculateAge(like.receiver.birthDate),
-        department: like.receiver.department,
-        isOnline: like.receiver.isOnline,
-      },
-    }));
+    // Formater la réponse - filtrer les likes dont le receiver a été supprimé
+    const formattedLikes = sentLikes
+      .filter((like) => like.receiver !== null)
+      .map((like) => ({
+        id: like.id,
+        createdAt: like.createdAt.toISOString(),
+        user: {
+          id: like.receiver.id,
+          pseudo: like.receiver.pseudo,
+          avatar: like.receiver.avatar,
+          age: calculateAge(like.receiver.birthDate),
+          department: like.receiver.department,
+          isOnline: like.receiver.isOnline,
+        },
+      }));
 
     return NextResponse.json({
       success: true,
@@ -111,7 +113,7 @@ export async function POST(request: NextRequest) {
 
     if (userId === currentUser.id) {
       return NextResponse.json(
-        { success: false, error: "Vous ne pouvez pas vous liker vous-même" },
+        { success: false, error: "Tu ne peux pas te liker toi-même" },
         { status: 400 }
       );
     }
@@ -131,7 +133,7 @@ export async function POST(request: NextRequest) {
     // On ne peut liker que des utilisateurs inscrits (pas quick access)
     if (targetUser.isQuickAccess) {
       return NextResponse.json(
-        { success: false, error: "Vous ne pouvez liker que des membres inscrits" },
+        { success: false, error: "Tu ne peux liker que des membres inscrits" },
         { status: 400 }
       );
     }
@@ -148,7 +150,7 @@ export async function POST(request: NextRequest) {
 
     if (existingLike) {
       return NextResponse.json(
-        { success: false, error: "Vous avez déjà liké cet utilisateur" },
+        { success: false, error: "Tu as déjà liké cet utilisateur" },
         { status: 400 }
       );
     }
@@ -182,14 +184,14 @@ export async function POST(request: NextRequest) {
             userId: userId,
             type: "MATCH",
             title: "Nouveau match ! 🎉",
-            content: `Vous et ${currentUser.pseudo} vous êtes mutuellement likés !`,
+            content: `Toi et ${currentUser.pseudo} vous êtes mutuellement likés !`,
             data: { userId: currentUser.id },
           },
           {
             userId: currentUser.id,
             type: "MATCH",
             title: "Nouveau match ! 🎉",
-            content: `Vous et ${targetUser.pseudo} vous êtes mutuellement likés !`,
+            content: `Toi et ${targetUser.pseudo} vous êtes mutuellement likés !`,
             data: { userId: userId },
           },
         ],
@@ -201,7 +203,7 @@ export async function POST(request: NextRequest) {
           userId: userId,
           type: "NEW_LIKE",
           title: "Nouveau like ❤️",
-          content: `${currentUser.pseudo} vous a liké`,
+          content: `${currentUser.pseudo} t'a liké`,
           data: { userId: currentUser.id },
         },
       });

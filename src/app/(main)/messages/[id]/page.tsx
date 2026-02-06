@@ -121,10 +121,13 @@ export default function ConversationPage() {
   // Charger les utilisateurs en ligne
   const fetchUsers = useCallback(async () => {
     try {
-      const response = await authenticatedFetch("/api/users?page=1&limit=20&isOnline=true");
+      // Ne pas filtrer par isOnline pour voir aussi l'interlocuteur
+      const response = await authenticatedFetch("/api/users?page=1&limit=20");
       if (response.ok) {
         const data = await response.json();
-        setUsers(data.users || []);
+        // Garder seulement les utilisateurs en ligne
+        const onlineUsers = (data.users || []).filter((u: UserData) => u.isOnline);
+        setUsers(onlineUsers);
       }
     } catch (error) {
       console.error("Erreur lors du chargement des utilisateurs:", error);
@@ -598,7 +601,7 @@ export default function ConversationPage() {
               Bloquer {conversation?.otherUser.pseudo} ?
             </h3>
             <p className="text-gray-600 dark:text-gray-400 mb-4">
-              Cette personne ne pourra plus vous contacter et vous ne verrez plus son profil.
+              Cette personne ne pourra plus te contacter et tu ne verras plus son profil.
             </p>
             <div className="flex gap-3">
               <Button
@@ -659,7 +662,7 @@ export default function ConversationPage() {
               <>
                 <p className="text-gray-600 dark:text-gray-400 mb-4">
                   Cet utilisateur est actuellement <strong>hors ligne</strong>. 
-                  Votre message sera conservé et il le verra à son retour (dans l'heure qui suit sa déconnexion).
+                  Ton message sera conservé et il le verra à son retour (dans l'heure qui suit sa déconnexion).
                 </p>
                 <div className="flex gap-3">
                   <Button

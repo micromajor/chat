@@ -79,8 +79,8 @@ function AuthPromptModal({
       icon: <MessageCircle className="w-8 h-8 text-primary-500" />,
     },
     like: {
-      title: "Montrez votre intérêt",
-      description: "Inscrivez-vous gratuitement pour envoyer des likes et voir qui vous aime.",
+      title: "Montre ton intérêt",
+      description: "Inscris-toi gratuitement pour envoyer des likes et voir qui t'aime.",
       icon: <Heart className="w-8 h-8 text-pink-500" />,
     },
     view_full: {
@@ -90,7 +90,7 @@ function AuthPromptModal({
     },
     default: {
       title: "Rejoignez Menhir",
-      description: "Inscrivez-vous gratuitement pour accéder à toutes les fonctionnalités.",
+      description: "Inscris-toi gratuitement pour accéder à toutes les fonctionnalités.",
       icon: <UserPlus className="w-8 h-8 text-primary-500" />,
     },
   };

@@ -71,7 +71,7 @@ export default function ParametresPage() {
       });
 
       if (response.ok) {
-        addToast("success", "Votre compte a été supprimé");
+        addToast("success", "Ton compte a été supprimé");
         // Attendre un peu pour que le toast s'affiche
         setTimeout(() => {
           if (isQuickAccess) {
@@ -262,8 +262,8 @@ export default function ParametresPage() {
         isOpen={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}
         onConfirm={handleDeleteAccount}
-        title="Supprimer votre compte ?"
-        message="Cette action est irréversible. Toutes vos données, messages et conversations seront définitivement supprimés."
+        title="Supprimer ton compte ?"
+        message="Cette action est irréversible. Toutes tes données, messages et conversations seront définitivement supprimés."
         confirmText="Supprimer définitivement"
         cancelText="Annuler"
         variant="danger"

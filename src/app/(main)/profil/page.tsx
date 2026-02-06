@@ -112,7 +112,7 @@ export default function MonProfilPage() {
   const handleDeleteAccount = async () => {
     if (
       !confirm(
-        "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible."
+        "Es-tu sûr de vouloir supprimer ton compte ? Cette action est irréversible."
       )
     ) {
       return;
@@ -120,7 +120,7 @@ export default function MonProfilPage() {
 
     if (
       !confirm(
-        "Toutes vos données seront définitivement supprimées. Confirmer ?"
+        "Toutes tes données seront définitivement supprimées. Confirmer ?"
       )
     ) {
       return;
@@ -324,7 +324,7 @@ export default function MonProfilPage() {
                   Mode invisible
                 </p>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Votre profil n'apparaîtra pas dans les recherches
+                  Ton profil n'apparaîtra pas dans les recherches
                 </p>
               </div>
             </div>
@@ -360,7 +360,7 @@ export default function MonProfilPage() {
           Zone dangereuse
         </h2>
         <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-          La suppression de votre compte est irréversible. Toutes vos données
+          La suppression de ton compte est irréversible. Toutes tes données
           seront définitivement effacées.
         </p>
         <Button variant="danger" onClick={handleDeleteAccount}>
