@@ -19,7 +19,6 @@ async function main() {
       pseudo: true,
       email: true,
       isQuickAccess: true,
-      isFakeProfile: true,
       createdAt: true,
     },
     orderBy: {
@@ -33,7 +32,7 @@ async function main() {
   console.log("\nDétails:");
   
   for (const user of menhirUsers) {
-    const type = user.isFakeProfile ? "FAKE" : (user.isQuickAccess ? "ACCÈS RAPIDE" : "INSCRIT");
+    const type = user.isQuickAccess ? "ACCÈS RAPIDE" : "INSCRIT";
     console.log(`- ${user.pseudo} | ${type} | créé: ${user.createdAt.toISOString().split('T')[0]}`);
   }
 
