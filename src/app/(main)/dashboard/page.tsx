@@ -173,11 +173,11 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row h-auto md:h-[calc(100dvh-220px)] gap-4">
+    <div className="flex flex-col md:flex-row h-auto md:max-h-[calc(100dvh-220px)] gap-4">
       {/* Colonne gauche - Liste des connectés (masquée sur mobile) */}
       <div className="hidden md:flex w-72 bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 flex-col overflow-hidden">
         {/* Header liste */}
-        <div className="bg-gradient-to-r from-primary-500 to-primary-600 text-white px-4 py-3 flex items-center justify-between">
+        <div className="flex-shrink-0 bg-gradient-to-r from-primary-500 to-primary-600 text-white px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Circle className="w-3 h-3 fill-green-400 text-green-400" />
             <span className="font-semibold">{totalOnline} connecté(e)s</span>
@@ -192,7 +192,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Liste scrollable */}
-        <div className="flex-1 overflow-y-auto">
+        <div className="overflow-y-auto">
           {users.map((user) => (
             <button
               key={user.id}
@@ -262,7 +262,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Pagination */}
-        <div className="px-3 py-2 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between bg-gray-50 dark:bg-gray-800/50">
+        <div className="flex-shrink-0 px-3 py-2 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between bg-gray-50 dark:bg-gray-800/50">
           <button
             onClick={() => setPage(Math.max(1, page - 1))}
             disabled={page === 1}
