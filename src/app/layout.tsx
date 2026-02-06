@@ -70,8 +70,9 @@ export default function RootLayout({
   return (
     <html lang="fr" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/favicon.ico" />
-        <meta name="theme-color" content="#1E3A5F" />
+        <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+        <link rel="apple-touch-icon" href="/apple-icon.svg" />
+        <meta name="theme-color" content="#DC2626" />
         {/* Données structurées JSON-LD pour le SEO */}
         <script
           type="application/ld+json"

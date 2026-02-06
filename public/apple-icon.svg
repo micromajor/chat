@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180">
+  <defs>
+    <linearGradient id="menhirGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#DC2626"/>
+      <stop offset="100%" style="stop-color:#F59E0B"/>
+    </linearGradient>
+  </defs>
+  <!-- Fond pour Apple Touch Icon -->
+  <rect width="180" height="180" fill="url(#menhirGradient)"/>
+  <!-- Montagne stylisée -->
+  <path d="M90 32 L150 140 L120 140 L102 108 L90 128 L78 108 L60 140 L30 140 Z" fill="white"/>
+</svg>
