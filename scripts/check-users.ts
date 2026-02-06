@@ -19,10 +19,12 @@ async function main() {
       pseudo: true,
       email: true,
       isQuickAccess: true,
+      isOnline: true,
+      lastSeenAt: true,
       createdAt: true,
     },
     orderBy: {
-      createdAt: "desc"
+      lastSeenAt: "desc"
     },
     take: 30
   });
@@ -32,8 +34,10 @@ async function main() {
   console.log("\nDétails:");
   
   for (const user of menhirUsers) {
-    const type = user.isQuickAccess ? "ACCÈS RAPIDE" : "INSCRIT";
-    console.log(`- ${user.pseudo} | ${type} | créé: ${user.createdAt.toISOString().split('T')[0]}`);
+    const lastSeen = new Date(user.lastSeenAt);
+    const agoMinutes = Math.round((Date.now() - lastSeen.getTime()) / 60000);
+    const status = user.isOnline ? "🟢 ONLINE" : "⚫ offline";
+    console.log(`- ${user.pseudo} | ${status} | last seen: ${agoMinutes} min ago | created: ${user.createdAt.toISOString().split('T')[0]}`);
   }
 
   await prisma.$disconnect();
