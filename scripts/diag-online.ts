@@ -29,7 +29,7 @@ async function main() {
   // Fakes online
   const fakesOnline = await prisma.user.findMany({
     where: { 
-      email: { contains: "@fake.menhir.local" },
+      email: { contains: "@menhir.test" },
       isOnline: true 
     },
     select: { pseudo: true, lastSeenAt: true },
@@ -48,7 +48,7 @@ async function main() {
   
   // Total des fakes
   const totalFakes = await prisma.user.count({
-    where: { email: { contains: "@fake.menhir.local" } }
+    where: { email: { contains: "@menhir.test" } }
   });
   console.log("\nTotal fakes en DB:", totalFakes);
   

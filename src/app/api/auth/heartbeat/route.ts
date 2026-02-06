@@ -26,12 +26,14 @@ export async function POST(request: NextRequest) {
     });
 
     // Passer les utilisateurs inactifs > 5 min en offline (en arrière-plan)
+    // Exclure les fakes (@menhir.test) qui sont gérés par le cron
     const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
     prisma.user.updateMany({
       where: {
         isOnline: true,
         lastSeenAt: { lt: fiveMinutesAgo },
-        id: { not: user!.id } // Pas l'utilisateur courant
+        id: { not: user!.id }, // Pas l'utilisateur courant
+        email: { not: { contains: "@menhir.test" } } // Exclure les fakes
       },
       data: { isOnline: false }
     }).catch(err => console.error("Erreur cleanup inactifs:", err));
