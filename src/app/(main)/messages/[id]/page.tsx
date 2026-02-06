@@ -4,7 +4,6 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { AdBanner } from "@/components/ads/ad-banner";
 import { useAuth } from "@/contexts/auth-context";
 import { useUnreadMessages } from "@/contexts/unread-messages-context";
 import { useAuthenticatedFetch } from "@/hooks/use-authenticated-fetch";

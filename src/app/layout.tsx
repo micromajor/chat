@@ -96,7 +96,7 @@ export default function RootLayout({
             }),
           }}
         />
-        {/* Google AdSense - À configurer avec votre ID */}
+        {/* Google AdSense Auto Ads - Place automatiquement les pubs */}
         {process.env.NEXT_PUBLIC_ADSENSE_ID && (
           <script
             async

@@ -16,7 +16,6 @@ import {
   ArrowLeft
 } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
-import { AdBanner } from "@/components/ads/ad-banner";
 import { formatRelativeTime, truncateText } from "@/lib/utils";
 import { useAuthenticatedFetch } from "@/hooks/use-authenticated-fetch";
 import { useUnreadMessages } from "@/contexts/unread-messages-context";
@@ -369,15 +368,6 @@ export default function MessagesPage() {
           </div>
         </div>
 
-        {/* Colonne droite - Publicité (desktop uniquement) */}
-        <div className="hidden lg:flex w-80 flex-col gap-4 flex-shrink-0">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-4">
-            <AdBanner slot="sidebar-top" />
-          </div>
-          <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-4 flex-1">
-            <AdBanner slot="sidebar-bottom" />
-          </div>
-        </div>
       </div>
     </div>
   );

@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Eye, UserPlus, Users, Sparkles } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { AdBannerSidebar, AdBannerNative } from "@/components/ads/ad-banner";
 
 // Wrapper pour les icônes Lucide
 function IconWrapper({ children, className }: { children: React.ReactNode; className?: string }) {
@@ -189,11 +188,9 @@ export default function ExplorerPage() {
         </div>
       </div>
 
-      {/* Sidebar pub */}
+      {/* Sidebar */}
       <aside className="hidden lg:block w-[300px] flex-shrink-0">
         <div className="sticky top-32 space-y-6">
-          <AdBannerSidebar />
-
           {/* Incitation inscription */}
           <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700">
             <h3 className="font-semibold text-gray-900 dark:text-white mb-3">
@@ -295,9 +292,6 @@ function GuestUserCard({
           </p>
         </div>
       </div>
-
-      {/* Publicité native */}
-      {showAd && <AdBannerNative />}
     </>
   );
 }

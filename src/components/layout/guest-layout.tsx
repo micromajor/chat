@@ -12,7 +12,6 @@ import {
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { AdBannerHorizontal } from "@/components/ads/ad-banner";
 import { Button } from "@/components/ui/button";
 import { MenhirLogo } from "@/components/ui/menhir-logo";
 
@@ -156,13 +155,6 @@ export function GuestLayout({ children }: GuestLayoutProps) {
           </div>
         )}
       </header>
-
-      {/* Pub header */}
-      <div className="bg-gray-100 dark:bg-gray-800 py-2">
-        <div className="max-w-7xl mx-auto px-4">
-          <AdBannerHorizontal />
-        </div>
-      </div>
 
       {/* Contenu principal */}
       <main className="max-w-7xl mx-auto px-4 py-6">{children}</main>

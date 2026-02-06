@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Search, Filter, MapPin, UserPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { AdBannerSidebar } from "@/components/ads/ad-banner";
 
 // Données de démonstration
 const demoUsers = [
@@ -163,12 +162,7 @@ export default function ExplorerRecherchePage() {
         </div>
       </div>
 
-      {/* Sidebar */}
-      <aside className="hidden lg:block w-[300px] flex-shrink-0">
-        <div className="sticky top-32">
-          <AdBannerSidebar />
-        </div>
-      </aside>
+
 
       {/* Modal auth */}
       {showAuthModal && (

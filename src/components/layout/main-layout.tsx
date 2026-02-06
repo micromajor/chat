@@ -13,7 +13,6 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar } from "@/components/ui/avatar";
-import { AdBannerHorizontal } from "@/components/ads/ad-banner";
 import { useAuth } from "@/contexts/auth-context";
 import { useUnreadMessages } from "@/contexts/unread-messages-context";
 import { MenhirLogo } from "@/components/ui/menhir-logo";
@@ -70,13 +69,6 @@ export function MainLayout({ children, user: propUser }: MainLayoutProps) {
     <div className="min-h-screen bg-surface-light dark:bg-surface-dark">
       {/* Header */}
       <header className="sticky top-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
-        {/* Bannière publicitaire */}
-        <div className="hidden lg:block border-b border-gray-100 dark:border-gray-800">
-          <div className="container mx-auto px-4 py-2">
-            <AdBannerHorizontal />
-          </div>
-        </div>
-
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}

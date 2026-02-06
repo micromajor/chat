@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import { Heart, ArrowRight, MessageCircle, Trash2 } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { formatRelativeTime } from "@/lib/utils";
-import { AdBannerSidebar } from "@/components/ads/ad-banner";
 import { useAuth } from "@/contexts/auth-context";
 import { getDepartmentLabel } from "@/lib/french-departments";
 import { useToast } from "@/components/ui/toast";
@@ -251,13 +250,6 @@ export default function LikesPage() {
             )}
           </div>
         </div>
-
-        {/* Sidebar pub */}
-        <aside className="hidden lg:block w-[300px] flex-shrink-0">
-          <div className="sticky top-32">
-            <AdBannerSidebar />
-          </div>
-        </aside>
       </div>
     </div>
   );

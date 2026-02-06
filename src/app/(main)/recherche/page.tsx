@@ -6,7 +6,6 @@ import { Search, Filter, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { UserCard } from "@/components/profile/user-card";
-import { AdBannerSidebar } from "@/components/ads/ad-banner";
 import { LocationSelect } from "@/components/ui/location-select";
 
 interface User {
@@ -245,12 +244,6 @@ export default function RecherchePage() {
           )}
         </div>
 
-        {/* Sidebar pub */}
-        <aside className="hidden lg:block w-[300px] flex-shrink-0">
-          <div className="sticky top-32">
-            <AdBannerSidebar />
-          </div>
-        </aside>
       </div>
     </div>
   );

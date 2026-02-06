@@ -19,7 +19,6 @@ import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { LocationSelect } from "@/components/ui/location-select";
-import { AdBannerSidebar } from "@/components/ads/ad-banner";
 import { formatRelativeTime } from "@/lib/utils";
 import { useAuth } from "@/contexts/auth-context";
 import { FRENCH_DEPARTMENTS, getDepartmentLabel } from "@/lib/french-departments";
@@ -395,12 +394,10 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Colonne droite - Pub (masquée sur mobile et tablette) */}
+      {/* Colonne droite - (masquée sur mobile et tablette) */}
       <div className="hidden xl:block w-[300px] flex-shrink-0">
-        <AdBannerSidebar />
-        
         {/* Suggestion premium (fun, pas vraiment premium) */}
-        <div className="mt-4 bg-gradient-to-br from-accent-500 to-primary-600 rounded-2xl p-5 text-white">
+        <div className="bg-gradient-to-br from-accent-500 to-primary-600 rounded-2xl p-5 text-white">
           <div className="text-3xl mb-2">🪨</div>
           <h3 className="font-bold text-lg mb-2">Tu kiffes Menhir ?</h3>
           <p className="text-sm text-white/80 mb-3">
