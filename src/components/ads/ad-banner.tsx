@@ -71,10 +71,14 @@ export function AdBanner({ slot, format = "horizontal", className }: AdBannerPro
 
 /**
  * Publicité bannière horizontale (header/footer)
- * Utilise NEXT_PUBLIC_AD_SLOT_HEADER ou un slot par défaut
+ * Ne s'affiche que si NEXT_PUBLIC_AD_SLOT_HEADER est configuré
  */
 export function AdBannerHorizontal({ className }: { className?: string }) {
-  const slot = process.env.NEXT_PUBLIC_AD_SLOT_HEADER || "header-banner";
+  const slot = process.env.NEXT_PUBLIC_AD_SLOT_HEADER;
+  
+  // Ne rien afficher si le slot n'est pas configuré (évite les iframes vides)
+  if (!slot) return null;
+  
   return (
     <AdBanner
       slot={slot}
@@ -86,10 +90,14 @@ export function AdBannerHorizontal({ className }: { className?: string }) {
 
 /**
  * Publicité carrée pour sidebar
- * Utilise NEXT_PUBLIC_AD_SLOT_SIDEBAR ou un slot par défaut
+ * Ne s'affiche que si NEXT_PUBLIC_AD_SLOT_SIDEBAR est configuré
  */
 export function AdBannerSidebar({ className }: { className?: string }) {
-  const slot = process.env.NEXT_PUBLIC_AD_SLOT_SIDEBAR || "sidebar-rectangle";
+  const slot = process.env.NEXT_PUBLIC_AD_SLOT_SIDEBAR;
+  
+  // Ne rien afficher si le slot n'est pas configuré (évite les iframes vides)
+  if (!slot) return null;
+  
   return (
     <AdBanner
       slot={slot}
@@ -101,28 +109,16 @@ export function AdBannerSidebar({ className }: { className?: string }) {
 
 /**
  * Publicité native pour insertion dans les listes de profils
- * Utilise NEXT_PUBLIC_AD_SLOT_NATIVE ou un slot par défaut
+ * Ne s'affiche que si NEXT_PUBLIC_AD_SLOT_NATIVE est configuré
  */
 export function AdBannerNative({ className }: { className?: string }) {
   const isProduction = process.env.NODE_ENV === "production";
   const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_ID;
-  const slot = process.env.NEXT_PUBLIC_AD_SLOT_NATIVE || "native-ad";
+  const slot = process.env.NEXT_PUBLIC_AD_SLOT_NATIVE;
 
-  if (!isProduction || !adsenseId) {
-    return (
-      <div
-        className={cn(
-          "bg-gray-100 dark:bg-gray-800 border border-dashed border-gray-300 dark:border-gray-600",
-          "rounded-xl flex items-center justify-center aspect-square",
-          className
-        )}
-        aria-label="Publicité native"
-      >
-        <span className="text-xs text-gray-400 dark:text-gray-500">
-          Pub
-        </span>
-      </div>
-    );
+  // Ne rien afficher si le slot n'est pas configuré (évite les iframes vides)
+  if (!slot || !isProduction || !adsenseId) {
+    return null;
   }
 
   return (
