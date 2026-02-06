@@ -7,8 +7,10 @@
   </defs>
   <!-- Fond arrondi -->
   <rect width="512" height="512" rx="96" ry="96" fill="url(#menhirGradient)"/>
-  <!-- Montagne stylisée -->
-  <path d="M256 96 L416 384 L336 384 L288 304 L256 352 L224 304 L176 384 L96 384 Z" fill="white"/>
-  <!-- Sommet avec neige/accent -->
-  <path d="M256 96 L296 176 L256 144 L216 176 Z" fill="rgba(255,255,255,0.8)"/>
+  <!-- Pierre dressée (menhir) -->
+  <path d="M256 56 C220 56 196 80 188 120 L180 200 L176 320 C174 360 190 420 210 440 L220 448 L292 448 L302 440 C322 420 338 360 336 320 L332 200 L324 120 C316 80 292 56 256 56 Z" fill="white"/>
+  <!-- Texture pierre -->
+  <ellipse cx="240" cy="180" rx="20" ry="12" fill="rgba(0,0,0,0.08)"/>
+  <ellipse cx="280" cy="280" rx="16" ry="10" fill="rgba(0,0,0,0.06)"/>
+  <ellipse cx="250" cy="360" rx="22" ry="14" fill="rgba(0,0,0,0.05)"/>
 </svg>
