@@ -65,21 +65,21 @@ Ce fichier documente tous les faux profils créés pour peupler la plateforme.
 
 | # | Pseudo | Âge | Département |
 |---|--------|-----|-------------|
-| 1 | KarimBg{XXX} | 28 | Variable |
-| 2 | MohamedSexy{XXX} | 25 | Variable |
-| 3 | YassineHot{XXX} | 23 | Variable |
-| 4 | AmineCool{XXX} | 30 | Variable |
-| 5 | SaidViril{XXX} | 35 | Variable |
-| 6 | RachidMuscle{XXX} | 32 | Variable |
-| 7 | IliesCharmant{XXX} | 22 | Variable |
-| 8 | SofianeBeur{XXX} | 27 | Variable |
-| 9 | NabilDoux{XXX} | 29 | Variable |
-| 10 | ZakariaBg{XXX} | 24 | Variable |
-| 11 | MehdiSportif{XXX} | 26 | Variable |
-| 12 | BilalDiscret{XXX} | 31 | Variable |
-| 13 | AdilCurieux{XXX} | 21 | Variable |
-| 14 | OmarPassionné{XXX} | 34 | Variable |
-| 15 | TarikSensuel{XXX} | 28 | Variable |
+| 1 | KarimBg716 | 28 | 75 |
+| 2 | MohamedSexy280 | 25 | 06 |
+| 3 | YassineHot620 | 23 | 95 |
+| 4 | AmineCool194 | 30 | 34 |
+| 5 | SaidViril959 | 35 | 06 |
+| 6 | RachidMuscle780 | 32 | 06 |
+| 7 | IliesCharmant400 | 22 | 93 |
+| 8 | SofianeBeur802 | 27 | 38 |
+| 9 | NabilDoux405 | 29 | 31 |
+| 10 | ZakariaBg810 | 24 | 93 |
+| 11 | MehdiSportif748 | 26 | 38 |
+| 12 | BilalDiscret404 | 31 | 38 |
+| 13 | AdilCurieux802 | 21 | 94 |
+| 14 | OmarPassionné683 | 34 | 95 |
+| 15 | TarikSensuel499 | 28 | 31 |
 
 ---
 
