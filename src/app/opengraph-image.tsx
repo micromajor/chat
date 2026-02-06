@@ -78,15 +78,6 @@ export default async function Image() {
           Le Menhir
         </div>
 
-        {/* Slogan */}
-        <div
-          style={{
-            fontSize: 32,
-            color: "rgba(255,255,255,0.85)",
-          }}
-        >
-          Solide comme la pierre 🪨
-        </div>
       </div>
     ),
     {
