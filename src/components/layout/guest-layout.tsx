@@ -10,11 +10,11 @@ import {
   UserPlus,
   Menu,
   X,
-  Mountain,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AdBannerHorizontal } from "@/components/ads/ad-banner";
 import { Button } from "@/components/ui/button";
+import { MenhirLogo } from "@/components/ui/menhir-logo";
 
 interface GuestLayoutProps {
   children: React.ReactNode;
@@ -58,7 +58,7 @@ export function GuestLayout({ children }: GuestLayoutProps) {
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2">
               <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-accent-500 rounded-xl flex items-center justify-center">
-                <Icon className="w-6 h-6 text-white"><Mountain /></Icon>
+                <MenhirLogo className="w-6 h-6 text-white" />
               </div>
               <span className="hidden sm:block text-xl font-heading font-bold text-gray-900 dark:text-white">
                 Menhir

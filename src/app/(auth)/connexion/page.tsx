@@ -4,9 +4,10 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
-import { Eye, EyeOff, LogIn, User, Lock, Mountain } from "lucide-react";
+import { Eye, EyeOff, LogIn, User, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { MenhirLogo } from "@/components/ui/menhir-logo";
 
 export default function ConnexionPage() {
   const router = useRouter();
@@ -52,7 +53,7 @@ export default function ConnexionPage() {
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-3">
             <div className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-lg">
-              <Mountain className="w-8 h-8 text-white" />
+              <MenhirLogo className="w-8 h-8 text-white" />
             </div>
             <span className="text-4xl font-heading font-bold text-white drop-shadow-lg">
               Menhir

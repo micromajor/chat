@@ -4,10 +4,11 @@ import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
-import { Mountain, Camera, Zap, X, Sparkles, Calendar } from "lucide-react";
+import { Camera, Zap, X, Sparkles, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LocationSelect } from "@/components/ui/location-select";
 import { generateRandomPseudo } from "@/lib/pseudo-generator";
+import { MenhirLogo } from "@/components/ui/menhir-logo";
 
 export default function AccesRapidePage() {
   const router = useRouter();
@@ -171,7 +172,7 @@ export default function AccesRapidePage() {
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-3">
             <div className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-lg">
-              <Mountain className="w-8 h-8 text-white" />
+              <MenhirLogo className="w-8 h-8 text-white" />
             </div>
             <span className="text-4xl font-heading font-bold text-white drop-shadow-lg">
               Menhir

@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { MessageCircle, Shield, Heart, Mountain, Sparkles, Zap, UserPlus, Clock } from "lucide-react";
+import { MessageCircle, Shield, Heart, Sparkles, Zap, UserPlus, Clock } from "lucide-react";
 import { useEffect, useState } from "react";
+import { MenhirLogo } from "@/components/ui/menhir-logo";
 
 export default function HomePage() {
   const [onlineCount, setOnlineCount] = useState<number | null>(null);
@@ -29,7 +30,7 @@ export default function HomePage() {
         <nav className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-              <Mountain className="w-7 h-7 text-white" />
+              <MenhirLogo className="w-7 h-7 text-white" />
             </div>
             <div>
               <span className="text-2xl font-heading font-bold text-white">

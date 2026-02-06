@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#DC2626"/>
+      <stop offset="50%" style="stop-color:#B91C1C"/>
+      <stop offset="100%" style="stop-color:#F59E0B"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Fond dégradé -->
+  <rect width="1200" height="630" fill="url(#bgGradient)"/>
+  
+  <!-- Motif décoratif subtil -->
+  <circle cx="100" cy="100" r="200" fill="rgba(255,255,255,0.05)"/>
+  <circle cx="1100" cy="530" r="250" fill="rgba(255,255,255,0.05)"/>
+  
+  <!-- Logo Menhir (pierre dressée) -->
+  <g transform="translate(450, 120)">
+    <path d="M150 0 C100 0 70 40 55 80 L40 160 L30 280 C25 340 60 420 95 450 L115 465 L185 465 L205 450 C240 420 275 340 270 280 L260 160 L245 80 C230 40 200 0 150 0 Z" fill="white"/>
+    <!-- Texture subtile -->
+    <ellipse cx="120" cy="140" rx="30" ry="18" fill="rgba(0,0,0,0.06)"/>
+    <ellipse cx="180" cy="250" rx="25" ry="15" fill="rgba(0,0,0,0.04)"/>
+    <ellipse cx="140" cy="350" rx="35" ry="20" fill="rgba(0,0,0,0.03)"/>
+  </g>
+  
+  <!-- Texte "Menhir" -->
+  <text x="600" y="540" font-family="system-ui, -apple-system, sans-serif" font-size="72" font-weight="bold" fill="white" text-anchor="middle">Menhir</text>
+  
+  <!-- Slogan -->
+  <text x="600" y="590" font-family="system-ui, -apple-system, sans-serif" font-size="28" fill="rgba(255,255,255,0.8)" text-anchor="middle">Solide comme la pierre 🪨</text>
+</svg>

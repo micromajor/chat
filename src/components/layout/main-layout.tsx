@@ -11,7 +11,6 @@ import {
   User,
   Settings,
   LogOut,
-  Mountain,
   UserPlus,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -19,6 +18,7 @@ import { Avatar } from "@/components/ui/avatar";
 import { AdBannerHorizontal } from "@/components/ads/ad-banner";
 import { useAuth } from "@/contexts/auth-context";
 import { useUnreadMessages } from "@/contexts/unread-messages-context";
+import { MenhirLogo } from "@/components/ui/menhir-logo";
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -114,7 +114,7 @@ export function MainLayout({ children, user: propUser }: MainLayoutProps) {
             {/* Logo */}
             <Link href="/dashboard" className="flex items-center gap-2">
               <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-accent-500 rounded-xl flex items-center justify-center shadow-lg">
-                <Mountain className="w-6 h-6 text-white" />
+                <MenhirLogo className="w-6 h-6 text-white" />
               </div>
               {/* Logo complet en desktop, caché en mobile */}
               <div className="hidden sm:block">
