@@ -57,9 +57,12 @@ export default function DashboardPage() {
     onlineOnly: true, // Par défaut ON
   });
 
-  const fetchUsers = async (pageNum: number) => {
+  const fetchUsers = async (pageNum: number, silent = false) => {
     try {
-      setIsLoading(true);
+      // Ne pas montrer le loader si c'est un refresh silencieux
+      if (!silent) {
+        setIsLoading(true);
+      }
       const params = new URLSearchParams({
         page: pageNum.toString(),
         limit: "15",
@@ -90,7 +93,9 @@ export default function DashboardPage() {
     } catch (error) {
       console.error("Erreur chargement utilisateurs:", error);
     } finally {
-      setIsLoading(false);
+      if (!silent) {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -104,14 +109,14 @@ export default function DashboardPage() {
     if (isAuthenticated) {
       fetchUsers(page);
       
-      // Polling toutes les 10 secondes pour rafraîchir la liste
+      // Polling toutes les 15 secondes pour rafraîchir la liste (silencieux)
       const interval = setInterval(() => {
-        fetchUsers(page);
-      }, 10000);
+        fetchUsers(page, true); // Mode silencieux
+      }, 15000);
       
       return () => clearInterval(interval);
     }
-  }, [page, authLoading, isAuthenticated]);
+  }, [page, authLoading, isAuthenticated, filters]);
 
   const handleSearch = () => {
     setPage(1);
@@ -239,7 +244,7 @@ export default function DashboardPage() {
             </button>
           ))}
 
-          {isLoading && (
+          {isLoading && users.length === 0 && (
             <div className="p-4 space-y-3">
               {[...Array(5)].map((_, i) => (
                 <div key={i} className="flex items-center gap-3 animate-pulse">
