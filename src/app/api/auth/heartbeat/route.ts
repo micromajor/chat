@@ -3,6 +3,7 @@
  * POST /api/auth/heartbeat
  * 
  * Appelée régulièrement (toutes les 2 minutes) pour maintenir le statut "en ligne"
+ * Passe aussi les utilisateurs inactifs > 5min en offline
  */
 
 import { NextRequest, NextResponse } from "next/server";
@@ -23,6 +24,17 @@ export async function POST(request: NextRequest) {
         lastSeenAt: new Date(),
       },
     });
+
+    // Passer les utilisateurs inactifs > 5 min en offline (en arrière-plan)
+    const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
+    prisma.user.updateMany({
+      where: {
+        isOnline: true,
+        lastSeenAt: { lt: fiveMinutesAgo },
+        id: { not: user!.id } // Pas l'utilisateur courant
+      },
+      data: { isOnline: false }
+    }).catch(err => console.error("Erreur cleanup inactifs:", err));
 
     return NextResponse.json({ success: true });
   } catch (error) {
