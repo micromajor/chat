@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/toast";
 import { formatRelativeTime } from "@/lib/utils";
 import { getLocationLabel } from "@/lib/countries";
+import { useAuthenticatedFetch } from "@/hooks/use-authenticated-fetch";
 
 interface UserProfile {
   id: string;
@@ -42,6 +43,7 @@ export default function ProfilPage() {
   const id = params.id as string;
   const router = useRouter();
   const { addToast } = useToast();
+  const authenticatedFetch = useAuthenticatedFetch();
   const [user, setUser] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
@@ -51,7 +53,7 @@ export default function ProfilPage() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await fetch(`/api/users/${id}`);
+        const response = await authenticatedFetch(`/api/users/${id}`);
         const data = await response.json();
 
         if (data.success) {
@@ -67,7 +69,7 @@ export default function ProfilPage() {
     };
 
     fetchProfile();
-  }, [id]);
+  }, [id, authenticatedFetch]);
 
   const handleLike = async () => {
     if (!user || isLiking) return;
@@ -76,12 +78,12 @@ export default function ProfilPage() {
     try {
       if (user.iLiked) {
         // Unlike
-        await fetch(`/api/likes?userId=${user.id}`, { method: "DELETE" });
+        await authenticatedFetch(`/api/likes?userId=${user.id}`, { method: "DELETE" });
         setUser({ ...user, iLiked: false, isMatch: false });
         addToast("info", "Like retiré");
       } else {
         // Like
-        const response = await fetch("/api/likes", {
+        const response = await authenticatedFetch("/api/likes", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ userId: user.id }),
@@ -104,7 +106,7 @@ export default function ProfilPage() {
     if (!user) return;
 
     try {
-      const response = await fetch("/api/conversations", {
+      const response = await authenticatedFetch("/api/conversations", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: user.id }),
@@ -125,7 +127,7 @@ export default function ProfilPage() {
     if (!confirm(`Êtes-vous sûr de vouloir bloquer ${user.pseudo} ?`)) return;
 
     try {
-      const response = await fetch("/api/blocks", {
+      const response = await authenticatedFetch("/api/blocks", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: user.id }),
@@ -158,7 +160,7 @@ export default function ProfilPage() {
     };
 
     try {
-      await fetch("/api/reports", {
+      await authenticatedFetch("/api/reports", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
