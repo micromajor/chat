@@ -101,6 +101,13 @@ export default function DashboardPage() {
     
     if (isAuthenticated) {
       fetchUsers(page);
+      
+      // Polling toutes les 10 secondes pour rafraîchir la liste
+      const interval = setInterval(() => {
+        fetchUsers(page);
+      }, 10000);
+      
+      return () => clearInterval(interval);
     }
   }, [page, authLoading, isAuthenticated]);
 
