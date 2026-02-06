@@ -31,14 +31,9 @@ export default function HomePage() {
           {/* Logo "Le Menhir" avec l'icône à la place du i */}
           <div className="flex justify-center items-end mb-8">
             <span className="text-6xl md:text-8xl font-heading font-bold text-white drop-shadow-lg leading-none">
-              Le Menh
-            </span>
-            <MenhirLogo className="w-12 h-24 md:w-20 md:h-36 text-white drop-shadow-lg -mx-1 mb-1" />
-            <span className="text-6xl md:text-8xl font-heading font-bold text-white drop-shadow-lg leading-none">
-              r
+              Le Menhir
             </span>
           </div>
-          <p className="text-xl md:text-2xl text-white/80 mb-8 font-medium">Solide comme la pierre 🪨</p>
           <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm mb-6">
             <Sparkles className="w-4 h-4" />
             <span>100% gratuit • Inscription rapide</span>
