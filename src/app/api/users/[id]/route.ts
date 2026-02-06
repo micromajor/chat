@@ -47,7 +47,7 @@ export async function GET(
       },
     });
 
-    if (!user || user.id === session.user.id) {
+    if (!user || user.id === currentUser!.id) {
       return NextResponse.json(
         { success: false, error: "Utilisateur non trouvé" },
         { status: 404 }
@@ -67,7 +67,7 @@ export async function GET(
     const myLike = await prisma.like.findUnique({
       where: {
         senderId_receiverId: {
-          senderId: session.user.id,
+          senderId: currentUser!.id,
           receiverId: id,
         },
       },
@@ -78,7 +78,7 @@ export async function GET(
       where: {
         senderId_receiverId: {
           senderId: id,
-          receiverId: session.user.id,
+          receiverId: currentUser!.id,
         },
       },
     });
@@ -86,7 +86,7 @@ export async function GET(
     // Enregistrer la vue du profil (si pas déjà vue récemment)
     const recentView = await prisma.profileView.findFirst({
       where: {
-        viewerId: session.user.id,
+        viewerId: currentUser!.id,
         viewedId: id,
         createdAt: {
           gte: new Date(Date.now() - 24 * 60 * 60 * 1000), // 24h
@@ -97,7 +97,7 @@ export async function GET(
     if (!recentView) {
       await prisma.profileView.create({
         data: {
-          viewerId: session.user.id,
+          viewerId: currentUser!.id,
           viewedId: id,
         },
       });
@@ -108,8 +108,8 @@ export async function GET(
           userId: id,
           type: "PROFILE_VIEW",
           title: "Nouveau visiteur",
-          content: `${session.user.pseudo} a visité votre profil`,
-          data: { userId: session.user.id },
+          content: `${currentUser!.pseudo} a visité votre profil`,
+          data: { userId: currentUser!.id },
         },
       });
     }
