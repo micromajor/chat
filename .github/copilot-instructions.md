@@ -4,8 +4,30 @@
 
 **À chaque accomplissement de tâche, TOUJOURS mettre à jour :**
 1. Ce fichier (`copilot-instructions.md`) - Section "État Actuel"
-2. Le fichier `PROJET_ETAT.md` - Progression et TODO
+2. Le fichier `docs/PROJET_ETAT.md` - Progression et TODO
 3. Commiter les changements avec un message descriptif
+
+---
+
+## 📁 Documentation du Projet
+
+Toute la documentation est centralisée dans le répertoire `docs/` :
+
+| Fichier | Description |
+|---------|-------------|
+| `PROJET_ETAT.md` | État global du projet, progression, TODO |
+| `ADSENSE_SETUP.md` | Guide configuration Google AdSense |
+| `BREVO_SETUP.md` | Configuration service email Brevo |
+| `POSTGRESQL_SETUP.md` | Setup PostgreSQL production |
+| `FAKE_PROFILES.md` | Gestion des profils simulés (fakes) |
+| `CHECKLIST_PRODUCTION.md` | Checklist déploiement |
+| `CONFIGURATION_COMPLETE.md` | Résumé config complète |
+| `nginx-menhir.conf` | Configuration Nginx production |
+| `SUPPRESSION_MESSAGES.md` | Cron job nettoyage messages |
+| `PHOTO_PROFIL.md` | Upload et gestion photos |
+| `TESTS_PROFIL_BADGE.md` | Tests fonctionnalités |
+| `MODIFICATIONS_PAGE_ACCUEIL.md` | Historique modifications page accueil |
+| `SYNTHESE_SESSION_04-02-2026.md` | Synthèse session du 4 février 2026 |
 
 ---
 
@@ -20,9 +42,9 @@
 
 ## 🚀 État Actuel du Projet (Février 2026)
 
-### Progression Globale: ~95%
+### Progression Globale: ~96%
 
-**Dernière mise à jour: 5 février 2026**
+**Dernière mise à jour: 6 février 2026**
 
 ### 🌐 SITE EN PRODUCTION : https://menhir.chat
 
@@ -37,6 +59,8 @@
 - [x] SSL/TLS via Cloudflare (mode Flexible)
 - [x] DNS Cloudflare avec proxy CDN activé
 - [x] Schéma Prisma complet avec toutes les relations
+- [x] **75 profils fakes** (simulation activité) + cron horaire randomisation
+- [x] **Heartbeat cleanup** automatique des users inactifs > 5min (exclut fakes)
 
 #### Authentification
 - [x] Système dual : NextAuth.js (inscrits) + Accès Rapide (anonyme)
