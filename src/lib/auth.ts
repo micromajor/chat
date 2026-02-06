@@ -139,6 +139,7 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: "/connexion",
+    signOut: "/deconnexion",
     error: "/connexion",
   },
   session: {
