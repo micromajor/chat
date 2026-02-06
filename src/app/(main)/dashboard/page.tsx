@@ -173,7 +173,7 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row h-auto md:h-[calc(100vh-180px)] gap-4">
+    <div className="flex flex-col md:flex-row h-auto md:h-[calc(100dvh-220px)] gap-4">
       {/* Colonne gauche - Liste des connectés (masquée sur mobile) */}
       <div className="hidden md:flex w-72 bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 flex-col overflow-hidden">
         {/* Header liste */}
@@ -226,20 +226,22 @@ export default function DashboardPage() {
 
               {/* Actions */}
               <div className="flex items-center gap-1">
-                <span
+                <button
+                  type="button"
                   onClick={(e) => handleMessage(e, user.id)}
                   className="p-1.5 text-gray-400 hover:text-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded transition-colors"
                   title="Envoyer un message"
                 >
                   <MessageCircle className="w-4 h-4" />
-                </span>
-                <span
+                </button>
+                <button
+                  type="button"
                   onClick={(e) => handleLike(e, user.id)}
                   className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-colors"
                   title="Envoyer un like"
                 >
                   <Heart className="w-4 h-4" />
-                </span>
+                </button>
               </div>
             </button>
           ))}
