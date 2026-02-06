@@ -33,6 +33,8 @@ export default function ParametresPage() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [logoutLoading, setLogoutLoading] = useState(false);
 
   useEffect(() => {
     // Vérifier le mode sombre actuel
@@ -52,14 +54,23 @@ export default function ParametresPage() {
     setIsDarkMode(!isDarkMode);
   };
 
-  const handleLogout = () => {
-    if (isQuickAccess) {
-      logout();
+  const handleLogout = async () => {
+    setLogoutLoading(true);
+    try {
+      if (isQuickAccess) {
+        logout();
+      } else {
+        await signOut({ redirect: false });
+      }
+      addToast("success", "Déconnexion réussie");
       router.push("/");
-    } else {
-      signOut({ callbackUrl: "/" });
+    } catch (error) {
+      console.error("Erreur déconnexion:", error);
+      addToast("error", "Erreur lors de la déconnexion");
+    } finally {
+      setLogoutLoading(false);
+      setShowLogoutModal(false);
     }
-    addToast("success", "Déconnexion réussie");
   };
 
   const handleDeleteAccount = async () => {
@@ -237,7 +248,7 @@ export default function ParametresPage() {
 
       {/* Actions */}
       <div className="space-y-4">
-        <Button variant="outline" className="w-full" onClick={handleLogout}>
+        <Button variant="outline" className="w-full" onClick={() => setShowLogoutModal(true)}>
           <LogOut className="w-5 h-5 mr-2" />
           Se déconnecter
         </Button>
@@ -256,6 +267,19 @@ export default function ParametresPage() {
       <p className="text-center text-sm text-gray-400 dark:text-gray-500 mt-8">
         Menhir v1.0.0
       </p>
+
+      {/* Modal de confirmation de déconnexion */}
+      <ConfirmModal
+        isOpen={showLogoutModal}
+        onClose={() => setShowLogoutModal(false)}
+        onConfirm={handleLogout}
+        title="Se déconnecter ?"
+        message="Tu es sur le point de te déconnecter de Menhir."
+        confirmText="Se déconnecter"
+        cancelText="Annuler"
+        variant="primary"
+        loading={logoutLoading}
+      />
 
       {/* Modal de confirmation de suppression */}
       <ConfirmModal
