@@ -98,7 +98,7 @@ export default function HomePage() {
             </div>
           </div>
           
-          {/* Stats - Afficher uniquement si > 50 connectés */}
+          {/* Stats - Afficher uniquement si > 30 connectés */}
           {showCount && onlineCount && (
             <div className="flex justify-center gap-8 mt-12">
               <div className="text-center bg-white/10 backdrop-blur-sm rounded-2xl px-8 py-4">

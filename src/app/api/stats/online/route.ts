@@ -23,7 +23,7 @@ export async function GET() {
     
     return NextResponse.json({
       count: onlineCount,
-      showCount: onlineCount > 50, // Afficher seulement si > 50
+      showCount: onlineCount > 30, // Afficher seulement si > 30
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
