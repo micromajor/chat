@@ -29,12 +29,12 @@ export default function HomePage() {
       <main className="container mx-auto px-4 py-20 md:py-28">
         <div className="text-center max-w-3xl mx-auto">
           {/* Logo "Le Menhir" avec l'icône à la place du i */}
-          <div className="flex justify-center items-baseline mb-8">
-            <span className="text-6xl md:text-8xl font-heading font-bold text-white drop-shadow-lg">
+          <div className="flex justify-center items-end mb-8">
+            <span className="text-6xl md:text-8xl font-heading font-bold text-white drop-shadow-lg leading-none">
               Le Menh
             </span>
-            <MenhirLogo className="w-10 h-16 md:w-14 md:h-20 text-white drop-shadow-lg -mx-1" />
-            <span className="text-6xl md:text-8xl font-heading font-bold text-white drop-shadow-lg">
+            <MenhirLogo className="w-12 h-24 md:w-20 md:h-36 text-white drop-shadow-lg -mx-1 mb-1" />
+            <span className="text-6xl md:text-8xl font-heading font-bold text-white drop-shadow-lg leading-none">
               r
             </span>
           </div>
