@@ -8,27 +8,24 @@ import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
-// Pseudos avec connotation maghrébine
+// Pseudos maghrébins naturels - variés sans pattern évident
 const maghrebProfiles = [
-  { pseudo: "KarimBg", age: 28 },
-  { pseudo: "MohamedSexy", age: 25 },
-  { pseudo: "YassineHot", age: 23 },
-  { pseudo: "AmineCool", age: 30 },
-  { pseudo: "SaidViril", age: 35 },
-  { pseudo: "RachidMuscle", age: 32 },
-  { pseudo: "IliesCharmant", age: 22 },
-  { pseudo: "SofianeBeur", age: 27 },
-  { pseudo: "NabilDoux", age: 29 },
-  { pseudo: "ZakariaBg", age: 24 },
-  { pseudo: "MehdiSportif", age: 26 },
-  { pseudo: "BilalDiscret", age: 31 },
-  { pseudo: "AdilCurieux", age: 21 },
-  { pseudo: "OmarPassionné", age: 34 },
-  { pseudo: "TarikSensuel", age: 28 },
+  { pseudo: "Karim_Bg", age: 28, country: "MA" },
+  { pseudo: "MohamedCasa", age: 25, country: "MA" },
+  { pseudo: "YassineOran", age: 23, country: "DZ" },
+  { pseudo: "AmineTunis", age: 30, country: "TN" },
+  { pseudo: "Said.Alger", age: 35, country: "DZ" },
+  { pseudo: "RachidRabat", age: 32, country: "MA" },
+  { pseudo: "IliesConstantine", age: 22, country: "DZ" },
+  { pseudo: "SofianeT", age: 27, country: "TN" },
+  { pseudo: "Nabil_Marra", age: 29, country: "MA" },
+  { pseudo: "ZakariaDZ", age: 24, country: "DZ" },
+  { pseudo: "MehdiSfax", age: 26, country: "TN" },
+  { pseudo: "BilalTanger", age: 31, country: "MA" },
+  { pseudo: "AdilDZ", age: 21, country: "DZ" },
+  { pseudo: "OmarTunis", age: 34, country: "TN" },
+  { pseudo: "Tarik.Fes", age: 28, country: "MA" },
 ];
-
-// Départements avec forte communauté maghrébine
-const departments = ["75", "93", "94", "95", "13", "69", "31", "59", "67", "38", "34", "06"];
 
 const descriptions = [
   "Mec sympa et ouvert d'esprit, à la recherche de belles rencontres 😊",
@@ -60,9 +57,7 @@ async function main() {
   const password = await bcrypt.hash("FakeProfile2026!", 10);
 
   for (const profile of maghrebProfiles) {
-    const suffix = Math.floor(Math.random() * 900) + 100;
-    const pseudo = `${profile.pseudo}${suffix}`;
-    const department = getRandomElement(departments);
+    const pseudo = profile.pseudo;
     const description = getRandomElement(descriptions);
     
     // Statut en ligne aléatoire (40% en ligne pour les nouveaux)
@@ -71,7 +66,7 @@ async function main() {
     const hoursAgo = Math.floor(Math.random() * 48);
     const lastSeenAt = new Date(Date.now() - hoursAgo * 60 * 60 * 1000);
 
-    const email = `fake.${pseudo.toLowerCase()}@menhir.test`;
+    const email = `fake.${pseudo.toLowerCase().replace(/[._]/g, '')}@menhir.test`;
 
     try {
       await prisma.user.create({
@@ -80,8 +75,8 @@ async function main() {
           password,
           pseudo,
           birthDate: generateBirthDate(profile.age),
-          country: "FR",
-          department,
+          country: profile.country,
+          department: null, // Pas de département pour le Maghreb
           description,
           isOnline,
           isVerified: true,
@@ -94,7 +89,8 @@ async function main() {
 
       createdUsers.push(pseudo);
       const status = isOnline ? "🟢" : "⚫";
-      console.log(`${status} Créé: ${pseudo} (${profile.age} ans, FR-${department})`);
+      const flag = profile.country === "MA" ? "🇲🇦" : profile.country === "DZ" ? "🇩🇿" : "🇹🇳";
+      console.log(`${status} Créé: ${pseudo} (${profile.age} ans, ${flag} ${profile.country})`);
     } catch (error: unknown) {
       const e = error as { code?: string };
       if (e.code === "P2002") {

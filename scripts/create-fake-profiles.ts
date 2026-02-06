@@ -1,27 +1,38 @@
 /**
  * Script de création de faux profils pour peupler la plateforme
- * Usage: npx ts-node scripts/create-fake-profiles.ts
- * Ou en production: node scripts/create-fake-profiles.js (après compilation)
+ * Usage: npx tsx scripts/create-fake-profiles.ts
  */
 
 import { PrismaClient } from "@prisma/client";
-import { randomBytes } from "crypto";
 import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
-// Préfixes de pseudos suggestifs/osés pour un chat gay
-const pseudoPrefixes = [
-  "BogossActif", "BogossPassif", "MecViril", "JHChaud", "GarsCool",
-  "MecPoilu", "SportifSexy", "BearGentil", "OursCalin", "TwinkMignon",
-  "MecDirect", "BogossSympa", "GarsDiscret", "MecSportif", "ActifDoux",
-  "PassifCoquin", "BisouBogoss", "MecCurieux", "GarsSensuel", "BogossBrun",
-  "BlondSexy", "RouxCharmant", "MecTatoue", "GarsMuscu", "FitnessBoy",
-  "RunnerHot", "NageurSexy", "CyclisteFit", "BoxeurViril", "RugbyMan",
-  "FootBoy", "GymBoy", "YogaMan", "DanseurSexy", "ArtisteBohème",
-  "MusicienCool", "ChefCuisto", "InfoSexy", "GarsBouclé", "MecRasé",
-  "BarbuSexy", "MoustachuHot", "DaddyCool", "JeuneLouis", "MatthieuH",
-  "LucasBg", "ThomasSexy", "HugoHot", "LeoCharmant", "NathanViril"
+// Pseudos naturels et variés - pas de pattern évident
+const pseudosList = [
+  // Avec prénom + suffixe ville/région
+  "TomParis", "MaxLyon", "LucasNice", "HugoBdx", "LeoMtp",
+  "NathanTls", "TheoNantes", "RaphaelStr", "LouisMars", "AdamLille",
+  
+  // Avec underscore ou point
+  "Nico_38", "Max.06", "Tom_75", "Alex.13", "Sam_31",
+  "Ben.69", "Matt_44", "Chris.33", "Julien_59", "Olivier.34",
+  
+  // Style descriptif
+  "MecViril38", "BgParis", "TwinkLyon", "BearMars", "SportifNice",
+  "MuscleMan69", "RunnerBdx", "GymBoyTls", "SweetBoy06", "CoolGuy75",
+  
+  // Prénoms simples avec année ou âge
+  "Mathieu92", "Kevin87", "Antoine85", "Romain88", "Florian90",
+  "JulienB", "NicoG", "MaximeP", "XavierL", "StephaneM",
+  
+  // Style anglais/mixte
+  "FrenchBoy", "ParisLover", "SouthernGuy", "BeachBoy06", "MountainMan",
+  "CityBoy75", "NightOwl", "SunnyGuy", "ChillDude", "GoodVibes",
+  
+  // Autres styles naturels
+  "Jerem_Actif", "Marco.Discret", "Fred_Sympa", "Phil.Cool", "YanBg",
+  "Titi93", "Lolo75", "Didi06", "Momo13", "Jojo69",
 ];
 
 // Descriptions variées
@@ -65,7 +76,7 @@ const countries = [
   { code: "FR", name: "France", weight: 40 }, // Plus de Français
   { code: "BE", name: "Belgique", weight: 5 },
   { code: "CH", name: "Suisse", weight: 3 },
-  { code: "CA", name: "Canada", weight: 2 },
+  { code: "LU", name: "Luxembourg", weight: 2 },
 ];
 
 function getRandomCountry() {
@@ -121,10 +132,8 @@ async function main() {
   const createdUsers: string[] = [];
   const password = await bcrypt.hash("FakeProfile2026!", 10);
 
-  for (let i = 0; i < 50; i++) {
-    const prefix = pseudoPrefixes[i % pseudoPrefixes.length];
-    const suffix = Math.floor(Math.random() * 900) + 100; // 100-999
-    const pseudo = `${prefix}${suffix}`;
+  for (let i = 0; i < pseudosList.length; i++) {
+    const pseudo = pseudosList[i];
     
     const age = getRandomAge();
     const country = getRandomCountry();
@@ -139,10 +148,10 @@ async function main() {
     const lastSeenAt = new Date(Date.now() - hoursAgo * 60 * 60 * 1000);
 
     // Email fictif unique
-    const email = `fake.${pseudo.toLowerCase()}@menhir.test`;
+    const email = `fake.${pseudo.toLowerCase().replace(/[._]/g, '')}@menhir.test`;
 
     try {
-      const user = await prisma.user.create({
+      await prisma.user.create({
         data: {
           email,
           password,
