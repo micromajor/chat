@@ -175,7 +175,7 @@ export default function LikesPage() {
                   Tu n&apos;as pas encore de favoris
                 </p>
                 <p className="text-sm text-gray-400 dark:text-gray-500">
-                  Like des profils pour les retrouver ici ❤️
+                  Like des profils pour les retrouver ici
                 </p>
                 <Link
                   href="/dashboard"

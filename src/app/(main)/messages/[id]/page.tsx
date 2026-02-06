@@ -124,9 +124,11 @@ export default function ConversationPage() {
       // Ne pas filtrer par isOnline pour voir aussi l'interlocuteur
       const response = await authenticatedFetch("/api/users?page=1&limit=20");
       if (response.ok) {
-        const data = await response.json();
+        const json = await response.json();
+        // L'API retourne { success: true, data: { users: [...] } }
+        const allUsers = json.data?.users || json.users || [];
         // Garder seulement les utilisateurs en ligne
-        const onlineUsers = (data.users || []).filter((u: UserData) => u.isOnline);
+        const onlineUsers = allUsers.filter((u: UserData) => u.isOnline);
         setUsers(onlineUsers);
       }
     } catch (error) {
