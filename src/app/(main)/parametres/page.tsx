@@ -277,7 +277,7 @@ export default function ParametresPage() {
         message="Tu es sur le point de te déconnecter de Menhir."
         confirmText="Se déconnecter"
         cancelText="Annuler"
-        variant="primary"
+        variant="default"
         loading={logoutLoading}
       />
 
