@@ -77,7 +77,7 @@ export default function MessagesPage() {
       setUsersLoading(true);
       const params = new URLSearchParams({
         page: pageNum.toString(),
-        limit: "20",
+        limit: "15",
         isOnline: "true",
       });
       
@@ -86,7 +86,7 @@ export default function MessagesPage() {
 
       if (data.success) {
         setUsers(data.data.users);
-        setTotalPages(Math.ceil(data.data.total / 20) || 1);
+        setTotalPages(Math.ceil(data.data.total / 15) || 1);
         setTotalOnline(data.data.total);
       }
     } catch (error) {
@@ -240,10 +240,10 @@ export default function MessagesPage() {
               </div>
             ) : (
               users.map((user) => (
-                <div
+                <button
                   key={user.id}
                   onClick={() => handleUserClick(user.id)}
-                  className="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer border-b border-gray-100 dark:border-gray-700 transition-colors"
+                  className="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600 cursor-pointer border-b border-gray-100 dark:border-gray-700 transition-colors w-full text-left"
                 >
                   <div className="relative flex-shrink-0">
                     <Avatar src={user.avatar} alt={user.pseudo} size="md" className="ring-2 ring-gray-100 dark:ring-gray-700" />
@@ -260,22 +260,22 @@ export default function MessagesPage() {
                   </div>
 
                   <div className="flex items-center gap-1">
-                    <button
+                    <span
                       onClick={(e) => { e.stopPropagation(); handleUserClick(user.id); }}
                       className="p-1.5 text-gray-400 hover:text-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded transition-colors"
                       title="Envoyer un message"
                     >
                       <MessageCircle className="w-4 h-4" />
-                    </button>
-                    <button
+                    </span>
+                    <span
                       onClick={(e) => handleLike(e, user.id)}
                       className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-colors"
                       title="Envoyer un like"
                     >
                       <Heart className="w-4 h-4" />
-                    </button>
+                    </span>
                   </div>
-                </div>
+                </button>
               ))
             )}
           </div>

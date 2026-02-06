@@ -85,7 +85,7 @@ export default function DashboardPage() {
       if (data.success) {
         setUsers(data.data.users);
         setTotalPages(Math.ceil(data.data.total / 15) || 1);
-        setTotalOnline(data.data.users.filter((u: User) => u.isOnline).length);
+        setTotalOnline(data.data.total);
       }
     } catch (error) {
       console.error("Erreur chargement utilisateurs:", error);
@@ -189,10 +189,10 @@ export default function DashboardPage() {
         {/* Liste scrollable */}
         <div className="flex-1 overflow-y-auto">
           {users.map((user) => (
-            <div
+            <button
               key={user.id}
               onClick={() => handleUserClick(user.id)}
-              className="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer border-b border-gray-100 dark:border-gray-700 transition-colors"
+              className="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600 cursor-pointer border-b border-gray-100 dark:border-gray-700 transition-colors w-full text-left"
             >
               {/* Avatar */}
               <div className="relative flex-shrink-0">
@@ -221,22 +221,22 @@ export default function DashboardPage() {
 
               {/* Actions */}
               <div className="flex items-center gap-1">
-                <button
+                <span
                   onClick={(e) => handleMessage(e, user.id)}
                   className="p-1.5 text-gray-400 hover:text-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded transition-colors"
                   title="Envoyer un message"
                 >
                   <MessageCircle className="w-4 h-4" />
-                </button>
-                <button
+                </span>
+                <span
                   onClick={(e) => handleLike(e, user.id)}
                   className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-colors"
                   title="Envoyer un like"
                 >
                   <Heart className="w-4 h-4" />
-                </button>
+                </span>
               </div>
-            </div>
+            </button>
           ))}
 
           {isLoading && (
