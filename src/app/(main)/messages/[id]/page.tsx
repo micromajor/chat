@@ -328,12 +328,14 @@ export default function ConversationPage() {
       const response = await authenticatedFetch("/api/conversations", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ targetUserId }),
+        body: JSON.stringify({ userId: targetUserId }),
       });
 
       if (response.ok) {
         const data = await response.json();
-        router.push(`/messages/${data.id}`);
+        if (data.success && data.data?.conversationId) {
+          router.push(`/messages/${data.data.conversationId}`);
+        }
       }
     } catch (error) {
       console.error("Erreur:", error);
