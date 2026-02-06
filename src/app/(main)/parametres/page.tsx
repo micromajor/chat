@@ -84,12 +84,13 @@ export default function ParametresPage() {
       if (response.ok) {
         addToast("success", "Ton compte a été supprimé");
         // Attendre un peu pour que le toast s'affiche
-        setTimeout(() => {
+        setTimeout(async () => {
           if (isQuickAccess) {
             logout();
           } else {
-            signOut({ callbackUrl: "/" });
+            await signOut({ redirect: false });
           }
+          router.push("/");
         }, 1000);
       } else {
         const data = await response.json();
