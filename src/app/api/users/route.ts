@@ -102,6 +102,7 @@ export async function GET(request: NextRequest) {
         department: true,
         description: true,
         isOnline: true,
+        isQuickAccess: true,
         lastSeenAt: true,
         createdAt: true,
       },

@@ -38,6 +38,7 @@ export async function GET(
                     pseudo: true,
                     avatar: true,
                     isOnline: true,
+                    isQuickAccess: true,
                     lastSeenAt: true,
                   },
                 },

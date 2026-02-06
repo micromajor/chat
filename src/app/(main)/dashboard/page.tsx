@@ -33,6 +33,7 @@ interface User {
   department?: string;
   description?: string;
   isOnline: boolean;
+  isQuickAccess?: boolean;
   lastSeenAt: string;
 }
 
@@ -233,14 +234,17 @@ export default function DashboardPage() {
                 >
                   <MessageCircle className="w-4 h-4" />
                 </button>
-                <button
-                  type="button"
-                  onClick={(e) => handleLike(e, user.id)}
-                  className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-colors"
-                  title="Envoyer un like"
-                >
-                  <Heart className="w-4 h-4" />
-                </button>
+{/* Bouton Like - masqué pour les utilisateurs anonymes */}
+                {!user.isQuickAccess && (
+                  <button
+                    type="button"
+                    onClick={(e) => handleLike(e, user.id)}
+                    className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-colors"
+                    title="Envoyer un like"
+                  >
+                    <Heart className="w-4 h-4" />
+                  </button>
+                )}
               </div>
             </button>
           ))}

@@ -450,8 +450,8 @@ export default function ConversationPage() {
 
                 {/* Avatar et infos */}
                 <div
-                  onClick={() => router.push(`/profil/${conversation.otherUser.id}`)}
-                  className="flex items-center gap-3 cursor-pointer flex-1"
+                  onClick={() => !conversation.otherUser.isQuickAccess && router.push(`/profil/${conversation.otherUser.id}`)}
+                  className={`flex items-center gap-3 flex-1 ${!conversation.otherUser.isQuickAccess ? 'cursor-pointer' : ''}`}
                 >
                   <div className="relative">
                     <Avatar
@@ -488,17 +488,19 @@ export default function ConversationPage() {
                     </button>
                   )}
                   
-                  {/* Like */}
-                  <button
-                    onClick={handleLike}
-                    disabled={actionLoading}
-                    className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
-                    title={hasLiked ? "Retirer le like" : "Liker"}
-                  >
-                    <Heart 
-                      className={`w-5 h-5 ${hasLiked ? "text-red-500 fill-red-500" : "text-gray-600 dark:text-gray-400"}`} 
-                    />
-                  </button>
+                  {/* Like - Uniquement pour les utilisateurs inscrits */}
+                  {!conversation.otherUser.isQuickAccess && (
+                    <button
+                      onClick={handleLike}
+                      disabled={actionLoading}
+                      className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
+                      title={hasLiked ? "Retirer le like" : "Liker"}
+                    >
+                      <Heart 
+                        className={`w-5 h-5 ${hasLiked ? "text-red-500 fill-red-500" : "text-gray-600 dark:text-gray-400"}`} 
+                      />
+                    </button>
+                  )}
 
                   {/* Bloquer */}
                   <button

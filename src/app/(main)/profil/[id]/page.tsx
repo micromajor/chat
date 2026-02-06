@@ -31,6 +31,7 @@ interface UserProfile {
   description?: string;
   isOnline: boolean;
   isVerified: boolean;
+  isQuickAccess?: boolean;
   lastSeenAt: string;
   createdAt: string;
   iLiked: boolean;
@@ -324,18 +325,20 @@ export default function ProfilPage() {
 
         {/* Actions */}
         <div className="p-6 flex gap-4">
-          <Button
-            variant={user.iLiked ? "outline" : "accent"}
-            size="lg"
-            className="flex-1"
-            onClick={handleLike}
-            disabled={isLiking}
-          >
-            <Heart
-              className={`w-5 h-5 mr-2 ${user.iLiked ? "fill-current" : ""}`}
-            />
-            {user.iLiked ? "Liké" : "Liker"}
-          </Button>
+          {!user.isQuickAccess && (
+            <Button
+              variant={user.iLiked ? "outline" : "accent"}
+              size="lg"
+              className="flex-1"
+              onClick={handleLike}
+              disabled={isLiking}
+            >
+              <Heart
+                className={`w-5 h-5 mr-2 ${user.iLiked ? "fill-current" : ""}`}
+              />
+              {user.iLiked ? "Liké" : "Liker"}
+            </Button>
+          )}
 
           <Button
             variant="primary"

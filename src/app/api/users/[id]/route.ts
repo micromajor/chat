@@ -42,6 +42,7 @@ export async function GET(
         description: true,
         isOnline: true,
         isVerified: true,
+        isQuickAccess: true,
         lastSeenAt: true,
         createdAt: true,
       },
