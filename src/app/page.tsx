@@ -25,32 +25,20 @@ export default function HomePage() {
   }, []);
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-500 via-primary-600 to-accent-500">
-      {/* Header */}
-      <header className="container mx-auto px-4 py-6">
-        <nav className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-              <MenhirLogo className="w-7 h-7 text-white" />
-            </div>
-            <div>
-              <span className="text-2xl font-heading font-bold text-white">
-                Le Menhir
-              </span>
-              <span className="block text-xs text-white/70">Solide comme la pierre</span>
-            </div>
-          </div>
-        </nav>
-      </header>
-
       {/* Hero Section */}
-      <main className="container mx-auto px-4 py-16 md:py-24">
+      <main className="container mx-auto px-4 py-20 md:py-28">
         <div className="text-center max-w-3xl mx-auto">
-          {/* Logo Menhir centré et mis en valeur */}
-          <div className="flex justify-center mb-8">
-            <div className="w-32 h-32 md:w-40 md:h-40 bg-white/20 backdrop-blur-md rounded-3xl flex items-center justify-center shadow-2xl border border-white/30 animate-pulse">
-              <MenhirLogo className="w-20 h-20 md:w-24 md:h-24 text-white drop-shadow-lg" />
-            </div>
+          {/* Logo "Le Menhir" avec l'icône à la place du i */}
+          <div className="flex justify-center items-baseline mb-8">
+            <span className="text-6xl md:text-8xl font-heading font-bold text-white drop-shadow-lg">
+              Le Menh
+            </span>
+            <MenhirLogo className="w-10 h-16 md:w-14 md:h-20 text-white drop-shadow-lg -mx-1" />
+            <span className="text-6xl md:text-8xl font-heading font-bold text-white drop-shadow-lg">
+              r
+            </span>
           </div>
+          <p className="text-xl md:text-2xl text-white/80 mb-8 font-medium">Solide comme la pierre 🪨</p>
           <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm mb-6">
             <Sparkles className="w-4 h-4" />
             <span>100% gratuit • Inscription rapide</span>
