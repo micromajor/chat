@@ -1,26 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/prisma";
+import { requireAuth } from "@/lib/quick-access";
 
 // GET - Récupérer les notifications
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-
-    if (!session?.user) {
-      return NextResponse.json(
-        { success: false, error: "Non authentifié" },
-        { status: 401 }
-      );
-    }
+    const { user, error } = await requireAuth(request);
+    
+    if (error) return error;
 
     const { searchParams } = new URL(request.url);
     const unreadOnly = searchParams.get("unreadOnly") === "true";
 
     const notifications = await prisma.notification.findMany({
       where: {
-        userId: session.user.id,
+        userId: user!.id,
         ...(unreadOnly && { isRead: false }),
       },
       orderBy: { createdAt: "desc" },
@@ -29,7 +23,7 @@ export async function GET(request: NextRequest) {
 
     const unreadCount = await prisma.notification.count({
       where: {
-        userId: session.user.id,
+        userId: user!.id,
         isRead: false,
       },
     });
@@ -53,14 +47,9 @@ export async function GET(request: NextRequest) {
 // PUT - Marquer les notifications comme lues
 export async function PUT(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-
-    if (!session?.user) {
-      return NextResponse.json(
-        { success: false, error: "Non authentifié" },
-        { status: 401 }
-      );
-    }
+    const { user, error } = await requireAuth(request);
+    
+    if (error) return error;
 
     const { notificationIds } = await request.json();
 
@@ -69,7 +58,7 @@ export async function PUT(request: NextRequest) {
       await prisma.notification.updateMany({
         where: {
           id: { in: notificationIds },
-          userId: session.user.id,
+          userId: user!.id,
         },
         data: { isRead: true },
       });
@@ -77,7 +66,7 @@ export async function PUT(request: NextRequest) {
       // Marquer toutes comme lues
       await prisma.notification.updateMany({
         where: {
-          userId: session.user.id,
+          userId: user!.id,
           isRead: false,
         },
         data: { isRead: true },
