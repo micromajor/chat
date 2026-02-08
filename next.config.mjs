@@ -46,6 +46,12 @@ const nextConfig = {
   // Redirections
   async redirects() {
     return [
+      // Redirection favicon.ico vers icon.svg (évite les 404)
+      {
+        source: "/favicon.ico",
+        destination: "/icon.svg",
+        permanent: true,
+      },
       {
         source: "/login",
         destination: "/connexion",
