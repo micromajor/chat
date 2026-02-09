@@ -154,15 +154,22 @@
   font-style: italic;
 }
 
-/* Navigation active */
-.comic-theme nav a[class*="bg-primary"],
-.comic-theme nav a.text-primary-500 {
+/* Navigation active - desktop header uniquement */
+.comic-theme header nav a[class*="bg-primary"],
+.comic-theme header nav a.text-primary-500 {
   background: var(--comic-gold) !important;
   color: var(--comic-ink) !important;
   border: var(--comic-outline-thin);
   border-radius: 12px !important;
   font-weight: bold;
   transform: rotate(-1deg);
+}
+
+/* Navigation active - mobile bottom bar */
+.comic-theme nav[class*="fixed"][class*="bottom-0"] a[class*="text-primary"] {
+  background: transparent !important;
+  border: none !important;
+  transform: none !important;
 }
 
 /* Badge messages non-lus */
@@ -460,17 +467,24 @@
 }
 
 .comic-theme nav[class*="fixed"][class*="bottom-0"] a {
-  color: rgba(255, 255, 255, 0.7) !important;
+  color: white !important;
+  opacity: 0.8;
 }
 
 .comic-theme nav[class*="fixed"][class*="bottom-0"] a[class*="text-primary"] {
   color: var(--comic-gold) !important;
+  opacity: 1;
+}
+
+.comic-theme nav[class*="fixed"][class*="bottom-0"] a svg {
+  color: inherit !important;
 }
 
 .comic-theme nav[class*="fixed"][class*="bottom-0"] span[class*="text-xs"] {
   font-family: var(--font-comic-heading) !important;
   font-size: 0.65rem !important;
   letter-spacing: 0.5px;
+  color: inherit !important;
 }
 
 /* ==========================================
