@@ -28,8 +28,11 @@ export default function HomePage() {
       {/* Hero Section */}
       <main className="container mx-auto px-4 py-20 md:py-28">
         <div className="text-center max-w-3xl mx-auto">
-          {/* Logo "Le Menhir" avec l'icône à la place du i */}
-          <div className="flex justify-center items-end mb-8">
+          {/* Logo Menhir en grand, centré */}
+          <div className="flex flex-col items-center mb-6">
+            <div className="drop-shadow-2xl mb-4 animate-fade-in">
+              <MenhirLogo className="w-32 h-44 md:w-48 md:h-64" />
+            </div>
             <span className="text-6xl md:text-8xl font-heading font-bold text-white drop-shadow-lg leading-none">
               Le Menhir
             </span>
