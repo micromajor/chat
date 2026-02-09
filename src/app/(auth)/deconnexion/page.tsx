@@ -9,7 +9,8 @@ import { useAuth } from "@/contexts/auth-context";
 
 export default function DeconnexionPage() {
   const router = useRouter();
-  const { isQuickAccess } = useAuth();
+  const { user } = useAuth();
+  const isQuickAccess = user?.isQuickAccess || false;
 
   const handleSignOut = async () => {
     try {
