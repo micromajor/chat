@@ -18,7 +18,10 @@ import {
   Trash2,
   Circle,
   MessageCircle,
-  AlertTriangle
+  AlertTriangle,
+  ChevronLeft,
+  ChevronRight,
+  RefreshCw
 } from "lucide-react";
 
 // Interface pour un utilisateur
@@ -98,6 +101,9 @@ export default function ConversationPage() {
   // États pour la liste des utilisateurs
   const [users, setUsers] = useState<UserData[]>([]);
   const [usersLoading, setUsersLoading] = useState(true);
+  const [usersPage, setUsersPage] = useState(1);
+  const [usersTotalPages, setUsersTotalPages] = useState(1);
+  const [totalOnline, setTotalOnline] = useState(0);
 
   // États pour la conversation
   const [conversation, setConversation] = useState<ConversationData | null>(null);
@@ -120,17 +126,22 @@ export default function ConversationPage() {
   }>({ show: false, isAnonymous: false, pseudo: "", pendingMessage: "" });
 
   // Charger les utilisateurs en ligne
-  const fetchUsers = useCallback(async () => {
+  const fetchUsers = useCallback(async (pageNum: number) => {
     try {
-      // Ne pas filtrer par isOnline pour voir aussi l'interlocuteur
-      const response = await authenticatedFetch("/api/users?page=1&limit=20");
+      setUsersLoading(true);
+      const params = new URLSearchParams({
+        page: pageNum.toString(),
+        limit: "15",
+        isOnline: "true",
+      });
+      const response = await authenticatedFetch(`/api/users?${params}`);
       if (response.ok) {
         const json = await response.json();
-        // L'API retourne { success: true, data: { users: [...] } }
-        const allUsers = json.data?.users || json.users || [];
-        // Garder seulement les utilisateurs en ligne
-        const onlineUsers = allUsers.filter((u: UserData) => u.isOnline);
-        setUsers(onlineUsers);
+        if (json.success) {
+          setUsers(json.data.users);
+          setUsersTotalPages(Math.ceil(json.data.total / 15) || 1);
+          setTotalOnline(json.data.total);
+        }
       }
     } catch (error) {
       console.error("Erreur lors du chargement des utilisateurs:", error);
@@ -313,7 +324,10 @@ export default function ConversationPage() {
 
   // Chargement initial
   useEffect(() => {
-    fetchUsers();
+    fetchUsers(usersPage);
+  }, [usersPage, fetchUsers]);
+
+  useEffect(() => {
     fetchConversation();
 
     // Rafraîchir périodiquement
@@ -322,7 +336,7 @@ export default function ConversationPage() {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [fetchUsers, fetchConversation]);
+  }, [fetchConversation]);
 
   // Démarrer une conversation avec un utilisateur
   const startConversation = async (targetUserId: string) => {
@@ -363,8 +377,15 @@ export default function ConversationPage() {
           <div className="bg-gradient-to-r from-primary-500 to-primary-600 text-white px-4 py-3 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Circle className="w-3 h-3 fill-green-400 text-green-400" />
-              <span className="font-semibold">{users.filter(u => u.isOnline).length} connecté(e)s</span>
+              <span className="font-semibold">{totalOnline} connecté(e)s</span>
             </div>
+            <button 
+              onClick={() => fetchUsers(usersPage)} 
+              className="p-1 hover:bg-white/20 rounded"
+              disabled={usersLoading}
+            >
+              <RefreshCw className={`w-4 h-4 ${usersLoading ? "animate-spin" : ""}`} />
+            </button>
           </div>
           <div className="flex-1 overflow-y-auto">
             {usersLoading ? (
@@ -426,6 +447,17 @@ export default function ConversationPage() {
                 })}
               </div>
             )}
+          </div>
+
+          {/* Pagination */}
+          <div className="px-3 py-2 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between bg-gray-50 dark:bg-gray-800/50">
+            <button onClick={() => setUsersPage(Math.max(1, usersPage - 1))} disabled={usersPage === 1} className="p-1 text-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded disabled:opacity-30">
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <span className="text-sm text-gray-600 dark:text-gray-400">{usersPage} / {usersTotalPages}</span>
+            <button onClick={() => setUsersPage(Math.min(usersTotalPages, usersPage + 1))} disabled={usersPage === usersTotalPages} className="p-1 text-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded disabled:opacity-30">
+              <ChevronRight className="w-5 h-5" />
+            </button>
           </div>
         </div>
 
