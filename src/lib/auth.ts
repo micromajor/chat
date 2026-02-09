@@ -44,25 +44,32 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Pseudo et mot de passe requis");
         }
 
+        const pseudoTrimmed = credentials.pseudo.trim();
+        console.log(`[AUTH] Tentative de connexion pour: "${pseudoTrimmed}"`);
+
         // Recherche par pseudo (insensible à la casse)
         const user = await prisma.user.findFirst({
           where: { 
             pseudo: { 
-              equals: credentials.pseudo,
+              equals: pseudoTrimmed,
               mode: 'insensitive'
             }
           },
         });
 
         if (!user) {
+          console.log(`[AUTH] Utilisateur non trouvé: "${pseudoTrimmed}"`);
           throw new Error("Identifiants invalides");
         }
+
+        console.log(`[AUTH] Utilisateur trouvé: "${user.pseudo}" (id: ${user.id}, verified: ${user.isVerified}, banned: ${user.isBanned})`);
 
         if (user.isBanned) {
           throw new Error("Votre compte a été suspendu");
         }
 
         const isPasswordValid = await compare(credentials.password, user.password);
+        console.log(`[AUTH] Mot de passe valide: ${isPasswordValid}`);
 
         if (!isPasswordValid) {
           throw new Error("Identifiants invalides");
@@ -71,10 +78,6 @@ export const authOptions: NextAuthOptions = {
         // Vérification email obligatoire
         if (!user.isVerified) {
           throw new Error("EMAIL_NON_VERIFIE");
-        }
-
-        if (!isPasswordValid) {
-          throw new Error("Identifiants invalides");
         }
 
         // Mettre à jour le statut en ligne

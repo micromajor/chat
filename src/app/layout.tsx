@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Inter, Montserrat } from "next/font/google";
+import { Inter, Montserrat, Bangers, Comic_Neue } from "next/font/google";
 import { Providers } from "./providers";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 import { CookieConsent } from "@/components/ui/cookie-consent";
 import "@/styles/globals.css";
+import "@/styles/comic-theme.css";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -14,6 +15,21 @@ const inter = Inter({
 const montserrat = Montserrat({
   subsets: ["latin"],
   variable: "--font-montserrat",
+  display: "swap",
+});
+
+// Fonts BD (thème comic Astérix)
+const bangers = Bangers({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-bangers",
+  display: "swap",
+});
+
+const comicNeue = Comic_Neue({
+  weight: ["300", "400", "700"],
+  subsets: ["latin"],
+  variable: "--font-comic-neue",
   display: "swap",
 });
 
@@ -106,7 +122,7 @@ export default function RootLayout({
         )}
       </head>
       <body
-        className={`${inter.variable} ${montserrat.variable} font-sans antialiased`}
+        className={`${inter.variable} ${montserrat.variable} ${bangers.variable} ${comicNeue.variable} font-sans antialiased`}
       >
         <GoogleAnalytics />
         <Providers>{children}</Providers>

@@ -3,6 +3,9 @@
 import { SessionProvider } from "next-auth/react";
 import { AuthProvider } from "@/contexts/auth-context";
 import { UnreadMessagesProvider } from "@/contexts/unread-messages-context";
+import { ThemeStyleProvider } from "@/contexts/theme-style-context";
+import { ThemeStyleSwitcher } from "@/components/ui/theme-style-switcher";
+import { ComicBanner } from "@/components/ui/comic-banner";
 import { ToastProvider } from "@/components/ui/toast";
 import { useEffect } from "react";
 
@@ -24,7 +27,13 @@ export function Providers({ children }: { children: React.ReactNode }) {
     <SessionProvider>
       <AuthProvider>
         <UnreadMessagesProvider>
-          <ToastProvider>{children}</ToastProvider>
+          <ThemeStyleProvider>
+            <ToastProvider>
+              <ComicBanner />
+              {children}
+              <ThemeStyleSwitcher />
+            </ToastProvider>
+          </ThemeStyleProvider>
         </UnreadMessagesProvider>
       </AuthProvider>
     </SessionProvider>

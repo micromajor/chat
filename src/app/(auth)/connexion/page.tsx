@@ -66,7 +66,7 @@ export default function ConnexionPage() {
 
     try {
       const result = await signIn("credentials", {
-        pseudo: formData.pseudo,
+        pseudo: formData.pseudo.trim(),
         password: formData.password,
         redirect: false,
       });

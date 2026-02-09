@@ -1,0 +1,688 @@
+/* ==========================================
+   🎨 THÈME BANDE DESSINÉE - Menhir Edition
+   Bordures épaisses, ombres portées, halftone
+   ========================================== */
+
+/* ==========================================
+   Variables CSS - Palette BD
+   ========================================== */
+.comic-theme {
+  --comic-blue: #1B4F8A;
+  --comic-blue-light: #3A7BD5;
+  --comic-blue-dark: #0D2B4A;
+  --comic-gold: #FFB800;
+  --comic-gold-light: #FFD54F;
+  --comic-gold-dark: #C68A00;
+  --comic-green: #2D7D3F;
+  --comic-green-light: #4CAF50;
+  --comic-red: #E63946;
+  --comic-red-light: #FF6B6B;
+  --comic-purple: #7B2D8E;
+  --comic-brown: #8B5E3C;
+  --comic-parchment: #FFF8E7;
+  --comic-cream: #FFFDF4;
+  --comic-ink: #1A1A1A;
+  --comic-outline: 3px solid #1A1A1A;
+  --comic-outline-thin: 2px solid #1A1A1A;
+
+  /* Font family override - utilise les Google Fonts chargées par Next.js */
+  --font-comic-heading: var(--font-bangers), 'Bangers', cursive;
+  --font-comic-body: var(--font-comic-neue), 'Comic Neue', cursive;
+}
+
+/* ==========================================
+   Base overrides
+   ========================================== */
+.comic-theme body {
+  font-family: var(--font-comic-body) !important;
+  background-color: var(--comic-parchment) !important;
+  background-image: 
+    radial-gradient(circle, rgba(0,0,0,0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--comic-ink) !important;
+}
+
+/* Tous les titres en police BD */
+.comic-theme h1,
+.comic-theme h2,
+.comic-theme h3,
+.comic-theme h4,
+.comic-theme h5,
+.comic-theme h6,
+.comic-theme .font-heading {
+  font-family: var(--font-comic-heading) !important;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+/* Tous les textes de body en Comic Neue */
+.comic-theme p,
+.comic-theme span,
+.comic-theme div,
+.comic-theme label,
+.comic-theme a {
+  font-family: var(--font-comic-body) !important;
+}
+
+/* ==========================================
+   Placeholder & Texte illisibles - FIXES
+   ========================================== */
+
+/* Placeholders des inputs : noir lisible */
+.comic-theme input::placeholder,
+.comic-theme textarea::placeholder {
+  color: #888 !important;
+  opacity: 1 !important;
+}
+
+/* Labels de formulaires */
+.comic-theme label {
+  color: var(--comic-ink) !important;
+  font-weight: 700 !important;
+}
+
+/* Texte gris sur fond clair (lisibilité) */
+.comic-theme [class*="text-gray-400"],
+.comic-theme [class*="text-gray-500"] {
+  color: #555 !important;
+}
+
+.comic-theme [class*="text-gray-600"],
+.comic-theme [class*="text-gray-700"] {
+  color: var(--comic-ink) !important;
+}
+
+/* Textes dans les cards (light mode) */
+.comic-theme [class*="text-stone-"],
+.comic-theme [class*="text-slate-"] {
+  color: var(--comic-ink) !important;
+}
+
+/* Lien "Mot de passe oublié" et liens d'action */
+.comic-theme a[class*="text-primary"] {
+  color: var(--comic-blue) !important;
+  font-weight: bold;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.comic-theme a[class*="text-primary"]:hover {
+  color: var(--comic-blue-light) !important;
+}
+
+/* Textes blancs sur fond coloré - garder blancs */
+/* IMPORTANT: utiliser ~= (correspondance exacte de mot) au lieu de *= 
+   pour ne pas matcher les variantes dark:text-white */
+.comic-theme [class*="bg-gradient"] [class~="text-white"],
+.comic-theme [class*="bg-primary"] [class~="text-white"],
+.comic-theme header [class*="text-white"] {
+  color: white !important;
+}
+
+/* ==========================================
+   Header - Bandeau BD
+   ========================================== */
+.comic-theme header {
+  background: linear-gradient(135deg, var(--comic-blue) 0%, var(--comic-blue-dark) 100%) !important;
+  border-bottom: var(--comic-outline) !important;
+  box-shadow: 0 4px 0 var(--comic-ink) !important;
+}
+
+.comic-theme header * {
+  color: white !important;
+}
+
+.comic-theme header a:hover {
+  color: var(--comic-gold) !important;
+}
+
+/* Logo dans le header */
+.comic-theme header .font-heading,
+.comic-theme header span[class*="text-primary"] {
+  font-family: var(--font-comic-heading) !important;
+  color: var(--comic-gold) !important;
+  font-size: 1.5rem !important;
+  text-shadow: 2px 2px 0 var(--comic-ink);
+  letter-spacing: 2px;
+}
+
+/* Slogan du header */
+.comic-theme header span[class*="text-gray-400"] {
+  color: var(--comic-gold-light) !important;
+  font-family: var(--font-comic-body) !important;
+  font-style: italic;
+}
+
+/* Navigation active */
+.comic-theme nav a[class*="bg-primary"],
+.comic-theme nav a.text-primary-500 {
+  background: var(--comic-gold) !important;
+  color: var(--comic-ink) !important;
+  border: var(--comic-outline-thin);
+  border-radius: 12px !important;
+  font-weight: bold;
+  transform: rotate(-1deg);
+}
+
+/* Badge messages non-lus */
+.comic-theme span[class*="bg-red-500"][class*="rounded-full"] {
+  background: var(--comic-red) !important;
+  border: 2px solid var(--comic-ink) !important;
+  font-family: var(--font-comic-heading) !important;
+  box-shadow: 2px 2px 0 var(--comic-ink);
+}
+
+/* ==========================================
+   Cards - Panneaux de BD (Vignettes)
+   ========================================== */
+.comic-theme div.card,
+.comic-theme div[class*="rounded-xl"][class*="shadow"],
+.comic-theme div[class*="rounded-2xl"][class*="bg-white"]:not([class*="bg-white/"]),
+.comic-theme div[class*="rounded-lg"][class*="bg-white"]:not([class*="bg-white/"]),
+.comic-theme div[class*="rounded-3xl"][class*="bg-white"]:not([class*="bg-white/"]) {
+  border: var(--comic-outline) !important;
+  border-radius: 16px !important;
+  box-shadow: 5px 5px 0 var(--comic-ink) !important;
+  background: var(--comic-cream) !important;
+  transition: all 0.2s ease;
+}
+
+.comic-theme div.card:hover,
+.comic-theme div[class*="rounded-xl"][class*="shadow"]:hover {
+  transform: translateY(-3px) rotate(0.5deg);
+  box-shadow: 7px 7px 0 var(--comic-ink) !important;
+}
+
+/* ==========================================
+   Boutons - Style "BOUM!"
+   ========================================== */
+.comic-theme button[class*="bg-primary"],
+.comic-theme a[class*="bg-primary"],
+.comic-theme .btn-primary,
+.comic-theme button[class*="bg-red-600"],
+.comic-theme a[class*="bg-red-600"] {
+  background: var(--comic-blue) !important;
+  color: white !important;
+  border: var(--comic-outline-thin) !important;
+  border-radius: 12px !important;
+  box-shadow: 4px 4px 0 var(--comic-ink) !important;
+  font-family: var(--font-comic-heading) !important;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  transition: all 0.15s ease;
+}
+
+.comic-theme button[class*="bg-primary"]:hover,
+.comic-theme a[class*="bg-primary"]:hover,
+.comic-theme .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 6px 6px 0 var(--comic-ink) !important;
+}
+
+.comic-theme button[class*="bg-primary"]:active,
+.comic-theme a[class*="bg-primary"]:active,
+.comic-theme .btn-primary:active {
+  transform: translateY(2px);
+  box-shadow: 1px 1px 0 var(--comic-ink) !important;
+}
+
+/* Bouton accent */
+.comic-theme button[class*="bg-accent"],
+.comic-theme a[class*="bg-accent"],
+.comic-theme .btn-accent {
+  background: var(--comic-blue) !important;
+  color: white !important;
+  border: var(--comic-outline-thin) !important;
+  border-radius: 12px !important;
+  box-shadow: 4px 4px 0 var(--comic-ink) !important;
+  font-family: var(--font-comic-heading) !important;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-size: 1.1rem !important;
+}
+
+.comic-theme button[class*="bg-accent"]:hover,
+.comic-theme a[class*="bg-accent"]:hover {
+  background: var(--comic-blue-light) !important;
+  color: white !important;
+  transform: translateY(-2px);
+  box-shadow: 6px 6px 0 var(--comic-ink) !important;
+}
+
+.comic-theme button[class*="bg-accent"]:active,
+.comic-theme a[class*="bg-accent"]:active {
+  transform: translateY(2px);
+  box-shadow: 1px 1px 0 var(--comic-ink) !important;
+}
+
+/* Bouton Connexion (bg-white) sur la home page */
+.comic-theme a[class*="bg-white"][class*="text-primary"] {
+  background: var(--comic-gold) !important;
+  color: var(--comic-ink) !important;
+  border: var(--comic-outline-thin) !important;
+  border-radius: 12px !important;
+  box-shadow: 4px 4px 0 var(--comic-ink) !important;
+  font-family: var(--font-comic-heading) !important;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-size: 1.1rem !important;
+  text-decoration: none !important;
+}
+
+.comic-theme a[class*="bg-white"][class*="text-primary"]:hover {
+  background: var(--comic-gold-light) !important;
+  transform: translateY(-2px);
+  box-shadow: 6px 6px 0 var(--comic-ink) !important;
+}
+
+/* Bouton outline */
+.comic-theme .btn-outline,
+.comic-theme button[class*="border-primary"],
+.comic-theme a[class*="border-primary"] {
+  border: var(--comic-outline-thin) !important;
+  color: var(--comic-blue) !important;
+  border-radius: 12px !important;
+  font-family: var(--font-comic-heading) !important;
+  box-shadow: 3px 3px 0 var(--comic-ink) !important;
+}
+
+/* Bouton danger */
+.comic-theme button[class*="bg-red-500"],
+.comic-theme button[class*="bg-red-600"],
+.comic-theme .btn-danger {
+  background: var(--comic-red) !important;
+  color: white !important;
+  border: var(--comic-outline-thin) !important;
+  box-shadow: 4px 4px 0 var(--comic-ink) !important;
+  font-family: var(--font-comic-heading) !important;
+}
+
+/* Bouton ghost (menus) */
+.comic-theme .btn-ghost,
+.comic-theme button[class*="hover:bg-gray"] {
+  font-family: var(--font-comic-body) !important;
+}
+
+/* ==========================================
+   Inputs
+   ========================================== */
+.comic-theme input[type="text"],
+.comic-theme input[type="email"],
+.comic-theme input[type="password"],
+.comic-theme input[type="number"],
+.comic-theme input[type="search"],
+.comic-theme input[type="tel"],
+.comic-theme input[type="date"],
+.comic-theme textarea,
+.comic-theme select,
+.comic-theme .input {
+  border: var(--comic-outline-thin) !important;
+  border-radius: 10px !important;
+  background: white !important;
+  color: var(--comic-ink) !important;
+  font-family: var(--font-comic-body) !important;
+  font-size: 1rem !important;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.15) !important;
+}
+
+.comic-theme input:focus,
+.comic-theme textarea:focus,
+.comic-theme select:focus {
+  box-shadow: 0 0 0 3px var(--comic-gold), 3px 3px 0 rgba(0,0,0,0.15) !important;
+  border-color: var(--comic-blue) !important;
+}
+
+/* ==========================================
+   Chat Bubbles - Bulles de BD
+   ========================================== */
+.comic-theme .chat-bubble-sent {
+  background: var(--comic-blue) !important;
+  color: white !important;
+  border: var(--comic-outline-thin) !important;
+  border-radius: 20px 20px 4px 20px !important;
+  box-shadow: 3px 3px 0 var(--comic-ink) !important;
+  position: relative;
+}
+
+.comic-theme .chat-bubble-received {
+  background: white !important;
+  color: var(--comic-ink) !important;
+  border: var(--comic-outline-thin) !important;
+  border-radius: 20px 20px 20px 4px !important;
+  box-shadow: 3px 3px 0 var(--comic-ink) !important;
+  position: relative;
+}
+
+/* ==========================================
+   Avatars - Médaillons avec bordure épaisse
+   ========================================== */
+.comic-theme .avatar,
+.comic-theme img[class*="rounded-full"] {
+  border: 3px solid var(--comic-ink) !important;
+  box-shadow: 3px 3px 0 var(--comic-ink) !important;
+}
+
+/* Badge en ligne */
+.comic-theme .online-badge {
+  background: var(--comic-green) !important;
+  border: 2px solid var(--comic-ink) !important;
+  box-shadow: 1px 1px 0 var(--comic-ink);
+}
+
+/* ==========================================
+   Page d'accueil
+   ========================================== */
+.comic-theme [class*="bg-gradient-to-br"][class*="from-primary"] {
+  background: 
+    linear-gradient(135deg, var(--comic-blue) 0%, var(--comic-blue-dark) 60%, var(--comic-green) 100%) !important;
+}
+
+/* Cards de la hero section (bg-white/10, bg-white/15) */
+.comic-theme div[class*="bg-white\/10"],
+.comic-theme div[class*="bg-white\/15"],
+.comic-theme div[class*="bg-white/10"],
+.comic-theme div[class*="bg-white/15"] {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border: 3px solid rgba(255, 255, 255, 0.5) !important;
+  border-radius: 16px !important;
+  box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Texte blanc sur fond hero - FORCER */
+.comic-theme div[class*="bg-white\/10"] h3,
+.comic-theme div[class*="bg-white\/10"] p,
+.comic-theme div[class*="bg-white\/10"] span,
+.comic-theme div[class*="bg-white/10"] h3,
+.comic-theme div[class*="bg-white/10"] p,
+.comic-theme div[class*="bg-white/10"] span {
+  color: white !important;
+}
+
+/* Texte blanc/70 lisible */
+.comic-theme [class*="text-white/70"],
+.comic-theme [class*="text-white/80"],
+.comic-theme [class*="text-white/60"],
+.comic-theme [class*="text-white/50"] {
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+
+/* Feature cards */
+.comic-theme [class*="bg-gradient-to-br"][class*="rounded-2xl"] {
+  border: var(--comic-outline-thin) !important;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Feature cards du bas (hover:scale-105) */
+.comic-theme div[class*="hover:scale-105"][class*="rounded-3xl"] {
+  background: rgba(255, 248, 231, 0.12) !important;
+  border: 3px solid rgba(255, 255, 255, 0.4) !important;
+  box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.4) !important;
+  border-radius: 16px !important;
+}
+
+.comic-theme div[class*="hover:scale-105"][class*="rounded-3xl"] h3,
+.comic-theme div[class*="hover:scale-105"][class*="rounded-3xl"] p {
+  color: white !important;
+}
+
+.comic-theme [class*="hover:scale-105"][class*="rounded-3xl"]:hover {
+  transform: translateY(-4px) rotate(1deg) scale(1.02) !important;
+  box-shadow: 7px 7px 0 rgba(0, 0, 0, 0.5) !important;
+  border-color: var(--comic-gold) !important;
+}
+
+/* Icônes dans les feature cards */
+.comic-theme [class*="hover:scale-105"] [class*="rounded-2xl"][class*="flex"][class*="items-center"] {
+  border: 2px solid rgba(0, 0, 0, 0.3) !important;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.3) !important;
+}
+
+/* ==========================================
+   Navigation mobile
+   ========================================== */
+.comic-theme nav[class*="fixed"][class*="bottom-0"] {
+  background: linear-gradient(to top, var(--comic-blue-dark), var(--comic-blue)) !important;
+  border-top: var(--comic-outline) !important;
+  box-shadow: 0 -3px 0 var(--comic-ink) !important;
+}
+
+.comic-theme nav[class*="fixed"][class*="bottom-0"] a {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.comic-theme nav[class*="fixed"][class*="bottom-0"] a[class*="text-primary"] {
+  color: var(--comic-gold) !important;
+}
+
+.comic-theme nav[class*="fixed"][class*="bottom-0"] span[class*="text-xs"] {
+  font-family: var(--font-comic-heading) !important;
+  font-size: 0.65rem !important;
+  letter-spacing: 0.5px;
+}
+
+/* ==========================================
+   Dropdown / Menus
+   ========================================== */
+.comic-theme [class*="absolute"][class*="bg-white"][class*="shadow-lg"] {
+  border: var(--comic-outline-thin) !important;
+  border-radius: 12px !important;
+  box-shadow: 5px 5px 0 var(--comic-ink) !important;
+  background: var(--comic-cream) !important;
+}
+
+/* Items de dropdown - lisibilité */
+.comic-theme [class*="absolute"][class*="bg-white"] a,
+.comic-theme [class*="absolute"][class*="bg-white"] button {
+  color: var(--comic-ink) !important;
+}
+
+.comic-theme [class*="absolute"][class*="bg-white"] a[class*="text-red"],
+.comic-theme [class*="absolute"][class*="bg-white"] button[class*="text-red"] {
+  color: var(--comic-red) !important;
+}
+
+/* ==========================================
+   Scrollbar BD
+   ========================================== */
+.comic-theme ::-webkit-scrollbar {
+  width: 12px;
+}
+
+.comic-theme ::-webkit-scrollbar-track {
+  background: var(--comic-parchment);
+  border-left: 3px solid var(--comic-ink);
+}
+
+.comic-theme ::-webkit-scrollbar-thumb {
+  background: var(--comic-blue);
+  border: 2px solid var(--comic-ink);
+  border-radius: 6px;
+}
+
+.comic-theme ::-webkit-scrollbar-thumb:hover {
+  background: var(--comic-blue-light);
+}
+
+/* ==========================================
+   Animations BD
+   ========================================== */
+@keyframes comic-bounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08) rotate(2deg); }
+}
+
+@keyframes comic-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px) rotate(-2deg); }
+  75% { transform: translateX(4px) rotate(2deg); }
+}
+
+@keyframes comic-pop {
+  0% { transform: scale(0.7); opacity: 0; }
+  60% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes halftone-pulse {
+  0%, 100% { opacity: 0.03; }
+  50% { opacity: 0.06; }
+}
+
+.comic-theme .animate-fade-in {
+  animation: comic-pop 0.3s ease-out !important;
+}
+
+/* Action sur les likes */
+.comic-theme button[class*="text-red"]:hover svg,
+.comic-theme a[class*="text-red"]:hover svg {
+  animation: comic-bounce 0.3s ease;
+}
+
+/* ==========================================
+   Toasts & Alertes
+   ========================================== */
+.comic-theme [role="alert"],
+.comic-theme [class*="toast"] {
+  border: var(--comic-outline-thin) !important;
+  border-radius: 14px !important;
+  box-shadow: 4px 4px 0 var(--comic-ink) !important;
+  font-family: var(--font-comic-body) !important;
+}
+
+/* Alertes erreur/succès dans les formulaires */
+.comic-theme div[class*="bg-red-50"],
+.comic-theme div[class*="bg-amber-50"],
+.comic-theme div[class*="bg-green-50"] {
+  border: var(--comic-outline-thin) !important;
+  border-radius: 12px !important;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.15) !important;
+}
+
+/* ==========================================
+   Tags & Badges
+   ========================================== */
+.comic-theme span[class*="bg-green"][class*="rounded"] {
+  border: 2px solid var(--comic-ink) !important;
+  font-family: var(--font-comic-heading) !important;
+  letter-spacing: 0.5px;
+  box-shadow: 2px 2px 0 var(--comic-ink);
+}
+
+/* ==========================================
+   Footer
+   ========================================== */
+.comic-theme footer {
+  border-top: var(--comic-outline) !important;
+  font-family: var(--font-comic-body) !important;
+}
+
+/* ==========================================
+   Halftone overlay (subtil)
+   ========================================== */
+.comic-theme main::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: radial-gradient(circle, rgba(0,0,0,0.025) 1px, transparent 1px);
+  background-size: 6px 6px;
+  animation: halftone-pulse 4s infinite;
+}
+
+.comic-theme main > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ==========================================
+   Bannière décorative - haut du site
+   ========================================== */
+.comic-banner {
+  background: var(--comic-gold);
+  color: var(--comic-ink);
+  text-align: center;
+  padding: 5px 0;
+  font-family: var(--font-comic-heading);
+  font-size: 0.8rem;
+  letter-spacing: 3px;
+  border-bottom: 3px solid var(--comic-ink);
+  text-transform: uppercase;
+}
+
+/* ==========================================
+   Profile cards - Style planche BD
+   ========================================== */
+.comic-theme [class*="grid"] > [class*="rounded"] {
+  transition: all 0.2s ease;
+}
+
+.comic-theme [class*="grid"] > [class*="rounded"]:hover {
+  transform: translateY(-3px) rotate(0.5deg);
+}
+
+/* ==========================================
+   Loading skeleton - Hachuré
+   ========================================== */
+.comic-theme [class*="animate-pulse"] {
+  background: repeating-linear-gradient(
+    45deg,
+    #e5e5e5,
+    #e5e5e5 4px,
+    #f0f0f0 4px,
+    #f0f0f0 8px
+  ) !important;
+  border: var(--comic-outline-thin) !important;
+  border-radius: 8px !important;
+}
+
+/* ==========================================
+   Responsive
+   ========================================== */
+@media (max-width: 768px) {
+  .comic-theme div.card,
+  .comic-theme div[class*="rounded-xl"][class*="shadow"] {
+    box-shadow: 3px 3px 0 var(--comic-ink) !important;
+  }
+  
+  .comic-theme button[class*="bg-primary"],
+  .comic-theme a[class*="bg-primary"] {
+    box-shadow: 3px 3px 0 var(--comic-ink) !important;
+  }
+}
+
+/* ==========================================
+   Misc - Éléments additionnels 
+   ========================================== */
+
+/* Sélecteurs dropdown natifs */
+.comic-theme select option {
+  font-family: var(--font-comic-body) !important;
+  background: white;
+  color: var(--comic-ink);
+}
+
+/* Séparateurs */
+.comic-theme hr {
+  border-color: var(--comic-ink) !important;
+  border-width: 2px !important;
+}
+
+/* Liens dans le footer de la home page */
+.comic-theme footer a {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
+.comic-theme footer a:hover {
+  color: var(--comic-gold) !important;
+}
+
+/* Texte des sous-titres / descriptions dans les pages internes */
+.comic-theme p[class*="text-gray"] {
+  color: #444 !important;
+}
