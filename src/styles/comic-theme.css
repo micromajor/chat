@@ -686,3 +686,121 @@
 .comic-theme p[class*="text-gray"] {
   color: #444 !important;
 }
+
+/* ==========================================
+   Compatibilité DARK MODE
+   Le thème BD est TOUJOURS visuellement clair (fond parchemin/crème).
+   Quand le dark mode système est actif, il faut :
+   → Forcer les fonds clairs (pas de bg-gray-800/900)
+   → Forcer les textes sombres (pas de text-white)
+   ========================================== */
+
+/* ---------- Fonds Dark Mode → Fonds clairs BD ---------- */
+
+/* Fond principal de la page (bg-surface-dark → parchemin) */
+.comic-theme [class*="dark:bg-surface-dark"] {
+  background-color: var(--comic-parchment) !important;
+}
+
+/* Fonds gris foncés → crème/parchemin BD */
+.comic-theme [class*="dark:bg-gray-900"]:not(header):not(nav[class*="fixed"]) {
+  background-color: var(--comic-parchment) !important;
+}
+
+.comic-theme [class*="dark:bg-gray-800"]:not(header):not(nav[class*="fixed"]) {
+  background-color: var(--comic-cream) !important;
+}
+
+.comic-theme [class*="dark:bg-gray-700"] {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Hover dark mode → hover léger sur fond clair */
+.comic-theme [class*="dark:hover:bg-gray-700"]:hover {
+  background-color: rgba(0, 0, 0, 0.06) !important;
+}
+
+.comic-theme [class*="dark:hover:bg-gray-800"]:hover {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+/* ---------- Textes Dark Mode → Textes sombres BD ---------- */
+
+/* dark:text-white → encre BD */
+.comic-theme [class*="dark:text-white"] {
+  color: var(--comic-ink) !important;
+}
+
+/* dark:text-gray-300 → gris foncé lisible */
+.comic-theme [class*="dark:text-gray-300"] {
+  color: #555 !important;
+}
+
+/* dark:text-gray-400 → gris moyen lisible */
+.comic-theme [class*="dark:text-gray-400"] {
+  color: #666 !important;
+}
+
+/* ---------- Bordures Dark Mode → Bordures BD ---------- */
+
+.comic-theme [class*="dark:border-gray-800"],
+.comic-theme [class*="dark:border-gray-700"] {
+  border-color: var(--comic-ink) !important;
+}
+
+.comic-theme [class*="dark:border-gray-600"] {
+  border-color: #666 !important;
+}
+
+/* ---------- EXCEPTION : Header → garder bleu foncé + texte blanc ---------- */
+/* Spécificité plus haute que les règles générales ci-dessus */
+
+html.comic-theme header {
+  background: linear-gradient(135deg, var(--comic-blue) 0%, var(--comic-blue-dark) 100%) !important;
+}
+
+html.comic-theme header *,
+html.comic-theme header [class*="dark:text-white"],
+html.comic-theme header [class*="dark:text-gray-300"],
+html.comic-theme header [class*="dark:text-gray-400"] {
+  color: white !important;
+}
+
+/* ---------- EXCEPTION : Navigation mobile fixe → garder style BD ---------- */
+
+html.comic-theme nav[class*="fixed"][class*="bottom-0"] {
+  background: linear-gradient(to top, var(--comic-blue-dark), var(--comic-blue)) !important;
+}
+
+html.comic-theme nav[class*="fixed"][class*="bottom-0"] *,
+html.comic-theme nav[class*="fixed"][class*="bottom-0"] [class*="dark:text-gray-400"],
+html.comic-theme nav[class*="fixed"][class*="bottom-0"] [class*="dark:border-gray"] {
+  border-color: transparent !important;
+}
+
+/* Badge non-lu dans nav mobile en dark+BD */
+html.comic-theme nav[class*="fixed"][class*="bottom-0"] span[class*="bg-red-500"] {
+  border-color: var(--comic-blue-dark) !important;
+}
+
+/* ---------- EXCEPTION : Dropdown profil dans le header ---------- */
+/* Le dropdown a déjà ses propres styles via les règles existantes,
+   mais il faut surcharger les background dark mode */
+
+html.comic-theme header [class*="absolute"][class*="bg-white"] {
+  background: var(--comic-cream) !important;
+}
+
+html.comic-theme header [class*="absolute"][class*="bg-white"] a,
+html.comic-theme header [class*="absolute"][class*="bg-white"] button {
+  color: var(--comic-ink) !important;
+}
+
+html.comic-theme header [class*="absolute"] a[class*="text-red"],
+html.comic-theme header [class*="absolute"] button[class*="text-red"] {
+  color: var(--comic-red) !important;
+}
+
+html.comic-theme header [class*="absolute"] a[class*="text-primary"] {
+  color: var(--comic-blue) !important;
+}

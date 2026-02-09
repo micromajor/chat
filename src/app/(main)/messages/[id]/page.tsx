@@ -468,7 +468,7 @@ export default function ConversationPage() {
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
             </div>
           ) : !conversation || !conversation.otherUser ? (
-            <div className="flex-1 flex items-center justify-center text-gray-500">
+            <div className="flex-1 flex items-center justify-center text-gray-500 dark:text-gray-400">
               Conversation non trouvée
             </div>
           ) : (
@@ -502,7 +502,7 @@ export default function ConversationPage() {
                     <h2 className="font-semibold text-gray-900 dark:text-white">
                       {conversation.otherUser.pseudo}
                     </h2>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
                       {conversation.otherUser.isOnline
                         ? "En ligne"
                         : "Hors ligne"}
@@ -560,7 +560,7 @@ export default function ConversationPage() {
               {/* Messages */}
               <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50 dark:bg-gray-900">
                 {conversation.messages.length === 0 ? (
-                  <div className="text-center text-gray-500 py-8">
+                  <div className="text-center text-gray-500 dark:text-gray-400 py-8">
                     Aucun message. Commencez la conversation !
                   </div>
                 ) : (
