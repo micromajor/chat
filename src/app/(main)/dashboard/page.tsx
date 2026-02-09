@@ -397,21 +397,6 @@ export default function DashboardPage() {
           </Button>
         </div>
       </div>
-
-      {/* Colonne droite - (masquée sur mobile et tablette) */}
-      <div className="hidden xl:block w-[300px] flex-shrink-0">
-        {/* Suggestion premium (fun, pas vraiment premium) */}
-        <div className="bg-gradient-to-br from-accent-500 to-primary-600 rounded-2xl p-5 text-white">
-          <div className="text-3xl mb-2">🪨</div>
-          <h3 className="font-bold text-lg mb-2">Tu kiffes Menhir ?</h3>
-          <p className="text-sm text-white/80 mb-3">
-            Partage le site avec tes potes pour agrandir la communauté !
-          </p>
-          <button className="w-full bg-white text-primary-600 font-bold py-2 rounded-lg hover:bg-accent-100 transition-colors">
-            Partager 🚀
-          </button>
-        </div>
-      </div>
     </div>
   );
 }
