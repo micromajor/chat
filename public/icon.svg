@@ -1,16 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <defs>
-    <linearGradient id="menhirGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#DC2626"/>
-      <stop offset="100%" style="stop-color:#F59E0B"/>
-    </linearGradient>
-  </defs>
-  <!-- Fond arrondi -->
-  <rect width="512" height="512" rx="96" ry="96" fill="url(#menhirGradient)"/>
-  <!-- Pierre dressée (menhir) -->
-  <path d="M256 56 C220 56 196 80 188 120 L180 200 L176 320 C174 360 190 420 210 440 L220 448 L292 448 L302 440 C322 420 338 360 336 320 L332 200 L324 120 C316 80 292 56 256 56 Z" fill="white"/>
-  <!-- Texture pierre -->
-  <ellipse cx="240" cy="180" rx="20" ry="12" fill="rgba(0,0,0,0.08)"/>
-  <ellipse cx="280" cy="280" rx="16" ry="10" fill="rgba(0,0,0,0.06)"/>
-  <ellipse cx="250" cy="360" rx="22" ry="14" fill="rgba(0,0,0,0.05)"/>
+  <!-- Fond bleu foncé arrondi -->
+  <rect width="512" height="512" rx="96" ry="96" fill="#1B3A5C"/>
+  <!-- Ombre de la pierre -->
+  <ellipse cx="264" cy="430" rx="110" ry="22" fill="rgba(0,0,0,0.3)"/>
+  <!-- Corps de la pierre (menhir) - contour noir -->
+  <path d="M256 52 C218 52 192 72 178 110 C164 148 158 200 156 260 C154 310 158 350 170 385 C182 420 200 438 220 445 L292 445 C312 438 330 420 342 385 C354 350 358 310 356 260 C354 200 348 148 334 110 C320 72 294 52 256 52 Z" fill="#2D2D2D" stroke="#1a1a1a" stroke-width="4"/>
+  <!-- Corps de la pierre (intérieur gris) -->
+  <path d="M256 62 C222 62 198 80 186 116 C172 152 166 202 164 260 C162 308 166 346 176 379 C188 412 204 430 224 436 L288 436 C308 430 324 412 336 379 C346 346 350 308 348 260 C346 202 340 152 326 116 C314 80 290 62 256 62 Z" fill="#8C8C8C"/>
+  <!-- Reflet clair sur la pierre -->
+  <path d="M230 80 C215 90 205 120 200 160 C195 200 194 240 196 280 C198 310 202 335 210 355 L220 355 C215 335 212 310 210 280 C208 240 210 200 216 160 C222 120 232 95 240 80 Z" fill="rgba(255,255,255,0.15)"/>
+  <!-- Fissure principale -->
+  <path d="M248 140 C244 170 252 200 246 240 C240 280 250 310 244 350" fill="none" stroke="#666" stroke-width="5" stroke-linecap="round"/>
+  <!-- Petite fissure -->
+  <path d="M246 240 L270 220" fill="none" stroke="#666" stroke-width="3" stroke-linecap="round"/>
+  <!-- Herbe / buissons à la base -->
+  <ellipse cx="175" cy="440" rx="22" ry="18" fill="#4A7C3F"/>
+  <ellipse cx="210" cy="445" rx="18" ry="15" fill="#5A9C4A"/>
+  <ellipse cx="305" cy="445" rx="18" ry="15" fill="#5A9C4A"/>
+  <ellipse cx="340" cy="440" rx="22" ry="18" fill="#4A7C3F"/>
+  <ellipse cx="256" cy="448" rx="16" ry="13" fill="#4A7C3F"/>
 </svg>

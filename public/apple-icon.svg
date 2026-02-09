@@ -1,12 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180">
-  <defs>
-    <linearGradient id="menhirGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#DC2626"/>
-      <stop offset="100%" style="stop-color:#F59E0B"/>
-    </linearGradient>
-  </defs>
-  <!-- Fond pour Apple Touch Icon -->
-  <rect width="180" height="180" fill="url(#menhirGradient)"/>
-  <!-- Pierre dressée (menhir) -->
-  <path d="M90 20 C78 20 69 28 66 42 L63 70 L62 112 C61 126 67 148 74 155 L78 158 L102 158 L106 155 C113 148 119 126 118 112 L117 70 L114 42 C111 28 102 20 90 20 Z" fill="white"/>
+  <!-- Fond bleu foncé -->
+  <rect width="180" height="180" fill="#1B3A5C"/>
+  <!-- Ombre -->
+  <ellipse cx="92" cy="155" rx="40" ry="8" fill="rgba(0,0,0,0.3)"/>
+  <!-- Corps de la pierre - contour -->
+  <path d="M90 18 C77 18 68 26 62 40 C56 54 53 72 52 94 C51 112 53 127 58 139 C63 151 70 158 78 160 L102 160 C110 158 117 151 122 139 C127 127 129 112 128 94 C127 72 124 54 118 40 C112 26 103 18 90 18 Z" fill="#2D2D2D" stroke="#1a1a1a" stroke-width="2"/>
+  <!-- Intérieur gris -->
+  <path d="M90 22 C79 22 71 29 66 42 C60 56 57 73 56 94 C55 111 57 125 62 136 C67 147 73 154 80 156 L100 156 C107 154 113 147 118 136 C123 125 125 111 124 94 C123 73 120 56 114 42 C109 29 101 22 90 22 Z" fill="#8C8C8C"/>
+  <!-- Reflet -->
+  <path d="M80 28 C75 32 72 44 70 58 C68 72 67 86 68 100 C69 111 70 120 73 128 L76 128 C74 120 73 111 72 100 C71 86 72 72 74 58 C76 44 79 34 83 28 Z" fill="rgba(255,255,255,0.15)"/>
+  <!-- Fissure -->
+  <path d="M87 50 C85 60 89 72 86 86 C83 100 88 112 86 126" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round"/>
+  <!-- Herbe -->
+  <ellipse cx="60" cy="158" rx="8" ry="7" fill="#4A7C3F"/>
+  <ellipse cx="74" cy="160" rx="7" ry="6" fill="#5A9C4A"/>
+  <ellipse cx="108" cy="160" rx="7" ry="6" fill="#5A9C4A"/>
+  <ellipse cx="122" cy="158" rx="8" ry="7" fill="#4A7C3F"/>
 </svg>

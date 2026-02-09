@@ -1,31 +1,36 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-  <defs>
-    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#DC2626"/>
-      <stop offset="50%" style="stop-color:#B91C1C"/>
-      <stop offset="100%" style="stop-color:#F59E0B"/>
-    </linearGradient>
-  </defs>
-  
-  <!-- Fond dégradé -->
-  <rect width="1200" height="630" fill="url(#bgGradient)"/>
+  <!-- Fond bleu foncé -->
+  <rect width="1200" height="630" fill="#1B3A5C"/>
   
   <!-- Motif décoratif subtil -->
-  <circle cx="100" cy="100" r="200" fill="rgba(255,255,255,0.05)"/>
-  <circle cx="1100" cy="530" r="250" fill="rgba(255,255,255,0.05)"/>
+  <circle cx="100" cy="100" r="200" fill="rgba(255,255,255,0.03)"/>
+  <circle cx="1100" cy="530" r="250" fill="rgba(255,255,255,0.03)"/>
   
-  <!-- Logo Menhir (pierre dressée) -->
-  <g transform="translate(450, 120)">
-    <path d="M150 0 C100 0 70 40 55 80 L40 160 L30 280 C25 340 60 420 95 450 L115 465 L185 465 L205 450 C240 420 275 340 270 280 L260 160 L245 80 C230 40 200 0 150 0 Z" fill="white"/>
-    <!-- Texture subtile -->
-    <ellipse cx="120" cy="140" rx="30" ry="18" fill="rgba(0,0,0,0.06)"/>
-    <ellipse cx="180" cy="250" rx="25" ry="15" fill="rgba(0,0,0,0.04)"/>
-    <ellipse cx="140" cy="350" rx="35" ry="20" fill="rgba(0,0,0,0.03)"/>
+  <!-- Ombre pierre -->
+  <ellipse cx="608" cy="490" rx="130" ry="25" fill="rgba(0,0,0,0.3)"/>
+  
+  <!-- Logo Menhir (pierre dressée) - contour -->
+  <g transform="translate(460, 40)">
+    <path d="M150 10 C118 10 96 34 84 66 C72 98 66 142 64 200 C62 248 66 286 76 318 C86 350 100 368 118 375 L182 375 C200 368 214 350 224 318 C234 286 238 248 236 200 C234 142 228 98 216 66 C204 34 182 10 150 10 Z" fill="#2D2D2D" stroke="#1a1a1a" stroke-width="4"/>
+    <!-- Intérieur gris -->
+    <path d="M150 20 C122 20 102 42 92 72 C80 104 74 146 72 200 C70 246 74 282 84 312 C94 342 108 358 124 364 L176 364 C192 358 206 342 216 312 C226 282 230 246 228 200 C226 146 220 104 208 72 C198 42 178 20 150 20 Z" fill="#8C8C8C"/>
+    <!-- Reflet -->
+    <path d="M126 30 C114 38 106 62 100 96 C94 130 92 164 94 200 C96 230 100 255 108 275 L116 275 C110 255 107 230 106 200 C104 164 106 130 112 96 C118 62 128 42 138 30 Z" fill="rgba(255,255,255,0.15)"/>
+    <!-- Fissure principale -->
+    <path d="M144 80 C140 110 148 140 142 180 C136 220 146 250 140 290" fill="none" stroke="#666" stroke-width="5" stroke-linecap="round"/>
+    <!-- Petite fissure -->
+    <path d="M142 180 L166 160" fill="none" stroke="#666" stroke-width="3" stroke-linecap="round"/>
+    <!-- Herbe -->
+    <ellipse cx="70" cy="372" rx="22" ry="18" fill="#4A7C3F"/>
+    <ellipse cx="100" cy="376" rx="18" ry="15" fill="#5A9C4A"/>
+    <ellipse cx="200" cy="376" rx="18" ry="15" fill="#5A9C4A"/>
+    <ellipse cx="232" cy="372" rx="22" ry="18" fill="#4A7C3F"/>
+    <ellipse cx="150" cy="378" rx="16" ry="13" fill="#4A7C3F"/>
   </g>
   
-  <!-- Texte "Menhir" -->
-  <text x="600" y="540" font-family="system-ui, -apple-system, sans-serif" font-size="72" font-weight="bold" fill="white" text-anchor="middle">Menhir</text>
+  <!-- Texte "Le Menhir" -->
+  <text x="600" y="540" font-family="system-ui, -apple-system, sans-serif" font-size="72" font-weight="bold" fill="white" text-anchor="middle">Le Menhir</text>
   
   <!-- Slogan -->
-  <text x="600" y="590" font-family="system-ui, -apple-system, sans-serif" font-size="28" fill="rgba(255,255,255,0.8)" text-anchor="middle">Solide comme la pierre 🪨</text>
+  <text x="600" y="590" font-family="system-ui, -apple-system, sans-serif" font-size="28" fill="rgba(255,255,255,0.7)" text-anchor="middle">Rencontres entre hommes — Solide comme la pierre</text>
 </svg>
