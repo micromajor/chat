@@ -26,7 +26,7 @@ interface UserData {
   id: string;
   pseudo: string;
   avatar?: string;
-  birthDate?: string;
+  age?: number;
   country?: string;
   department?: string;
   description?: string;
@@ -387,7 +387,6 @@ export default function ConversationPage() {
             ) : (
               <div className="divide-y divide-gray-100 dark:divide-gray-700">
                 {users.map((u) => {
-                  const age = calculateAge(u.birthDate);
                   return (
                     <div
                       key={u.id}
@@ -410,8 +409,8 @@ export default function ConversationPage() {
                           {u.pseudo}
                         </p>
                         <p className="text-xs text-gray-500 dark:text-gray-400">
-                          {age ? `${age} ans` : ""}
-                          {age && (u.department || u.country) ? " • " : ""}
+                          {u.age ? `${u.age} ans` : ""}
+                          {u.age && (u.department || u.country) ? " • " : ""}
                           {getLocationLabel(u.country, u.department) || ""}
                         </p>
                       </div>
