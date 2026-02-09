@@ -803,6 +803,24 @@ html.comic-theme header [class*="absolute"][class*="bg-white"] button {
   font-family: var(--font-comic-body) !important;
 }
 
+/* CTA "Créer un compte" dans le dropdown — garder son style gradient */
+html.comic-theme header [class*="absolute"] a.dropdown-cta {
+  background: linear-gradient(to right, var(--comic-blue), var(--comic-blue-light)) !important;
+  color: white !important;
+  border: 2px solid var(--comic-ink) !important;
+  box-shadow: 3px 3px 0 var(--comic-ink) !important;
+  font-family: var(--font-comic-heading) !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+  border-radius: 10px !important;
+}
+
+html.comic-theme header [class*="absolute"] a.dropdown-cta:hover {
+  background: linear-gradient(to right, var(--comic-blue-light), var(--comic-blue)) !important;
+  transform: translateY(-1px);
+  box-shadow: 4px 4px 0 var(--comic-ink) !important;
+}
+
 html.comic-theme header [class*="absolute"][class*="bg-white"] a:hover,
 html.comic-theme header [class*="absolute"][class*="bg-white"] button:hover {
   background: rgba(0, 0, 0, 0.06) !important;

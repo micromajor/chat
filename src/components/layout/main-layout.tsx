@@ -153,13 +153,18 @@ export function MainLayout({ children, user: propUser }: MainLayoutProps) {
                       </>
                     )}
                     {authUser?.isQuickAccess && (
-                      <Link
-                        href="/inscription"
-                        className="flex items-center gap-2 px-3 py-2 text-primary-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg"
-                      >
-                        <UserPlus className="w-4 h-4" />
-                        Créer un compte
-                      </Link>
+                      <>
+                        <div className="px-3 py-2 mb-1">
+                          <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">Profitez de toutes les fonctionnalités</p>
+                          <Link
+                            href="/inscription"
+                            className="flex items-center justify-center gap-2 w-full px-3 py-2 text-sm font-semibold text-white bg-gradient-to-r from-primary-500 to-accent-500 hover:from-primary-600 hover:to-accent-600 rounded-lg transition-all shadow-sm dropdown-cta"
+                          >
+                            <UserPlus className="w-4 h-4" />
+                            Créer un compte
+                          </Link>
+                        </div>
+                      </>
                     )}
                     <hr className="my-2 border-gray-200 dark:border-gray-700" />
                     <button
