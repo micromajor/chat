@@ -86,9 +86,8 @@ export default function RootLayout({
   return (
     <html lang="fr" className="comic-theme" suppressHydrationWarning>
       <head>
-        <link rel="icon" type="image/svg+xml" href="/icon.svg" />
-        <link rel="apple-touch-icon" href="/apple-icon.svg" />
-        <meta name="theme-color" content="#DC2626" />
+        <link rel="apple-touch-icon" href="/apple-icon.svg?v=2" />
+        <meta name="theme-color" content="#1B3A5C" />
         {/* Données structurées JSON-LD pour le SEO */}
         <script
           type="application/ld+json"
