@@ -92,8 +92,25 @@ export async function GET(request: NextRequest) {
       ...(minBirthDate && { birthDate: { gte: minBirthDate } }),
     };
 
-    // Compter le total
+    // Compter le total filtré
     const total = await prisma.user.count({ where });
+
+    // Compter le nombre total de connectés (sans les filtres, pour le header)
+    const onlineCount = await prisma.user.count({
+      where: {
+        id: { 
+          not: user!.id,
+          notIn: Array.from(blockedUserIds),
+        },
+        isBanned: false,
+        isInvisible: false,
+        isOnline: true,
+        OR: [
+          { isQuickAccess: false },
+          { isQuickAccess: true, isOnline: true },
+        ],
+      },
+    });
 
     // Récupérer les utilisateurs
     const users = await prisma.user.findMany({
@@ -139,6 +156,7 @@ export async function GET(request: NextRequest) {
       data: {
         users: usersWithAge,
         total,
+        onlineCount,
         page,
         limit,
         hasMore: page * limit < total,

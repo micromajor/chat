@@ -88,7 +88,7 @@ export default function DashboardPage() {
       if (data.success) {
         setUsers(data.data.users);
         setTotalPages(Math.ceil(data.data.total / 15) || 1);
-        setTotalOnline(data.data.total);
+        setTotalOnline(data.data.onlineCount);
       }
     } catch (error) {
       console.error("Erreur chargement utilisateurs:", error);
