@@ -64,15 +64,20 @@ export async function GET(request: NextRequest) {
       : undefined;
 
     // Construire la requête
+    // RÈGLE: Les anonymes (isQuickAccess=true) ne sont visibles QUE s'ils sont en ligne
+    // Les inscrits (isQuickAccess=false) sont toujours visibles (en ligne ou hors ligne)
     const where = {
       id: { 
         not: user!.id,
         notIn: Array.from(blockedUserIds),
       },
       isBanned: false,
-      // Les utilisateurs en accès rapide peuvent voir tout le monde
-      // isVerified: true, // Commenté pour permettre aux quick access de voir les autres
       isInvisible: false,
+      // Exclure les anonymes hors ligne : soit inscrit, soit anonyme en ligne
+      OR: [
+        { isQuickAccess: false }, // Inscrits : toujours visibles
+        { isQuickAccess: true, isOnline: true }, // Anonymes : seulement si en ligne
+      ],
       ...(isOnline !== undefined && { isOnline }),
       ...(hasPhoto && { 
         AND: [
