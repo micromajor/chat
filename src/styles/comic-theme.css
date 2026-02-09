@@ -794,6 +794,18 @@ html.comic-theme header [class*="absolute"][class*="bg-white"] {
 html.comic-theme header [class*="absolute"][class*="bg-white"] a,
 html.comic-theme header [class*="absolute"][class*="bg-white"] button {
   color: var(--comic-ink) !important;
+  /* Reset du style bouton BD qui matche par erreur */
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  font-family: var(--font-comic-body) !important;
+}
+
+html.comic-theme header [class*="absolute"][class*="bg-white"] a:hover,
+html.comic-theme header [class*="absolute"][class*="bg-white"] button:hover {
+  background: rgba(0, 0, 0, 0.06) !important;
 }
 
 html.comic-theme header [class*="absolute"] a[class*="text-red"],
