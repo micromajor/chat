@@ -5,12 +5,44 @@ import { useRouter } from "next/navigation";
 import { LogOut, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MenhirLogo } from "@/components/ui/menhir-logo";
+import { useAuth } from "@/contexts/auth-context";
 
 export default function DeconnexionPage() {
   const router = useRouter();
+  const { isQuickAccess } = useAuth();
 
   const handleSignOut = async () => {
-    await signOut({ callbackUrl: "/" });
+    try {
+      // Appeler l'API logout pour mettre isOnline à false
+      const token = localStorage.getItem("quickAccessToken");
+      await fetch("/api/auth/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { "X-Quick-Access-Token": token } : {}),
+        },
+      });
+      
+      // Pour les anonymes, supprimer le token local
+      if (isQuickAccess) {
+        localStorage.removeItem("quickAccessToken");
+        localStorage.removeItem("quickAccessUser");
+        router.push("/");
+      } else {
+        // Pour les inscrits, déconnexion NextAuth
+        await signOut({ callbackUrl: "/" });
+      }
+    } catch (error) {
+      console.error("Erreur déconnexion:", error);
+      // En cas d'erreur, forcer la déconnexion quand même
+      if (isQuickAccess) {
+        localStorage.removeItem("quickAccessToken");
+        localStorage.removeItem("quickAccessUser");
+        router.push("/");
+      } else {
+        await signOut({ callbackUrl: "/" });
+      }
+    }
   };
 
   return (
