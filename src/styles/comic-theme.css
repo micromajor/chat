@@ -197,8 +197,8 @@
 /* ==========================================
    Boutons - Style "BOUM!"
    ========================================== */
-.comic-theme button[class*="bg-primary"],
-.comic-theme a[class*="bg-primary"],
+.comic-theme button[class*="bg-primary"]:not([class*="border-primary"]),
+.comic-theme a[class*="bg-primary"]:not([class*="border-primary"]),
 .comic-theme .btn-primary,
 .comic-theme button[class*="bg-red-600"],
 .comic-theme a[class*="bg-red-600"] {
@@ -213,15 +213,15 @@
   transition: all 0.15s ease;
 }
 
-.comic-theme button[class*="bg-primary"]:hover,
-.comic-theme a[class*="bg-primary"]:hover,
+.comic-theme button[class*="bg-primary"]:not([class*="border-primary"]):hover,
+.comic-theme a[class*="bg-primary"]:not([class*="border-primary"]):hover,
 .comic-theme .btn-primary:hover {
   transform: translateY(-2px);
   box-shadow: 6px 6px 0 var(--comic-ink) !important;
 }
 
-.comic-theme button[class*="bg-primary"]:active,
-.comic-theme a[class*="bg-primary"]:active,
+.comic-theme button[class*="bg-primary"]:not([class*="border-primary"]):active,
+.comic-theme a[class*="bg-primary"]:not([class*="border-primary"]):active,
 .comic-theme .btn-primary:active {
   transform: translateY(2px);
   box-shadow: 1px 1px 0 var(--comic-ink) !important;
@@ -280,11 +280,23 @@
 .comic-theme .btn-outline,
 .comic-theme button[class*="border-primary"],
 .comic-theme a[class*="border-primary"] {
-  border: var(--comic-outline-thin) !important;
+  background: transparent !important;
+  border: 3px solid var(--comic-blue) !important;
   color: var(--comic-blue) !important;
   border-radius: 12px !important;
   font-family: var(--font-comic-heading) !important;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
   box-shadow: 3px 3px 0 var(--comic-ink) !important;
+}
+
+.comic-theme .btn-outline:hover,
+.comic-theme button[class*="border-primary"]:hover,
+.comic-theme a[class*="border-primary"]:hover {
+  background: var(--comic-blue) !important;
+  color: white !important;
+  transform: translateY(-2px);
+  box-shadow: 5px 5px 0 var(--comic-ink) !important;
 }
 
 /* Bouton danger */
@@ -649,8 +661,8 @@
     box-shadow: 3px 3px 0 var(--comic-ink) !important;
   }
   
-  .comic-theme button[class*="bg-primary"],
-  .comic-theme a[class*="bg-primary"] {
+  .comic-theme button[class*="bg-primary"]:not([class*="border-primary"]),
+  .comic-theme a[class*="bg-primary"]:not([class*="border-primary"]) {
     box-shadow: 3px 3px 0 var(--comic-ink) !important;
   }
 }
