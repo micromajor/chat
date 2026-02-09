@@ -16,6 +16,7 @@ interface AuthContextType {
   isLoading: boolean;
   quickAccessToken: string | null;
   logout: () => void;
+  refreshAvatar: () => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -24,6 +25,7 @@ const AuthContext = createContext<AuthContextType>({
   isLoading: true,
   quickAccessToken: null,
   logout: () => {},
+  refreshAvatar: () => {},
 });
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -31,6 +33,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [quickAccessUser, setQuickAccessUser] = useState<AuthUser | null>(null);
   const [quickAccessToken, setQuickAccessToken] = useState<string | null>(null);
   const [isLoadingQuickAccess, setIsLoadingQuickAccess] = useState(true);
+  const [nextAuthAvatar, setNextAuthAvatar] = useState<string | null>(null);
 
   // Charger le token d'accès rapide depuis localStorage
   useEffect(() => {
@@ -55,6 +58,36 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
     setIsLoadingQuickAccess(false);
   }, []);
+
+  // Charger l'avatar depuis l'API pour les utilisateurs NextAuth
+  useEffect(() => {
+    if (session?.user?.id && status === "authenticated") {
+      fetch("/api/profile")
+        .then(res => res.json())
+        .then(data => {
+          if (data.avatar) {
+            setNextAuthAvatar(data.avatar);
+          }
+        })
+        .catch(() => {
+          // Silently fail
+        });
+    }
+  }, [session?.user?.id, status]);
+
+  // Fonction pour rafraîchir l'avatar
+  const refreshAvatar = () => {
+    if (session?.user?.id) {
+      fetch("/api/profile")
+        .then(res => res.json())
+        .then(data => {
+          if (data.avatar) {
+            setNextAuthAvatar(data.avatar);
+          }
+        })
+        .catch(() => {});
+    }
+  };
 
   // Déconnexion
   const logout = async () => {
@@ -92,7 +125,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     ? {
         id: session.user.id,
         pseudo: session.user.pseudo || "Utilisateur",
-        avatar: session.user.avatar,
+        avatar: nextAuthAvatar || session.user.avatar,
         isQuickAccess: false,
       }
     : quickAccessUser;
@@ -108,6 +141,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isLoading,
         quickAccessToken,
         logout,
+        refreshAvatar,
       }}
     >
       {children}

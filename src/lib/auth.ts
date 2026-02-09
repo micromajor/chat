@@ -9,7 +9,7 @@ declare module "next-auth" {
       id: string;
       email: string;
       pseudo: string;
-      avatar?: string;
+      avatar?: string; // Chargé dynamiquement, pas stocké dans le JWT
       isVerified: boolean;
     };
   }
@@ -18,7 +18,6 @@ declare module "next-auth" {
     id: string;
     email: string;
     pseudo: string;
-    avatar?: string;
     isVerified: boolean;
   }
 }
@@ -28,7 +27,6 @@ declare module "next-auth/jwt" {
     id: string;
     email: string;
     pseudo: string;
-    avatar?: string;
     isVerified: boolean;
   }
 }
@@ -89,7 +87,7 @@ export const authOptions: NextAuthOptions = {
           id: user.id,
           email: user.email,
           pseudo: user.pseudo,
-          avatar: user.avatar || undefined,
+          // NOTE: Ne pas inclure avatar ici (trop volumineux pour le JWT)
           isVerified: user.isVerified,
         };
       },
@@ -101,14 +99,14 @@ export const authOptions: NextAuthOptions = {
         token.id = user.id;
         token.email = user.email;
         token.pseudo = user.pseudo;
-        token.avatar = user.avatar;
+        // NOTE: Ne PAS stocker l'avatar dans le JWT (trop volumineux en base64)
+        // L'avatar sera récupéré via /api/profile ou AuthContext
         token.isVerified = user.isVerified;
       }
 
       // Mise à jour de la session
       if (trigger === "update" && session) {
         token.pseudo = session.pseudo || token.pseudo;
-        token.avatar = session.avatar || token.avatar;
       }
 
       return token;
@@ -118,7 +116,7 @@ export const authOptions: NextAuthOptions = {
         id: token.id,
         email: token.email,
         pseudo: token.pseudo,
-        avatar: token.avatar,
+        // Avatar sera chargé dynamiquement côté client
         isVerified: token.isVerified,
       };
       return session;
