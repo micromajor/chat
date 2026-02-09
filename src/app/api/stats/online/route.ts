@@ -23,7 +23,7 @@ export async function GET() {
     
     return NextResponse.json({
       count: onlineCount,
-      showCount: onlineCount > 30, // Afficher seulement si > 30
+      showCount: onlineCount >= 1, // Afficher dès qu'il y a 1 connecté
       timestamp: new Date().toISOString(),
     });
   } catch (error) {

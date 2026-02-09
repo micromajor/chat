@@ -41,9 +41,18 @@ export default function HomePage() {
           <h1 className="text-4xl md:text-6xl font-heading font-bold text-white mb-6 leading-tight">
             Chat gratuit et privé entre mecs.
           </h1>
-          <p className="text-xl text-white/90 mb-8">
+          <p className="text-xl text-white/90 mb-4">
             Viens faire de nouvelles rencontres !
           </p>
+
+          {/* Compteur de connectés */}
+          {showCount && onlineCount && onlineCount > 0 && (
+            <div className="inline-flex items-center gap-2 bg-green-500/20 backdrop-blur-sm text-white px-5 py-2.5 rounded-full text-base mb-6 border border-green-400/30">
+              <span className="w-2.5 h-2.5 bg-green-400 rounded-full animate-pulse"></span>
+              <span className="font-semibold">{onlineCount}</span>
+              <span className="text-white/80">mec{onlineCount > 1 ? 's' : ''} connecté{onlineCount > 1 ? 's' : ''}</span>
+            </div>
+          )}
 
           {/* Options d'accès avec descriptions */}
           <div className="max-w-4xl mx-auto mb-8">
@@ -97,19 +106,6 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-          
-          {/* Stats - Afficher uniquement si > 30 connectés */}
-          {showCount && onlineCount && (
-            <div className="flex justify-center gap-8 mt-12">
-              <div className="text-center bg-white/10 backdrop-blur-sm rounded-2xl px-8 py-4">
-                <div className="text-3xl font-bold text-white">{onlineCount}</div>
-                <div className="text-white/70 text-sm flex items-center justify-center gap-2">
-                  <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                  Connectés maintenant
-                </div>
-              </div>
-            </div>
-          )}
         </div>
 
         {/* Features */}
