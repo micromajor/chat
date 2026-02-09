@@ -2,7 +2,7 @@
 
 Ce document résume l'état actuel du projet pour faciliter la reprise par un autre modèle ou développeur.
 
-**Dernière mise à jour: 5 février 2026**
+**Dernière mise à jour: 9 février 2026**
 
 ---
 
@@ -13,12 +13,12 @@ Ce document résume l'état actuel du projet pour faciliter la reprise par un au
 - **Logo**: Icône Mountain (Lucide React)
 - **🌐 EN PRODUCTION** : https://menhir.chat
 
-### Progression Globale: ~95%
+### Progression Globale: ~96%
 
 | Module | État | Notes |
 |--------|------|-------|
 | Frontend Pages | ✅ 100% | Toutes les pages créées |
-| Authentification | ⚠️ 95% | NextAuth + Accès Rapide - MANQUE blocage sans vérification |
+| Authentification | ✅ 100% | NextAuth + Accès Rapide - Fix JWT avatar (9 fév 2026) |
 | Vérification Email | ✅ 100% | Fix race condition (4 fév 2026) |
 | Schema Prisma | ✅ 100% | Complet |
 | Base de données | ✅ 100% | PostgreSQL LOCAL sur serveur Hetzner |
@@ -36,6 +36,16 @@ Ce document résume l'état actuel du projet pour faciliter la reprise par un au
 | Cookie Consent RGPD | ✅ 100% | Bandeau cookies, GA ne charge qu'après consentement |
 | Robustesse | ✅ 100% | Error Boundary, retry API, rate limiting, logger, sécurité |
 | Déploiement | ✅ 100% | Hetzner CX23 + Nginx + PM2 + Cloudflare SSL |
+
+---
+
+## 🐛 Bugs Corrigés Récemment
+
+### 9 février 2026 - Fix connexion NextAuth bloquée
+- **Problème** : La connexion restait bloquée sur "Chargement..." 
+- **Cause racine** : L'avatar base64 (~12KB) était stocké dans le JWT, rendant le cookie de session > 4KB (découpé en 5 parties)
+- **Solution** : Ne plus stocker l'avatar dans le JWT. L'avatar est chargé dynamiquement depuis `/api/profile` via le AuthContext
+- **Fichiers modifiés** : `src/lib/auth.ts`, `src/contexts/auth-context.tsx`
 
 ---
 
