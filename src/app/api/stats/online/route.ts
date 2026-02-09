@@ -8,15 +8,11 @@ import { prisma } from "@/lib/prisma";
 
 export async function GET() {
   try {
-    // Compter les utilisateurs en ligne (connectés dans les 5 dernières minutes)
-    const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
-    
+    // Compter les utilisateurs en ligne (flag isOnline = true)
+    // Note: les fakes n'ont pas de heartbeat donc on ne filtre plus par lastSeenAt
     const onlineCount = await prisma.user.count({
       where: {
         isOnline: true,
-        lastSeenAt: {
-          gte: fiveMinutesAgo,
-        },
         isBanned: false,
       },
     });

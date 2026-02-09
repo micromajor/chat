@@ -8,6 +8,7 @@ import { useAuth } from "@/contexts/auth-context";
 import { useUnreadMessages } from "@/contexts/unread-messages-context";
 import { useAuthenticatedFetch } from "@/hooks/use-authenticated-fetch";
 import { useToast } from "@/components/ui/toast";
+import { getLocationLabel } from "@/lib/countries";
 import { 
   ArrowLeft, 
   Send, 
@@ -26,7 +27,8 @@ interface UserData {
   pseudo: string;
   avatar?: string;
   birthDate?: string;
-  city?: string;
+  country?: string;
+  department?: string;
   description?: string;
   isOnline?: boolean;
   lastSeenAt?: string;
@@ -409,8 +411,8 @@ export default function ConversationPage() {
                         </p>
                         <p className="text-xs text-gray-500 dark:text-gray-400">
                           {age ? `${age} ans` : ""}
-                          {age && u.city ? " • " : ""}
-                          {u.city || ""}
+                          {age && (u.department || u.country) ? " • " : ""}
+                          {getLocationLabel(u.country, u.department) || ""}
                         </p>
                       </div>
                       <button
