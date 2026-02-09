@@ -65,8 +65,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       fetch("/api/profile")
         .then(res => res.json())
         .then(data => {
-          if (data.avatar) {
-            setNextAuthAvatar(data.avatar);
+          const avatar = data?.data?.avatar || data?.avatar;
+          if (avatar) {
+            setNextAuthAvatar(avatar);
           }
         })
         .catch(() => {
@@ -81,8 +82,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       fetch("/api/profile")
         .then(res => res.json())
         .then(data => {
-          if (data.avatar) {
-            setNextAuthAvatar(data.avatar);
+          const avatar = data?.data?.avatar || data?.avatar;
+          if (avatar) {
+            setNextAuthAvatar(avatar);
           }
         })
         .catch(() => {});
