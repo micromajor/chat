@@ -7,6 +7,23 @@ import { Button } from "@/components/ui/button";
 import { MenhirLogo } from "@/components/ui/menhir-logo";
 import { useAuth } from "@/contexts/auth-context";
 
+// Fonction pour nettoyer TOUS les cookies de session NextAuth
+function cleanupAllSessionCookies() {
+  const allCookies = document.cookie.split(';');
+  
+  allCookies.forEach(cookie => {
+    const cookieName = cookie.split('=')[0].trim();
+    // Nettoyer tous les cookies NextAuth
+    if (cookieName.includes('next-auth') || cookieName.includes('__Secure-next-auth')) {
+      // Supprimer avec différentes combinaisons path/domain
+      document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+      document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=${window.location.hostname}`;
+      document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=.${window.location.hostname}`;
+      document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=.menhir.chat`;
+    }
+  });
+}
+
 export default function DeconnexionPage() {
   const router = useRouter();
   const { user } = useAuth();
@@ -24,6 +41,9 @@ export default function DeconnexionPage() {
         },
       });
       
+      // Nettoyer tous les cookies de session AVANT la déconnexion
+      cleanupAllSessionCookies();
+      
       // Pour les anonymes, supprimer le token local
       if (isQuickAccess) {
         localStorage.removeItem("quickAccessToken");
@@ -36,6 +56,7 @@ export default function DeconnexionPage() {
     } catch (error) {
       console.error("Erreur déconnexion:", error);
       // En cas d'erreur, forcer la déconnexion quand même
+      cleanupAllSessionCookies();
       if (isQuickAccess) {
         localStorage.removeItem("quickAccessToken");
         localStorage.removeItem("quickAccessUser");

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
@@ -9,9 +9,44 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { MenhirLogo } from "@/components/ui/menhir-logo";
 
+// Fonction pour nettoyer les cookies de session corrompus/trop gros
+function cleanupSessionCookies() {
+  const cookiesToClean = [
+    'next-auth.session-token',
+    '__Secure-next-auth.session-token',
+    'next-auth.csrf-token',
+    '__Secure-next-auth.csrf-token',
+    'next-auth.callback-url',
+    '__Secure-next-auth.callback-url',
+  ];
+  
+  // Chercher aussi les cookies chunked (session splitée)
+  const allCookies = document.cookie.split(';');
+  allCookies.forEach(cookie => {
+    const cookieName = cookie.split('=')[0].trim();
+    if (cookieName.includes('next-auth') && cookieName.includes('.')) {
+      cookiesToClean.push(cookieName);
+    }
+  });
+  
+  // Supprimer chaque cookie avec les différents paths possibles
+  cookiesToClean.forEach(name => {
+    // Path racine
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+    // Avec domain
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=${window.location.hostname}`;
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=.${window.location.hostname}`;
+  });
+}
+
 export default function ConnexionPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  
+  // Nettoyer les cookies corrompus au chargement de la page
+  useEffect(() => {
+    cleanupSessionCookies();
+  }, []);
   const [isResending, setIsResending] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
