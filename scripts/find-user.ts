@@ -3,10 +3,11 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  const user = await prisma.user.findFirst({
+  const search = process.argv[2] || 'jrph';
+  const users = await prisma.user.findMany({
     where: {
       pseudo: {
-        contains: 'dorian',
+        contains: search,
         mode: 'insensitive'
       }
     },
@@ -14,11 +15,13 @@ async function main() {
       id: true,
       pseudo: true,
       email: true,
+      isVerified: true,
+      isBanned: true,
       isQuickAccess: true
     }
   });
   
-  console.log("Utilisateur trouvé:", JSON.stringify(user, null, 2));
+  console.log("Utilisateurs trouvés:", JSON.stringify(users, null, 2));
 }
 
 main().finally(() => prisma.$disconnect());
