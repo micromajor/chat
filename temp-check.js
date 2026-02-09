@@ -1,0 +1,1 @@
+﻿const{PrismaClient}=require("@prisma/client");const p=new PrismaClient();p.user.findFirst({where:{pseudo:{equals:"jhprhmur44",mode:"insensitive"}}}).then(u=>{if(u)console.log(u.pseudo,u.password.length,u.password.substring(0,10));else console.log("not found");p.$disconnect()})

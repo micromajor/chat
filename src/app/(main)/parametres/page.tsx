@@ -1,12 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import {
   Settings,
-  Moon,
-  Sun,
   Shield,
   Trash2,
   LogOut,
@@ -29,29 +27,10 @@ export default function ParametresPage() {
   const { addToast } = useToast();
   
   const isQuickAccess = user?.isQuickAccess ?? false;
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [logoutLoading, setLogoutLoading] = useState(false);
-
-  useEffect(() => {
-    // Vérifier le mode sombre actuel
-    setIsDarkMode(document.documentElement.classList.contains("dark"));
-  }, []);
-
-  const toggleDarkMode = () => {
-    if (isDarkMode) {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-      addToast("info", "Mode clair activé");
-    } else {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-      addToast("info", "Mode sombre activé");
-    }
-    setIsDarkMode(!isDarkMode);
-  };
 
   const handleLogout = async () => {
     setLogoutLoading(true);
@@ -156,42 +135,6 @@ export default function ParametresPage() {
           </div>
           <ChevronRight className="w-5 h-5 text-gray-400" />
         </Link>
-      </div>
-
-      {/* Préférences */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden mb-6">
-        <div className="p-4 border-b border-gray-100 dark:border-gray-700">
-          <h2 className="font-semibold text-gray-900 dark:text-white">
-            Préférences
-          </h2>
-        </div>
-
-        <button
-          onClick={toggleDarkMode}
-          className="w-full flex items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50"
-        >
-          <div className="flex items-center gap-3">
-            {isDarkMode ? (
-              <Moon className="w-5 h-5 text-gray-500" />
-            ) : (
-              <Sun className="w-5 h-5 text-gray-500" />
-            )}
-            <span className="text-gray-700 dark:text-gray-300">
-              Mode sombre
-            </span>
-          </div>
-          <div
-            className={`w-12 h-7 rounded-full p-1 transition-colors ${
-              isDarkMode ? "bg-primary-500" : "bg-gray-300"
-            }`}
-          >
-            <div
-              className={`w-5 h-5 rounded-full bg-white transition-transform ${
-                isDarkMode ? "translate-x-5" : ""
-              }`}
-            />
-          </div>
-        </button>
       </div>
 
       {/* Informations légales */}

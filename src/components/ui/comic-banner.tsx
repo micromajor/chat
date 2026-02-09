@@ -1,16 +1,10 @@
 "use client";
 
-import { useThemeStyle } from "@/contexts/theme-style-context";
-
 /**
- * Bandeau décoratif affiché en haut du site 
- * uniquement quand le thème BD est activé.
+ * Bandeau décoratif affiché en haut du site.
+ * Le thème BD est toujours actif.
  */
 export function ComicBanner() {
-  const { isComic } = useThemeStyle();
-  
-  if (!isComic) return null;
-
   return (
     <div className="comic-banner" style={{
       background: "var(--comic-gold)",

@@ -1,8 +1,8 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from "react";
+import { createContext, useContext, type ReactNode } from "react";
 
-type ThemeStyle = "default" | "comic";
+type ThemeStyle = "comic";
 
 interface ThemeStyleContextType {
   themeStyle: ThemeStyle;
@@ -11,9 +11,9 @@ interface ThemeStyleContextType {
 }
 
 const ThemeStyleContext = createContext<ThemeStyleContextType>({
-  themeStyle: "default",
+  themeStyle: "comic",
   toggleThemeStyle: () => {},
-  isComic: false,
+  isComic: true,
 });
 
 export function useThemeStyle() {
@@ -21,38 +21,13 @@ export function useThemeStyle() {
 }
 
 export function ThemeStyleProvider({ children }: { children: ReactNode }) {
-  const [themeStyle, setThemeStyle] = useState<ThemeStyle>("default");
-
-  // Charger le thème depuis localStorage au montage
-  useEffect(() => {
-    const saved = localStorage.getItem("menhir-theme-style") as ThemeStyle;
-    if (saved === "comic") {
-      setThemeStyle("comic");
-      document.documentElement.classList.add("comic-theme");
-    }
-  }, []);
-
-  const toggleThemeStyle = useCallback(() => {
-    setThemeStyle((prev) => {
-      const next = prev === "default" ? "comic" : "default";
-      localStorage.setItem("menhir-theme-style", next);
-      
-      if (next === "comic") {
-        document.documentElement.classList.add("comic-theme");
-      } else {
-        document.documentElement.classList.remove("comic-theme");
-      }
-      
-      return next;
-    });
-  }, []);
-
+  // Le thème BD est toujours actif — plus de toggle
   return (
     <ThemeStyleContext.Provider
       value={{
-        themeStyle,
-        toggleThemeStyle,
-        isComic: themeStyle === "comic",
+        themeStyle: "comic",
+        toggleThemeStyle: () => {},
+        isComic: true,
       }}
     >
       {children}
