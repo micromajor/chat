@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 async function resetUserPassword() {
   try {
-    const pseudo = 'jhprhmur';
+    const pseudo = 'jhprhmur44';
     const newPassword = 'Menhir2026!'; // Nouveau mot de passe temporaire
     
     console.log('🔍 Recherche de l\'utilisateur...');
