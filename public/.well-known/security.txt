@@ -1,0 +1,4 @@
+Contact: mailto:contact@menhir.chat
+Expires: 2027-02-16T00:00:00.000Z
+Preferred-Languages: fr, en
+Canonical: https://menhir.chat/.well-known/security.txt
