@@ -36,12 +36,12 @@ const comicNeue = Comic_Neue({
 export const metadata: Metadata = {
   metadataBase: new URL("https://menhir.chat"),
   title: {
-    default: "Le Menhir - Rencontres entre hommes",
+    default: "Le Menhir - Chat gay gratuit & rencontres entre hommes",
     template: "%s | Le Menhir",
   },
   description:
-    "Le Menhir est la plateforme de rencontres gratuite dédiée aux hommes. Chat privé, profils vérifiés, messagerie sécurisée. Solide comme la pierre !",
-  keywords: ["rencontres", "gay", "hommes", "chat", "messagerie", "gratuit", "France", "menhir", "rencontre homme", "tchat gay", "site rencontre gratuit"],
+    "Le Menhir : tchat gay gratuit et sans inscription entre mecs. Messagerie privée, profils vérifiés, 100% gratuit. Rejoins la communauté !",
+  keywords: ["chat gay gratuit", "tchat gay", "rencontre gay gratuit", "site rencontre gay", "chat entre mecs", "tchat gay sans inscription", "rencontre entre hommes", "site gay gratuit", "messagerie gay", "chat homme gratuit", "rencontre homo", "tchat entre mecs gratuit", "alternative grindr", "site rencontre gratuit homme", "chat gay français", "menhir"],
   authors: [{ name: "Le Menhir" }],
   creator: "Le Menhir",
   publisher: "Le Menhir",
@@ -60,8 +60,8 @@ export const metadata: Metadata = {
     canonical: "https://menhir.chat",
   },
   openGraph: {
-    title: "Le Menhir - Rencontres entre hommes",
-    description: "La plateforme de rencontres gratuite dédiée aux hommes. Solide comme la pierre !",
+    title: "Le Menhir - Chat gay gratuit & rencontres entre hommes",
+    description: "Tchat gay gratuit entre mecs. Messagerie privée et sécurisée, 100% gratuit, sans abonnement.",
     type: "website",
     locale: "fr_FR",
     siteName: "Le Menhir",
@@ -69,8 +69,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Le Menhir - Rencontres entre hommes",
-    description: "La plateforme de rencontres gratuite dédiée aux hommes. Solide comme la pierre !",
+    title: "Le Menhir - Chat gay gratuit & rencontres entre hommes",
+    description: "Tchat gay gratuit entre mecs. Messagerie privée et sécurisée, 100% gratuit, sans abonnement.",
   },
   verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || "",
