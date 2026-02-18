@@ -1,10 +1,13 @@
-"use client";
+import { redirect } from "next/navigation";
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { Eye, UserPlus, Users, Sparkles } from "lucide-react";
-import { Avatar } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+/**
+ * La page /explorer affichait des profils fictifs visibles sans connexion,
+ * ce qui a déclenché un signalement "page trompeuse" sur Google Safe Browsing.
+ * On redirige désormais vers /connexion.
+ */
+export default function ExplorerPage() {
+  redirect("/connexion");
+}
 
 // Wrapper pour les icônes Lucide
 function IconWrapper({ children, className }: { children: React.ReactNode; className?: string }) {
